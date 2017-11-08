@@ -32,25 +32,27 @@ void SyntaxAnalyzer::setRhs(string s)
 
 void SyntaxAnalyzer::parse(char *l)
 {
-    regex ra("[a-zA-Z]+");
+    regex ra("[a-zA-Z]+|[0-9]+");
     regex ri(".(\\s+)=(\\s+).");
 
-    // match entire input string
-    if (!regex_match(l, ri))
+    if (strchr(l, '=') != NULL)
     {
-        cerr << "syntax error1" << endl;
-        exit(EXIT_FAILURE);
+        _sp = strsplit("=", (string)l);
+        setLhs(_sp[0]);
+        setRhs(_sp[1]);
     }
-    _sp = strsplit("=", (string)l);
-    setLhs(_sp[0]);
-    setRhs(_sp[1]);
-    // quit on error. assignment input check
-    if (regex_match(l, ra))
-        cout << "match" << endl;
     else
     {
-        cerr << "syntax error2" << endl;
-        exit(EXIT_FAILURE);
+        // quit on error. assignment input check
+        if (regex_match(l, ra))
+        {
+            if (l[0] >= 48 && l[0] <= 57)
+                cout << l << endl;
+            else
+                cout << "0" << endl;
+        }
+        else
+            cerr << "syntax error" << endl;
     }
 }
 
