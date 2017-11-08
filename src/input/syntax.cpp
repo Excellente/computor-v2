@@ -4,22 +4,54 @@ SyntaxAnalyzer::~SyntaxAnalyzer(){}
 
 SyntaxAnalyzer::SyntaxAnalyzer()
 {
-    isFloat = false;
-    isUnknown = false;
-    isComplex = false;
-    isFunction = false;
+    _isFloat = false;
+    _isUnknown = false;
+    _isComplex = false;
+    _isFunction = false;
+}
+
+string SyntaxAnalyzer::getLhs() const
+{
+    return (_lhs);
+}
+
+string SyntaxAnalyzer::getRhs() const
+{
+    return (_rhs);
+}
+
+void SyntaxAnalyzer::setLhs(string s)
+{
+    _lhs = s;
+}
+
+void SyntaxAnalyzer::setRhs(string s)
+{
+    _rhs = s;
 }
 
 void SyntaxAnalyzer::parse(char *l)
 {
-    regex ra("[a-zA-Z]+(\\s)=(\\s)");
+    regex ra("[a-zA-Z]+");
+    regex ri(".(\\s+)=(\\s+).");
 
-    /* regex to check for all possible inputs
-    ** quit on error. assignment input check */
+    // match entire input string
+    if (!regex_match(l, ri))
+    {
+        cerr << "syntax error1" << endl;
+        exit(EXIT_FAILURE);
+    }
+    _sp = strsplit("=", (string)l);
+    setLhs(_sp[0]);
+    setRhs(_sp[1]);
+    // quit on error. assignment input check
     if (regex_match(l, ra))
         cout << "match" << endl;
     else
-        cout << "ERROR! unexpected input" << endl;
+    {
+        cerr << "syntax error2" << endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 char *SyntaxAnalyzer::read_line(void)
@@ -34,7 +66,6 @@ char *SyntaxAnalyzer::read_line(void)
         fprintf(stderr, "lsh: allocation error\n");
         exit(EXIT_FAILURE);
     }
-
     while (1)
     {
         c = getchar();
@@ -49,7 +80,6 @@ char *SyntaxAnalyzer::read_line(void)
             buffer[position] = c;
         }
         position++;
-
         if (position >= bufsize)
         {
             bufsize += BUFF_SIZE;

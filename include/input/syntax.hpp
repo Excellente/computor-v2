@@ -8,16 +8,25 @@
 class SyntaxAnalyzer{
     public:
         SyntaxAnalyzer();
-        ~SyntaxAnalyzer();
-        
+        ~SyntaxAnalyzer(); 
+
         char *read_line();
+        string getLhs() const;
+        string getRhs() const;
+
         void parse(char *l);
+        void setLhs(string s);
+        void setRhs(string s);
 
     private:
-        bool isFloat;
-        bool isUnknown;
-        bool isComplex;
-        bool isFunction;
+        bool _isFloat;
+        bool _isUnknown;
+        bool _isComplex;
+        bool _isFunction;
+        
+        string _lhs;
+        string _rhs;
+        vector<string> _sp;
 };
 
 #endif

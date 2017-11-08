@@ -34,7 +34,6 @@ class Computor{
         bool isGoodEnough(float sqr, float guess);
         template <class T>
         size_t count_terms(vector<T> v);
-        vector<string> strsplit(string d);
         Computor& operator=(const Computor &r);
         bool ignore(vector<float> del, float _exp);
 

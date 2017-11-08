@@ -3,7 +3,7 @@
 Computor::Computor(string exp) : _exp(exp){
     vector<string> ret;
 
-    ret = strsplit("=");
+    ret = strsplit("=", _exp);
     _sol1 = 0;
     _sol2 = 0;
     _sol3[0] = '\0';
@@ -271,25 +271,6 @@ size_t Computor::count_terms(vector<T> v)
         bvi++;
         terms++;
     }
-    return (terms);
-}
-
-vector<string> Computor::strsplit(string del)
-{
-    int len;
-    size_t pos;
-    vector<int> delpos;
-    vector<string> terms;
-
-    len = 0;
-    for (int i = 0; i != string::npos;)
-    {
-        delpos.push_back((i = _exp.find(del, i + 1)));
-        len++;
-    }
-    terms.push_back(_exp.substr(0, delpos[0]));
-    for (int i = 1; i < len; i++)
-        terms.push_back(_exp.substr(delpos[i - 1] + 1, (delpos[i] - delpos[i - 1]) - 1));
     return (terms);
 }
 
