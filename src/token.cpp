@@ -21,6 +21,19 @@ static vector<string> tokenize(string del, string _exp)
     vector<int> delpos;
     vector<string> terms;
 
+    // while (p[last] != '+' && p[last] != '-' && p[last] != '\0')
+    // last++;
+    // t = p.substr(first, last - first);
+    // if (p[last] != '\0')
+    //     last++;
+    // first = last;
+    // if (!regex_match(t, rg))
+    // {
+    //     cout << t << endl;
+    //     cerr << "Error: InvalidTermFormat\n";
+    //     exit(EXIT_FAILURE);
+    // }
+
     len = 0;
     for (int i = 0; _exp[i] != '\0'; i++)
     {

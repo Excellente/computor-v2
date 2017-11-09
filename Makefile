@@ -10,6 +10,11 @@ all:
 	$(CC) $(CFLAGS) $(SRCS) -I $(INC) -o $(EXE)
 
 clean:
-	rm -f $(EXE)
+	rm -f $(EXE) *.out
+
+push: clean
+	git add .
+	git commit -m "automated push"
+	git push origin master
 
 re: clean all
