@@ -9,6 +9,7 @@
 #define TOK_LSB '['
 #define TOK_RSB ']'
 #define TOK_EQ '='
+#define TOK_QM '?'
 #define TOK_CO ','
 #define TOK_SC ';'
 #define TOK_OA '+'

@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     Lexer le;
     SyntaxAnalyzer sa;
 
+    cout << "\nComputor-v2 (c) November 2017, [rap]dean\n free software, dean-techonlogies inc.\n" << endl;
     while (1)
     {
         cout << "$> ";

@@ -90,6 +90,8 @@ void Lexer::tokenize(char *s)
             _tkns["R_PARENTH"] = s[i];
         if (s[i] == TOK_EQ)
             _tkns["EQUAL"] = s[i];
+        if (s[i] == TOK_QM)
+            _tkns["QUESTION_M"] = s[i];
         if (s[i] == TOK_LSB)
             _tkns["L_S_BRACKET"] = s[i];
         if (s[i] == TOK_RSB)
