@@ -4,60 +4,39 @@
 
 using namespace std;
 
-template <class T>
-void print(vector<T> &v)
+string _substr(string l, int s, int e)
 {
-    typename vector<T>::iterator evi = v.end();
-    typename vector<T>::iterator bvi = v.begin();
-    for (; bvi != evi; bvi++)
-        cout << *bvi << " ";
-    cout << endl;
+    int i;
+    int j = 0;
+    char *str;
+
+    if ((e < s))
+        return ("");
+    str = (char *)malloc((sizeof(char) * (e - s)) + 1);
+    if (str == NULL)
+        return ("");
+    for (i = 0; i != s && l[i] != '\0'; i++);
+    while (i <= e && l[i] != '\0')
+        str[j++] = l[i++];
+    str[j] = '\0';
+    string ret(str);
+    return (ret);
 }
 
-static vector<string> tokenize(string del, string _exp)
+string tolower(string s)
 {
-    int len;
-    size_t pos;
-    vector<int> delpos;
-    vector<string> terms;
-
-    // while (p[last] != '+' && p[last] != '-' && p[last] != '\0')
-    // last++;
-    // t = p.substr(first, last - first);
-    // if (p[last] != '\0')
-    //     last++;
-    // first = last;
-    // if (!regex_match(t, rg))
-    // {
-    //     cout << t << endl;
-    //     cerr << "Error: InvalidTermFormat\n";
-    //     exit(EXIT_FAILURE);
-    // }
-
-    len = 0;
-    for (int i = 0; _exp[i] != '\0'; i++)
-    {
-        if (_exp[i] != '*' || _exp[i] != '-' || _exp[i] != '^' || _exp[i] != '(' ||
-            _exp[i] != '/' || _exp[i] != '+' || _exp[i] != '%' || _exp[i] != ')')
-            delpos.push_back(i);
-        len++;
-    }
-    print(delpos);
-    terms.push_back(_exp.substr(0, delpos[0]));
-    // for (int i = 1; i < len; i++)
-    //     terms.push_back(_exp.substr(delpos[i - 1] + 1, (delpos[i] - delpos[i - 1]) - 1));
-    return (terms);
+    string tl(s);
+    for (int i = 0; tl[i] != '\0'; i++)
+        if (tl[i] >= 65 && tl[i] <= 90)
+            tl[i] += 32;
+    return (tl);
 }
 
 int main(void)
 {
-    string s = string("x + z - 3");
-    vector<string> v = tokenize("=", s);
+    string s = _substr("ZaMani", 0, 100);
 
-    vector<string>::iterator bi = v.begin();
-    vector<string>::iterator ei = v.begin();
-    for (; bi != ei; bi++)
-        cout << *bi << " ";
-    cout << endl;
+    cout << s << endl;
+    cout << tolower(s) << endl;
     return (0);
 }

@@ -1,12 +1,13 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <map>
+#include <regex>
 #include <vector>
 #include <string>
-#include <iostream>
-#include <regex>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+#include <iostream>
 
 #define __sqrt(x) sqrt(x)
 

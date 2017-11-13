@@ -76,10 +76,6 @@ bool SyntaxAnalyzer::parseExpression(char *l)
     else
     {
         paranScan(l);
-        // if (isVarname(l))
-        // else if (funcExp(l))
-        // else if ()
-        // check for syntactical errors in exp
     }
     return (1);
 }
