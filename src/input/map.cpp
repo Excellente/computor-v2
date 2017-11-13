@@ -5,19 +5,8 @@ Maps::Maps(){
 }
 Maps::~Maps(){}
 
-void Maps::insert(string &k, string &v)
-{
-    _len++;
-    _k.push_back(k);
-    _v.push_back(v);
-}
-
-void Maps::print()
-{
-    vector<string>::iterator kit = _k.begin(); 
-    vector<string>::iterator vit = _v.begin(); 
-    for (; kit != _k.end() && vit != _v.end(); kit++, vit++)
-        cout << *kit << " -> " << *vit << endl;
+int Maps::length(){
+    return (_len);
 }
 
 vector<string>::iterator Maps::end(){
@@ -54,9 +43,19 @@ string Maps::value_at(const int &s)
         cerr << "IndexOutOfBounds" << endl;
         exit(EXIT_FAILURE);
     }
-    cout << _len << endl;
     while (i++ < s) bval_i++;
     return (*bval_i);
+}
+
+Maps &Maps::operator[](const string &s)
+{
+    _len++;
+    _k.push_back(s);
+    return (*this);
+}
+
+string Maps::operator[](const int &s){
+    return (value_at(s));
 }
 
 void Maps::operator=(const string &s){
@@ -69,13 +68,17 @@ void Maps::operator=(const char &s)
     _v.push_back(I);
 }
 
-Maps &Maps::operator[](const string &s)
+void Maps::insert(string &k, string &v)
 {
     _len++;
-    _k.push_back(s);
-    return (*this);
+    _k.push_back(k);
+    _v.push_back(v);
 }
 
-string Maps::operator[](const int &s){
-    return (value_at(s));
+void Maps::print()
+{
+    vector<string>::iterator kit = _k.begin(); 
+    vector<string>::iterator vit = _v.begin(); 
+    for (; kit != _k.end() && vit != _v.end(); kit++, vit++)
+        cout << *kit << " -> " << *vit << endl;
 }

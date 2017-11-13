@@ -8,12 +8,7 @@ class Maps{
         Maps();
         ~Maps();
 
-        void print();
-        void insert(string &k, string &v);
-        
-        void operator=(const char &s);
-        void operator=(const string &s);
-
+        int length();
         string value_at(const int &s);
         string value_at(const string &s);
 
@@ -22,6 +17,11 @@ class Maps{
         
         string operator[](const int &s);
         Maps &operator[](const string &s);
+
+        void print();
+        void insert(string &k, string &v);
+        void operator=(const char &s);
+        void operator=(const string &s);
 
     private:
         int _len;

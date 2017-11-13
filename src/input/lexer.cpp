@@ -35,10 +35,11 @@ string Lexer::tolower(string s)
 
 void Lexer::printmap()
 {
+    int len = _tkns.length();
     vector<string>::iterator ecit = _tkns.end();
     vector<string>::iterator bcit = _tkns.begin();
-    for (; bcit != ecit; bcit++)
-        cout << *bcit << " -> " << _tkns.value_at(*bcit) << endl;
+    for (int i = 0; i < len; i++, bcit++)
+        cout << *bcit << " -> " << _tkns[i] << endl;
 }
 
 string _substr(string l, int s, int e)
