@@ -44,12 +44,21 @@ bool isalpha(char c)
 int main(void)
 {
     Maps mps;
+
     string st("key");
     string si("value");
+    
+    string ft("name");
+    string fi("Zamani");
     map<string, string> _tkns;
 
     mps.insert(st, si);
-    mps.print();
+    mps.insert(ft, fi);
+    // mps.print();
+    mps["test"] = "success";
+    mps["char"] = 'c';
+    cout << mps[4] << endl;
+    // cout << mps.value_at("char") << endl;
     // string s = "_tkns[(L_PARENTH + i )] = s[i]";
     // for (int i = 0; s[i] != '\0'; i++)
     // {

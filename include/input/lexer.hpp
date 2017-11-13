@@ -2,6 +2,7 @@
 #define LEXER_HPP
 
 #include "common.hpp"
+#include "map.hpp"
 
 #define TOK_LP '('
 #define TOK_RP ')'
@@ -32,7 +33,7 @@ class Lexer{
         void printmap();
 
     private:
-        map<string, string> _tkns;
+        Maps _tkns;
 };
 
 #endif

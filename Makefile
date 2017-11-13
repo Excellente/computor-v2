@@ -2,7 +2,8 @@ CC		= clang++
 CFLAGS	= -std=c++11
 EXE		= computorv2
 INC 	= ./include/
-SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp input/lexer.cpp
+SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp\
+		  input/lexer.cpp input/map.cpp
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
 
