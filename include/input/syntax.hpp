@@ -8,7 +8,6 @@ class SyntaxAnalyzer{
         SyntaxAnalyzer();
         ~SyntaxAnalyzer(); 
 
-        char *read_line();
         bool isAtomic(string &s);
 
         void parse(char *l);

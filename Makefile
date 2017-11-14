@@ -3,7 +3,7 @@ CFLAGS	= -std=c++11
 EXE		= computorv2
 INC 	= ./include/
 SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp\
-		  input/lexer.cpp input/map.cpp
+		  input/lexer.cpp input/map.cpp input/iostream.cpp
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
 LIBDIR	= $(SRCDIR)lib/
