@@ -137,7 +137,6 @@ char *SyntaxAnalyzer::read_line(void)
     while (1)
     {
         c = getchar();
-
         if (c == EOF || c == '\n')
         {
             buffer[position] = '\0';
