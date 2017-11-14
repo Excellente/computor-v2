@@ -17,8 +17,6 @@
 #define TOK_OD '/'
 #define TOK_OM '*'
 #define TOK_DP '.'
-// #define TOK_DI '[0-9]'
-// #define TOK_NA '[a-zA-Z]'
 
 class Lexer{
     public:
@@ -27,11 +25,11 @@ class Lexer{
 
         bool isdigit(char c);
         bool isalpha(char c);
-        bool iswhitespace(char c);
         string tolower(string s);
+        bool iswhitespace(char c);
 
-        void tokenize(char *s);
         void printmap();
+        void tokenize(char *s);
 
     private:
         Maps _tkns;

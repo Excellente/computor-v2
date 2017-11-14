@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
             cerr << e.what() << endl;
         }
         catch(...){
-            cerr << "unknwon exception" << endl;
+            cerr << "Error: UnknownException" << endl;
         }
 
     }
