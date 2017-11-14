@@ -30,7 +30,7 @@ clean:
 fclean: clean
 	rm -fr $(LIB) $(LIBOBJ)
 
-push: clean
+push: fclean
 	git add .
 	git commit -m "automated push"
 	git push origin master
