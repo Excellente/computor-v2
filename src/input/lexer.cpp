@@ -1,36 +1,24 @@
 #include "input/lexer.hpp"
 
 Lexer::~Lexer(){}
-Lexer::Lexer(){}
 
-bool Lexer::isdigit(char c)
+Lexer::Lexer()
 {
-    if (c >= 48 && c <= 57)
-        return (true);
-    return (false);
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
 }
 
-bool Lexer::isalpha(char c)
+string Lexer::getNextToken()
 {
-    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-        return (true);
-    return (false);
-}
-
-bool Lexer::iswhitespace(char c)
-{
-    if ((c >= 9 && c <= 13) || c == 32)
-        return (true);
-    return (false);
-}
-
-string Lexer::tolower(string s)
-{
-    string tl(s);
-    for (int i = 0; tl[i] != '\0'; i++)
-        if (tl[i] >= 65 && tl[i] <= 90)
-            tl[i] += 32;
-    return (tl);
+    string st;
+    if (_bgn != _end)
+    {
+        st = _tkns.value_at(*_bgn);
+        _bgn++;
+    }
+    else
+        return (_EOF_);
+    return (st);
 }
 
 void Lexer::printmap()
@@ -110,5 +98,9 @@ void Lexer::tokenize(char *s)
             _tkns["OP_MULTIPLY"] = s[i];
         if (s[i] == TOK_DP)
             _tkns["DECIMAL_POINT"] = s[i];
+        /*
+        ** else
+        **      throw UnkownSymbolException
+        */
     }
 }

@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 #include "map.hpp"
+#include "lib.hpp"
 
 #define TOK_LP '('
 #define TOK_RP ')'
@@ -23,16 +24,15 @@ class Lexer{
         Lexer();
         ~Lexer();
 
-        bool isdigit(char c);
-        bool isalpha(char c);
-        string tolower(string s);
-        bool iswhitespace(char c);
+        string getNextToken();
 
         void printmap();
         void tokenize(char *s);
 
     private:
         Maps _tkns;
+        maper_t _bgn;
+        maper_t _end;
 };
 
 #endif

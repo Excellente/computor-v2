@@ -6,16 +6,33 @@ SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp\
 		  input/lexer.cpp input/map.cpp
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
+LIBDIR	= $(SRCDIR)lib/
+LIBOBJ	= ./obj/
+LIBSRCS	= isalpha.cpp iswhitespace.cpp tolower.cpp isdigit.cpp isnumber.cpp\
+		  isname.cpp
+LIBSRC	= $(addprefix $(LIBDIR), $(LIBSRCS))
+LIB		= libstr.a
 
-all:
-	$(CC) $(CFLAGS) $(SRCS) -I $(INC) -o $(EXE)
+all: $(LIB)
+	$(CC) $(CFLAGS) $(SRCS) -L. $(LIB) -I $(INC) -o $(EXE)
+
+$(LIB): $(LIBOBJ)
+	ar rc $(LIB) $(LIBOBJ)*.o
+	ranlib $(LIB)
+
+$(LIBOBJ):
+	$(CC) -c $(LIBSRC) -I $(INC)
+	@mkdir $@; mv *.o $@
 
 clean:
-	rm -f $(EXE) *.out
+	rm -f $(EXE) *.out *.o
+
+fclean: clean
+	rm -fr $(LIB) $(LIBOBJ)
 
 push: clean
 	git add .
 	git commit -m "automated push"
 	git push origin master
 
-re: clean all
+re: fclean all

@@ -10,11 +10,11 @@ int Maps::length(){
     return (_len);
 }
 
-vector<string>::iterator Maps::end(){
+maper_t Maps::end(){
     return (_k.end());
 }
 
-vector<string>::iterator Maps::begin(){
+maper_t Maps::begin(){
     return (_k.begin());
 }
 

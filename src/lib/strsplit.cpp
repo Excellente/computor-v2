@@ -1,16 +1,4 @@
-#ifndef COMMON_H
-#define COMMON_H
-
 #include "lib.hpp"
-
-#define __sqrt(x) sqrt(x)
-
-#define _EOF_ "^\0"
-#define BUFF_SIZE 1024
-
-using namespace std;
-
-typedef vector<string>::iterator maper_t;
 
 static vector<string> strsplit(string del, string _exp)
 {
@@ -30,5 +18,3 @@ static vector<string> strsplit(string del, string _exp)
         terms.push_back(_exp.substr(delpos[i - 1] + 1, (delpos[i] - delpos[i - 1]) - 1));
     return (terms);
 }
-
-#endif
