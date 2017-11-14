@@ -3,6 +3,7 @@
 Maps::Maps(){
     _len = 0;
 }
+
 Maps::~Maps(){}
 
 int Maps::length(){
@@ -17,12 +18,11 @@ vector<string>::iterator Maps::begin(){
     return (_k.begin());
 }
 
-string Maps::value_at(const string &s)
+string Maps::value_at(const string &s) throw (IndexOutOfBounds)
 {
-    vector<string>::const_iterator end_key_i = _k.end();
-    vector<string>::const_iterator begin_key_i = _k.begin();
-    vector<string>::const_iterator eval_i = _v.end();
-    vector<string>::const_iterator bval_i = _v.begin();
+    const_i_t end_key_i = _k.end();
+    const_i_t begin_key_i = _k.begin();
+    const_i_t bval_i = _v.begin();
 
     while (s.compare(*begin_key_i) != 0 && begin_key_i != end_key_i)
     {
@@ -32,17 +32,15 @@ string Maps::value_at(const string &s)
     return (*bval_i);
 }
 
-string Maps::value_at(const int &s)
+string Maps::value_at(const int &s) throw (IndexOutOfBounds)
 {
     int i = 0;
-    vector<string>::const_iterator eval_i = _v.end();
-    vector<string>::const_iterator bval_i = _v.begin();
+    IndexOutOfBounds iob;
+    const_i_t eval_i = _v.end();
+    const_i_t bval_i = _v.begin();
 
     if (s == _len)
-    {
-        cerr << "IndexOutOfBounds" << endl;
-        exit(EXIT_FAILURE);
-    }
+        throw iob;
     while (i++ < s) bval_i++;
     return (*bval_i);
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "input/map.hpp"
+#include <exception>
 
 using namespace std;
 
@@ -41,41 +42,40 @@ bool isalpha(char c)
     return (false);
 }
 
+class ErrorException : public exception {
+    using exception::what;
+    public:
+        virtual const char* what() throw() {
+            return "ErrorExcpetion";
+        }
+};
+
+int divide(int a, int b) throw(ErrorException)
+{
+    int q;
+    ErrorException ee;
+
+    if (b == 0)
+        throw ee;
+    q = a / b;
+    return (q);
+}
+
+void _math()
+{
+    divide(1, 0);
+}
+
 int main(void)
 {
     Maps mps;
 
-    string st("key");
-    string si("value");
-    
-    string ft("name");
-    string fi("Zamani");
-    map<string, string> _tkns;
-
-    mps.insert(st, si);
-    mps.insert(ft, fi);
-    // mps.print();
-    mps["test"] = "success";
-    mps["char"] = 'c';
-    cout << mps[4] << endl;
-    // cout << mps.value_at("char") << endl;
-    // string s = "_tkns[(L_PARENTH + i )] = s[i]";
-    // for (int i = 0; s[i] != '\0'; i++)
-    // {
-    //     if (isalpha(s[i]))
-    //     {
-    //         int end;
-    //         int start = i;
-
-    //         while (isalpha(s[i])) i++;
-    //         end = i;
-    //         cout << tolower(_substr(s, start, end)) << endl;
-    //         // _tkns["NAME"] = tolower(_substr(s, start, end));
-    //     }
-    // }
-    // string s = _substr("ZaMani", 0, 100);
-
-    // cout << s << endl;
-    // cout << tolower(s) << endl;
+    try
+    {
+        _math();
+    }
+    catch(ErrorException &e){
+        cerr << e.what() << endl;
+    }
     return (0);
 }

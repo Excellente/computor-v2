@@ -3,14 +3,25 @@
 
 #include "common.hpp"
 
+typedef vector<string>::const_iterator const_i_t;
+
+class IndexOutOfBounds : public exception{
+    using exception::what;
+    public:
+        virtual const char *what() const throw()
+        {
+            return ("Error: IndexOutOfBoundsException");
+        }
+};
+
 class Maps{
     public:
         Maps();
         ~Maps();
 
         int length();
-        string value_at(const int &s);
-        string value_at(const string &s);
+        string value_at(const int &s) throw (IndexOutOfBounds);
+        string value_at(const string &s) throw (IndexOutOfBounds);
 
         vector<string>::iterator end();
         vector<string>::iterator begin();

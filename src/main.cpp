@@ -12,19 +12,28 @@ void printmap(map<string, string> m)
 
 int main(int argc, char *argv[])
 {
-    char *line;
     Lexer le;
+    char *line;
     SyntaxAnalyzer sa;
 
     cout << "\nComputor-v2 (c) November 2017, [rap]dean\n free software, dean-techonlogies inc.\n" << endl;
     while (1)
     {
-        cout << "$> ";
-        line = sa.read_line();
-        le.tokenize(line);
-        le.printmap();
-        // sa.parse(line);
-        // cout << line << endl;
+        try{
+            cout << "$> ";
+            line = sa.read_line();
+            le.tokenize(line);
+            le.printmap();
+            // sa.parse(line);
+            // cout << line << endl;
+        }
+        catch(IndexOutOfBounds &e){
+            cerr << e.what() << endl;
+        }
+        catch(...){
+            cerr << "unknwon exception" << endl;
+        }
+
     }
     return (0);
 }
