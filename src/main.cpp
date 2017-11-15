@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
         try{
             cout << "$> ";
             line = ios.read_line();
+            if (!strcmp(line, "quit") || !strcmp(line, "exit"))
+                exit(EXIT_SUCCESS);
             le.tokenize(line);
             le.printmap();
             // sa.parse(line);
