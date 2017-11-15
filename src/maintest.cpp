@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-// #include "input/map.hpp"
+#include <regex>
 #include <exception>
 
 using namespace std;
@@ -37,7 +37,18 @@ string tolower(string s)
 
 bool isalpha(char c)
 {
-    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+    regex rn("[a-zA-Z]");
+
+    if (regex_match(string(1, c), rn))
+        return (true);
+    return (false);
+}
+
+bool isnumber(string s)
+{
+    regex rn("[0-9]+");
+
+    if (regex_match(s, rn))
         return (true);
     return (false);
 }
@@ -66,22 +77,11 @@ void _math()
     divide(1, 0);
 }
 
-int main(void)
+int main(int ac, char *av[])
 {
     try
     {
-        string st("c");
-        vector<string> v;
-        for (int i = 0; i < 4; i++)
-            v.push_back(st.append(1, 65 + i));
-        vector<string> t = v;
-        vector<string>::iterator it = v.begin();
-        vector<string>::iterator tt = t.begin();
-        if ((*it).compare("cA") == 0)
-            cout << "*it -> cA" << endl;
-        else
-            cout << *(++it) << endl;
-        st.compare("") == 0 ? divide(1, 8) : 0;
+        cout << tolower(av[1]) << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

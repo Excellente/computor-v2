@@ -2,7 +2,9 @@
 
 bool isdigit(char c)
 {
-    if (c >= 48 && c <= 57)
+    regex rd("[0-9]");
+
+    if (regex_match(string(1, c), rd))
         return (true);
     return (false);
 }

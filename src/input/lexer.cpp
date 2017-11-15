@@ -42,32 +42,36 @@ void Lexer::tokenize(char *s)
             _tkns["NAME"] = tolower(_substr(s, start, end));
             i--;
         }
-        if (s[i] == TOK_LP)
-            _tkns["L_PARENTH"] = s[i];
-        if (s[i] == TOK_RP)
-            _tkns["R_PARENTH"] = s[i];
-        if (s[i] == TOK_EQ)
-            _tkns["EQUAL"] = s[i];
-        if (s[i] == TOK_QM)
-            _tkns["QUESTION_M"] = s[i];
-        if (s[i] == TOK_LSB)
-            _tkns["L_S_BRACKET"] = s[i];
-        if (s[i] == TOK_RSB)
-            _tkns["R_S_BRACKET"] = s[i];
         if (s[i] == TOK_CO)
             _tkns["COMMA"] = s[i];
+        if (s[i] == TOK_LP)
+            _tkns["L_PAREN"] = s[i];
+        if (s[i] == TOK_RP)
+            _tkns["R_PAREN"] = s[i];
+        if (s[i] == TOK_QM)
+            _tkns["Q_MARK"] = s[i];
+        if (s[i] == TOK_LSB)
+            _tkns["L_BRAC"] = s[i];
+        if (s[i] == TOK_RSB)
+            _tkns["R_BRAC"] = s[i];
         if (s[i] == TOK_SC)
-            _tkns["SEMICOLON"] = s[i];
-        if (s[i] == TOK_OA)
-            _tkns["OP_ADD"] = s[i];
-        if (s[i] == TOK_OS)
-            _tkns["OP_SUBTRACT"] = s[i];
-        if (s[i] == TOK_OD)
-            _tkns["OP_DIVIDE"] = s[i];
-        if (s[i] == TOK_OM)
-            _tkns["OP_MULTIPLY"] = s[i];
+            _tkns["SEMICO"] = s[i];
         if (s[i] == TOK_DP)
-            _tkns["DECIMAL_POINT"] = s[i];
+            _tkns["D_POIN"] = s[i];
+        if (s[i] == TOK_OADD)
+            _tkns["OP_ADD"] = s[i];
+        if (s[i] == TOK_OSUB)
+            _tkns["OP_SUB"] = s[i];
+        if (s[i] == TOK_ODIV)
+            _tkns["OP_DIV"] = s[i];
+        if (s[i] == TOK_OMUL)
+            _tkns["OP_MUL"] = s[i];
+        if (s[i] == TOK_OMOD)
+            _tkns["OP_MOD"] = s[i];
+        if (s[i] == TOK_OEXP)
+            _tkns["OP_EXP"] = s[i];
+        if (s[i] == TOK_OEQU)
+            _tkns["OP_EQU"] = s[i];
         i++;
     }
     while (s[i] != '\0');

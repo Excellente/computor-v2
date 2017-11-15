@@ -5,15 +5,19 @@
 #define TOK_RP ')'
 #define TOK_LSB '['
 #define TOK_RSB ']'
-#define TOK_EQ '='
 #define TOK_QM '?'
 #define TOK_CO ','
 #define TOK_SC ';'
-#define TOK_OA '+'
-#define TOK_OS '-'
-#define TOK_OD '/'
-#define TOK_OM '*'
 #define TOK_DP '.'
+
+// ================= operator macros ===================
+#define TOK_OADD '+'
+#define TOK_OSUB '-'
+#define TOK_ODIV '/'
+#define TOK_OMUL '*'
+#define TOK_OMOD '%'
+#define TOK_OEXP '^'
+#define TOK_OEQU '='
 
 #define _EOF_ "^\0"
 #define BUFF_SIZE 1024

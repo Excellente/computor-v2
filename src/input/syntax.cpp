@@ -31,8 +31,8 @@ void SyntaxAnalyzer::parse(Maps _tkns)
 {
     string la("");
     string tmp_tkn("");
-    this->_tkns = _tkns;
 
+    this->_tkns = _tkns;
     while (tmp_tkn != _EOF_)
     {
         tmp_tkn = getNextToken();
@@ -47,5 +47,8 @@ void SyntaxAnalyzer::parse(Maps _tkns)
             if (la == (string(1, TOK_LP)))
                 ;// _function();
         }
+        // to do:
+        // -> template classes: for ast implimentation
+        // -> build ast class;
     }
 }

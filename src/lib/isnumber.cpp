@@ -2,10 +2,9 @@
 
 bool isnumber(string &s)
 {
-    int i;
+    regex rn("[0-9]+");
 
-    for (i = 0; isdigit(s[i]) && s[i] != '\0'; i++);
-    if (s[i] == '\0')
+    if (regex_match(s, rn))
         return (true);
     return (false);
 }

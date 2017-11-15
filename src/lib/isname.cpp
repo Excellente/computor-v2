@@ -2,10 +2,9 @@
 
 bool isname(string &s)
 {
-    int i;
+    regex rn("[a-zA-Z]+");
 
-    for (i = 0; isalpha(s[i]) && s[i] != '\0'; i++);
-    if (s[i] == '\0')
+    if (regex_match(s, rn))
         return (true);
     return (false);
 }

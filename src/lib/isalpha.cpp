@@ -2,7 +2,9 @@
 
 bool isalpha(char c)
 {
-    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+    regex ra("[a-zA-Z]");
+
+    if (regex_match(string(1, c), ra))
         return (true);
     return (false);
 }
