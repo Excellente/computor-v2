@@ -30,13 +30,9 @@ clean:
 fclean: clean
 	rm -fr $(LIB) $(LIBOBJ)
 
-push: fclean vogs
+push: fclean
 	git add .
 	git commit -m "automated push"
 	git push origin master
-
-vogs:
-	cp -rfv * ../emsimang
-	cd ../emsimang
 
 re: fclean all
