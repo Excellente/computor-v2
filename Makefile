@@ -34,7 +34,6 @@ push: fclean vogs
 	git add .
 	git commit -m "automated push"
 	git push origin master
-	cd -
 
 vogs:
 	cp -rfv * ../emsimang
