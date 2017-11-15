@@ -72,16 +72,63 @@ int divide(int a, int b) throw(ErrorException)
     return (q);
 }
 
-void _math()
+class BTree{
+    int value;
+    BTree *left;
+    BTree *right;
+    
+    public:
+        BTree(int v = 0);
+        ~BTree();
+        BTree *insert(int v);
+        int getValue() const;
+        BTree *getLeft() const;
+        BTree *getRight() const;
+};
+
+BTree::BTree(int v) : value(v)
 {
-    divide(1, 0);
+    right = NULL;
+    right = NULL;
+}
+
+BTree *BTree::insert(int v)
+{
+    BTree *tmp = new BTree();
+
+    tmp->value = v;
+    v > value ? (right == NULL) ? right = tmp : right->insert(v)
+    : (left == NULL) ? left = tmp : left->insert(v);
+    return (tmp);
+}
+
+BTree *BTree::getLeft() const
+{
+    return (left);
+}
+
+BTree *BTree::getRight() const
+{
+    return (right);
+}
+
+int BTree::getValue() const
+{
+    return (value);
 }
 
 int main(int ac, char *av[])
 {
     try
     {
-        cout << tolower(av[1]) << endl;
+        BTree *node = new BTree(2);
+        node->insert(4);
+        node->insert(5);
+        node->insert(1);
+        cout << node->getValue() << endl;
+        cout << node->getLeft()->getValue() << endl;
+        cout << node->getRight()->getValue() << endl;
+        cout << node->getRight()->getRight()->getValue() << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;
