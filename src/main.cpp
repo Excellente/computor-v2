@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            le.printmap();
-            // sa.parse(line);
+            sa.parse(le.getTokens());
+            // le.printmap();
             // cout << line << endl;
         }
         catch(IndexOutOfBounds &e){

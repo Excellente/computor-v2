@@ -16,6 +16,6 @@ bool isname(string &s);
 bool isnumber(string &s);
 string tolower(string s);
 bool iswhitespace(char c);
-static vector<string> strsplit(string del, string _exp);
+string _substr(string l, int s, int e);
 
 #endif

@@ -32,6 +32,7 @@ class Maps{
         void print();
         void insert(string &k, string &v);
         void operator=(const char &s);
+        Maps &operator=(const Maps &s);
         void operator=(const string &s);
 
     private:

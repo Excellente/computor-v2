@@ -1,24 +1,11 @@
 #include "input/lexer.hpp"
 
+Lexer::Lexer(){}
 Lexer::~Lexer(){}
 
-Lexer::Lexer()
+Maps Lexer::getTokens()
 {
-    _end = _tkns.end();
-    _bgn = _tkns.begin();
-}
-
-string Lexer::getNextToken()
-{
-    string st;
-    if (_bgn != _end)
-    {
-        st = _tkns.value_at(*_bgn);
-        _bgn++;
-    }
-    else
-        return (_EOF_);
-    return (st);
+    return (_tkns);
 }
 
 void Lexer::printmap()
@@ -30,28 +17,10 @@ void Lexer::printmap()
         cout << *bcit << " -> " << _tkns[i] << endl;
 }
 
-string _substr(string l, int s, int e)
-{
-    int i;
-    int j = 0;
-    char *str;
-
-    if ((e < s))
-        return ("");
-    str = (char *)malloc((sizeof(char) * (e - s)) + 1);
-    if (str == NULL)
-        return ("");
-    for (i = 0; i != s; i++);
-    while (i < e && l[i] != '\0')
-        str[j++] = l[i++];
-    str[j] = '\0';
-    string ret(str);
-    return (ret);
-}
-
 void Lexer::tokenize(char *s)
 {
-    for (int i = 0; s[i] != '\0'; i++)
+    int i = 0;
+    do
     {
         while (iswhitespace(s[i])) i++;
         if (isdigit(s[i]))
@@ -71,6 +40,7 @@ void Lexer::tokenize(char *s)
             while (isalpha(s[i])) i++;
             end = i;
             _tkns["NAME"] = tolower(_substr(s, start, end));
+            i--;
         }
         if (s[i] == TOK_LP)
             _tkns["L_PARENTH"] = s[i];
@@ -98,9 +68,7 @@ void Lexer::tokenize(char *s)
             _tkns["OP_MULTIPLY"] = s[i];
         if (s[i] == TOK_DP)
             _tkns["DECIMAL_POINT"] = s[i];
-        /*
-        ** else
-        **      throw UnkownSymbolException
-        */
+        i++;
     }
+    while (s[i] != '\0');
 }

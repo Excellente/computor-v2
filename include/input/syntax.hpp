@@ -2,18 +2,22 @@
 #define INPUT_HPP
 
 #include "common.hpp"
+#include "map.hpp"
 
 class SyntaxAnalyzer{
     public:
         SyntaxAnalyzer();
-        ~SyntaxAnalyzer(); 
+        ~SyntaxAnalyzer();
 
-        bool isAtomic(string &s);
+        string getNextToken();
 
-        void parse(char *l);
+        void parse(Maps _tk);
         void paranScan(char *l);
 
     private:
+        Maps _tkns;
+        maper_t _bgn;
+        maper_t _end;
 };
 
 #endif

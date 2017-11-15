@@ -1,4 +1,4 @@
-#include "lib.hpp"
+#include "common.hpp"
 
 bool iswhitespace(char c)
 {

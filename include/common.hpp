@@ -1,6 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#define __sqrt(x) sqrt(x)
+
+
 #include "lib.hpp"
 
 #define __sqrt(x) sqrt(x)

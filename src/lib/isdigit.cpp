@@ -1,4 +1,4 @@
-#include "lib.hpp"
+#include "common.hpp"
 
 bool isdigit(char c)
 {

@@ -1,10 +1,6 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
-#include "common.hpp"
-#include "map.hpp"
-#include "lib.hpp"
-
 #define TOK_LP '('
 #define TOK_RP ')'
 #define TOK_LSB '['
@@ -19,20 +15,22 @@
 #define TOK_OM '*'
 #define TOK_DP '.'
 
+#include "common.hpp"
+#include "map.hpp"
+#include "lib.hpp"
+
 class Lexer{
     public:
         Lexer();
         ~Lexer();
 
-        string getNextToken();
+        Maps getTokens();
 
         void printmap();
         void tokenize(char *s);
 
     private:
         Maps _tkns;
-        maper_t _bgn;
-        maper_t _end;
 };
 
 #endif

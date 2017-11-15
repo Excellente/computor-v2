@@ -66,6 +66,14 @@ void Maps::operator=(const char &s)
     _v.push_back(I);
 }
 
+Maps &Maps::operator=(const Maps &rhs)
+{
+    _k = rhs._k;
+    _v = rhs._v;
+    _len = rhs._len;
+    return (*this);
+}
+
 void Maps::insert(string &k, string &v)
 {
     _len++;

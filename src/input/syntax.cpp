@@ -1,18 +1,26 @@
 #include "input/syntax.hpp"
 
-SyntaxAnalyzer::SyntaxAnalyzer(){}
 SyntaxAnalyzer::~SyntaxAnalyzer(){}
-
-bool SyntaxAnalyzer::isAtomic(string &t)
+SyntaxAnalyzer::SyntaxAnalyzer()
 {
-    int i;
-    bool res = false;
-
-    if (isname(t) || isnumber(t))
-        return (!res);
-    return (res);
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
 }
 
-void SyntaxAnalyzer::parse(char *l)
+string SyntaxAnalyzer::getNextToken()
 {
+    string st;
+    if (_bgn != _end)
+    {
+        st = _tkns.value_at(*_bgn);
+        _bgn++;
+    }
+    else
+        return (_EOF_);
+    return (st);
+}
+
+void SyntaxAnalyzer::parse(Maps _tkns)
+{
+    this->_tkns = _tkns;
 }

@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "input/map.hpp"
+// #include "input/map.hpp"
 #include <exception>
 
 using namespace std;
@@ -68,11 +68,20 @@ void _math()
 
 int main(void)
 {
-    Maps mps;
-
     try
     {
-        _math();
+        string st("c");
+        vector<string> v;
+        for (int i = 0; i < 4; i++)
+            v.push_back(st.append(1, 65 + i));
+        vector<string> t = v;
+        vector<string>::iterator it = v.begin();
+        vector<string>::iterator tt = t.begin();
+        if ((*it).compare("cA") == 0)
+            cout << "*it -> cA" << endl;
+        else
+            cout << *(++it) << endl;
+        cout << "this tt: " << *tt << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;
