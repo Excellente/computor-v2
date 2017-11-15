@@ -23,8 +23,8 @@ class Maps{
         string value_at(const int &s) throw (IndexOutOfBounds);
         string value_at(const string &s) throw (IndexOutOfBounds);
 
-        maper_t end();
-        maper_t begin();
+        mapit_t end();
+        mapit_t begin();
         
         string operator[](const int &s);
         Maps &operator[](const string &s);

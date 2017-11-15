@@ -10,11 +10,11 @@ int Maps::length(){
     return (_len);
 }
 
-maper_t Maps::end(){
+mapit_t Maps::end(){
     return (_k.end());
 }
 
-maper_t Maps::begin(){
+mapit_t Maps::begin(){
     return (_k.begin());
 }
 

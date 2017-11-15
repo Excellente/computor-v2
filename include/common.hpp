@@ -1,19 +1,42 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef LIB_HPP
+#define LIB_HPP
 
-#define __sqrt(x) sqrt(x)
-
-
-#include "lib.hpp"
-
-#define __sqrt(x) sqrt(x)
+#define TOK_LP '('
+#define TOK_RP ')'
+#define TOK_LSB '['
+#define TOK_RSB ']'
+#define TOK_EQ '='
+#define TOK_QM '?'
+#define TOK_CO ','
+#define TOK_SC ';'
+#define TOK_OA '+'
+#define TOK_OS '-'
+#define TOK_OD '/'
+#define TOK_OM '*'
+#define TOK_DP '.'
 
 #define _EOF_ "^\0"
 #define BUFF_SIZE 1024
+#define __sqrt(x) sqrt(x)
+
+#include <map>
+#include <regex>
+#include <vector>
+#include <string>
+#include <math.h>
+#include <stdio.h>
+#include <iostream>
 
 using namespace std;
 
-typedef vector<string>::iterator maper_t;
+bool isalpha(char c);
+bool isname(string &s);
+bool isnumber(string &s);
+string tolower(string s);
+bool iswhitespace(char c);
+string _substr(string l, int s, int e);
+
+typedef vector<string>::iterator mapit_t;
 
 static vector<string> strsplit(string del, string _exp)
 {

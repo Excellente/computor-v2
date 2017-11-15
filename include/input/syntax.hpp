@@ -9,6 +9,7 @@ class SyntaxAnalyzer{
         SyntaxAnalyzer();
         ~SyntaxAnalyzer();
 
+        string look_ahead();
         string getNextToken();
 
         void parse(Maps _tk);
@@ -16,8 +17,9 @@ class SyntaxAnalyzer{
 
     private:
         Maps _tkns;
-        maper_t _bgn;
-        maper_t _end;
+        int _tkn_num;
+        mapit_t _bgn;
+        mapit_t _end;
 };
 
 #endif

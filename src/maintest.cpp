@@ -81,7 +81,7 @@ int main(void)
             cout << "*it -> cA" << endl;
         else
             cout << *(++it) << endl;
-        cout << "this tt: " << *tt << endl;
+        st.compare("") == 0 ? divide(1, 8) : 0;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;
