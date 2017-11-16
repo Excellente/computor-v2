@@ -59,19 +59,19 @@ void Lexer::tokenize(char *s)
         if (s[i] == TOK_DP)
             _tkns["D_POIN"] = s[i];
         if (s[i] == TOK_OADD)
-            _tkns["OP_ADD"] = s[i];
+            _tkns[OP_ADD] = s[i];
         if (s[i] == TOK_OSUB)
-            _tkns["OP_SUB"] = s[i];
+            _tkns[OP_SUB] = s[i];
         if (s[i] == TOK_ODIV)
-            _tkns["OP_DIV"] = s[i];
+            _tkns[OP_DIV] = s[i];
         if (s[i] == TOK_OMUL)
-            _tkns["OP_MUL"] = s[i];
+            _tkns[OP_MUL] = s[i];
         if (s[i] == TOK_OMOD)
-            _tkns["OP_MOD"] = s[i];
+            _tkns[OP_MOD] = s[i];
         if (s[i] == TOK_OEXP)
-            _tkns["OP_EXP"] = s[i];
+            _tkns[OP_EXP] = s[i];
         if (s[i] == TOK_OEQU)
-            _tkns["OP_EQU"] = s[i];
+            _tkns[OP_EQU] = s[i];
         i++;
     }
     while (s[i] != '\0');

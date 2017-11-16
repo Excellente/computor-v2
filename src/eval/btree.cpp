@@ -19,6 +19,7 @@ vector<string> BTree::getOperand2() const{
 
 void BTree::set_operands(Maps _tkns)
 {
+    int i = 0;
     mapit_t _end = _tkns.end();
     mapit_t _bgn = _tkns.begin();
 
@@ -26,7 +27,6 @@ void BTree::set_operands(Maps _tkns)
     {
         _oprnd1.push_back(_tkns.value_at(*_bgn));
     }
-    // cout << "_bgn = " << *_bgn << "\n_op = " << _op << endl;    
     if (*_bgn == _op)
         _bgn++;
     for (; _bgn != _end; _bgn++)

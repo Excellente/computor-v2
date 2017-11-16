@@ -30,6 +30,8 @@ class Maps{
         string operator[](const int &s);
         Maps &operator[](const string &s);
         Maps &operator=(const Maps &s);
+        Maps _submap(int e);
+        Maps _submap(int s, int e);
 
         void print();
         void operator=(const char &s);

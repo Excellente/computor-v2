@@ -27,6 +27,18 @@ bool Maps::search(string const s)
     return (true);
 }
 
+// Maps Maps::_submap(){}
+// Maps Maps::_submap(int start, int end)
+// {
+//     Maps retmap = Maps();
+
+//     retmap._len = this->_len;
+//     for (int i = start; i != end; i++)
+//     {
+//         _k.push_back(this->_k[i])
+//     }
+// }
+
 string Maps::value_at(const string &s) throw (IndexOutOfBounds)
 {
     IndexOutOfBounds iob;
