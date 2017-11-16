@@ -3,6 +3,8 @@
 
 #include "common.hpp"
 
+#define _npos_ -1
+
 typedef vector<string>::const_iterator const_i_t;
 
 class IndexOutOfBounds : public exception{

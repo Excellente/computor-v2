@@ -140,15 +140,23 @@ int main(int ac, char *av[])
     try
     {
         Maps map;
+        Maps map2;
+        Maps map3;
         string st("human");
+    
         map["human"] = "zamani";
         map["greeting"] = "dawg";
         map["letter"] = "h";
-        if (map.search(st))
+        map["newme"] = "fini";
+        map["go"] = "hamba";
+
+        map2 = map._submap(1);
+        map3 = map._submap(2, 4);
+        if (map2.search(st))
             cout << "found" << endl;
         else
             cout << "not found" << endl;
-        map.print();
+        map3.print();
         // BTree *node = new BTree(2);
         // node->insert(4);
         // node->insert(5);

@@ -22,7 +22,7 @@ $(LIB): $(LIBOBJ)
 	ranlib $(LIB)
 
 $(LIBOBJ):
-	$(CC) -c $(LIBSRC) -I $(INC)
+	$(CC) $(CFLAGS) -c $(LIBSRC) -I $(INC)
 	@mkdir $@; mv *.o $@
 
 clean:

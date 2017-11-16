@@ -27,17 +27,55 @@ bool Maps::search(string const s)
     return (true);
 }
 
-// Maps Maps::_submap(){}
-// Maps Maps::_submap(int start, int end)
-// {
-//     Maps retmap = Maps();
+Maps Maps::_submap(int s)
+{
+    int i = s;
+    Maps retmap = Maps();
+    mapit_t _end = end();
+    mapit_t _beg = begin();
 
-//     retmap._len = this->_len;
-//     for (int i = start; i != end; i++)
-//     {
-//         _k.push_back(this->_k[i])
-//     }
-// }
+    if (s < 0) exit(EXIT_FAILURE);
+    while (i--) _beg++;
+    for (; _beg != _end; _beg++)
+    {
+        retmap._len++;
+        retmap._k.push_back(this->_k[s]);
+        retmap._v.push_back(this->_v[s++]);
+    }
+    return (retmap);
+}
+
+Maps Maps::_submap(int start, int fin)
+{
+    int i = start;
+    Maps retmap = Maps();
+    mapit_t _end = end();
+    mapit_t _beg = begin();
+
+    if (start < 0 || (fin < 0 && fin != _npos_))
+        exit(EXIT_FAILURE);
+    while (i--) _beg++;
+    if (fin == _npos_)
+    {
+        for (int i = start; _beg != _end; _beg++)
+        {
+            retmap._len++;
+            retmap._k.push_back(this->_k[i]);
+            retmap._v.push_back(this->_v[i++]);
+        }
+    }
+    else
+    {
+        if (start > fin) exit(EXIT_FAILURE);
+        for (int i = start; i <= fin; i++)
+        {
+            retmap._len++;
+            retmap._k.push_back(this->_k[i]);
+            retmap._v.push_back(this->_v[i++]);
+        }
+    }
+    return (retmap);
+}
 
 string Maps::value_at(const string &s) throw (IndexOutOfBounds)
 {
