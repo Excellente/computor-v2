@@ -38,7 +38,9 @@ void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
     {
         bt = new BTree(ops[0]);
         bt->set_operands(_tkns);
-        cout << bt->getOperand2()[0] << endl;
+        print(bt->getOperand1());
+        print(bt->getOperand2());       // wrong results since more values have key -> NAME
+                                        // find index_of() and use index to get value_at(locations);
         // node_eval();
         // cout << OP_EQU << ": found" << endl;
     }

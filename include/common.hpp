@@ -50,6 +50,9 @@ string tolower(string s);
 bool iswhitespace(char c);
 string _substr(string l, int s, int e);
 
+// template <class T>
+void print(vector<string> s);
+
 typedef vector<string>::iterator mapit_t;
 
 static vector<string> strsplit(string del, string _exp)

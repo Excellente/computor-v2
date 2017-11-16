@@ -25,8 +25,8 @@ void BTree::set_operands(Maps _tkns)
     for (; *_bgn != _op; _bgn++)
     {
         _oprnd1.push_back(_tkns.value_at(*_bgn));
-        cout << _op << endl;
     }
+    // cout << "_bgn = " << *_bgn << "\n_op = " << _op << endl;    
     if (*_bgn == _op)
         _bgn++;
     for (; _bgn != _end; _bgn++)

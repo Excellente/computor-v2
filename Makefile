@@ -10,7 +10,7 @@ SRCS 	= $(addprefix $(SRCDIR), $(SRC))
 LIBDIR	= $(SRCDIR)lib/
 LIBOBJ	= ./obj/
 LIBSRCS	= isalpha.cpp iswhitespace.cpp tolower.cpp isdigit.cpp isnumber.cpp	\
-		  isname.cpp substr.cpp
+		  isname.cpp substr.cpp print.cpp
 LIBSRC	= $(addprefix $(LIBDIR), $(LIBSRCS))
 LIB		= libstr.a
 
