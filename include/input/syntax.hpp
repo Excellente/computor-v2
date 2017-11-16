@@ -1,8 +1,9 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include "common.hpp"
 #include "map.hpp"
+#include "common.hpp"
+#include "eval/btree.hpp"
 
 class SyntaxAnalyzer{
     public:
@@ -12,8 +13,9 @@ class SyntaxAnalyzer{
         string look_ahead();
         string getNextToken();
 
-        void parse(Maps _tk);
+        void node_eval();
         void paranScan(char *l);
+        void parse(Maps _tk, BTree *bt);
 
     private:
         Maps _tkns;

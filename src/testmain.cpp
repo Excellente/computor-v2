@@ -4,6 +4,7 @@
 #include <iostream>
 #include <regex>
 #include <exception>
+#include "input/map.hpp"
 
 using namespace std;
 
@@ -84,11 +85,14 @@ class BTree{
         int getValue() const;
         BTree *getLeft() const;
         BTree *getRight() const;
+
+        void visit();
+        void traverse();
 };
 
 BTree::BTree(int v) : value(v)
 {
-    right = NULL;
+    left = NULL;
     right = NULL;
 }
 
@@ -97,9 +101,23 @@ BTree *BTree::insert(int v)
     BTree *tmp = new BTree();
 
     tmp->value = v;
-    v > value ? (right == NULL) ? right = tmp : right->insert(v)
-    : (left == NULL) ? left = tmp : left->insert(v);
+    v > value ? ((right == NULL) ? right = tmp : right->insert(v))
+    : ((left == NULL) ? left = tmp : left->insert(v));
     return (tmp);
+}
+
+void BTree::traverse()
+{
+    if (left != NULL)
+        left->traverse();
+    visit();
+    if (right != NULL)
+        right->traverse();
+}
+
+void BTree::visit()
+{
+    cout << value << endl;
 }
 
 BTree *BTree::getLeft() const
@@ -121,14 +139,26 @@ int main(int ac, char *av[])
 {
     try
     {
-        BTree *node = new BTree(2);
-        node->insert(4);
-        node->insert(5);
-        node->insert(1);
-        cout << node->getValue() << endl;
-        cout << node->getLeft()->getValue() << endl;
-        cout << node->getRight()->getValue() << endl;
-        cout << node->getRight()->getRight()->getValue() << endl;
+        Maps map;
+        string st("human");
+        map["human"] = "zamani";
+        map["greeting"] = "dawg";
+        map["letter"] = "h";
+        if (map.search(st))
+            cout << "found" << endl;
+        else
+            cout << "not found" << endl;
+        map.print();
+        // BTree *node = new BTree(2);
+        // node->insert(4);
+        // node->insert(5);
+        // node->insert(1);
+        // node->insert(0);
+        // node->traverse();
+        // cout << node->getValue() << endl;
+        // cout << node->getLeft()->getValue() << endl;
+        // cout << node->getRight()->getValue() << endl;
+        // cout << node->getRight()->getRight()->getValue() << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

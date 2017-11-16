@@ -2,13 +2,14 @@ CC		= clang++
 CFLAGS	= -std=c++11
 EXE		= computorv2
 INC 	= ./include/
-SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp\
-		  input/lexer.cpp input/map.cpp input/iostream.cpp input/ast.cpp
+SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp	\
+		  input/lexer.cpp input/map.cpp input/iostream.cpp eval/btree.cpp 	\
+
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
 LIBDIR	= $(SRCDIR)lib/
 LIBOBJ	= ./obj/
-LIBSRCS	= isalpha.cpp iswhitespace.cpp tolower.cpp isdigit.cpp isnumber.cpp\
+LIBSRCS	= isalpha.cpp iswhitespace.cpp tolower.cpp isdigit.cpp isnumber.cpp	\
 		  isname.cpp substr.cpp
 LIBSRC	= $(addprefix $(LIBDIR), $(LIBSRCS))
 LIB		= libstr.a
