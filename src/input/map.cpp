@@ -67,11 +67,11 @@ Maps Maps::_submap(int start, int fin)
     else
     {
         if (start > fin) exit(EXIT_FAILURE);
-        for (int i = start; i <= fin; i++)
+        for (int j = start; i <= fin; i++)
         {
             retmap._len++;
-            retmap._k.push_back(this->_k[i]);
-            retmap._v.push_back(this->_v[i++]);
+            retmap._k.push_back(this->_k[j]);
+            retmap._v.push_back(this->_v[j++]);
         }
     }
     return (retmap);
