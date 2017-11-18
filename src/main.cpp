@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            sa.parse(le.getTokens(), root);
+            sa.parse(le.getTokens(), root, 0);
             // le.printmap();
             // cout << line << endl;
         }

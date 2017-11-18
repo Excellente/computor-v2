@@ -30,13 +30,11 @@ string SyntaxAnalyzer::getNextToken()
 bool SyntaxAnalyzer::isAtomic(Maps m)
 {
     if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
-        cout << "yep is atomic" << endl;
-    else
-        cout << "nope needs eval" << endl;
-    return (true);
+        return (true);
+    return (false);
 }
 
-void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
+void SyntaxAnalyzer::parse(Maps _tk, BTree *bt, int flag)
 {
     // string la("");
     // string tmp_tkn("");
@@ -46,14 +44,25 @@ void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
 
     this->_tkns = _tk;
     for (i = 0; !(found = _tkns.search(ops[i])); i++);
+    if (flag == 0)
+    {
+        cout << found << endl;
+        _tk.print();
+    }
     if (found)
     {
         bt = new BTree(ops[i]);
         bt->set_operands(_tkns);
+        cout << "********* start ***********" << endl;
         bt->getOperand1().print();
         cout << endl;
         bt->getOperand2().print();
-        cout << endl << endl;        
+        cout << "********* end ***********" << endl;
+        cout << endl << endl;
+        if (bt->getOperand1().length())
+            parse(bt->getOperand1(), bt->getLeft(), flag++);
+        // if (bt->getOperand2().length())
+        //     parse(bt->getOperand2(), bt->getRight());
         // node_eval(left_operand: Maps, parent: BTree):
         //      -> if isAtomic(left_operand)
         //          parent->left = new Btree(left_operand[0]);
@@ -62,7 +71,7 @@ void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
         // node_eval(right_operand):
     }
     else
-        cout << OP_EQU << ": not found" << endl;
+        bt = new BTree(ops[i]);
     // while (ops[i] != _NUL_)
     // {
         // -> search for operator in token stream

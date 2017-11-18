@@ -10,6 +10,8 @@ class BTree{
         ~BTree();
         BTree(string op = "");
 
+        BTree *getLeft() const;
+        BTree *getRight() const;
         Maps getOperand1() const;
         Maps getOperand2() const;
 

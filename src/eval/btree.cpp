@@ -9,6 +9,14 @@ BTree::BTree(string op) : _op(op)
     _right = NULL;
 }
 
+BTree *BTree::getLeft() const{
+    return (_left);
+}
+
+BTree *BTree::getRight() const{
+    return (_right);
+}
+
 Maps BTree::getOperand1() const{
     return (_oprnd1);
 }
