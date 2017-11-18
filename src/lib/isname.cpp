@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-bool isname(string &s)
+bool isname(string s)
 {
     regex rn("[a-zA-Z]+");
 

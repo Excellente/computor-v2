@@ -27,13 +27,15 @@ class Maps{
 
         mapit_t end();
         mapit_t begin();
-        
-        bool search(string const s);
-        string operator[](const int &s);
-        Maps &operator[](const string &s);
-        Maps &operator=(const Maps &s);
+
+        int length() const;
         Maps _submap(int e);
         Maps _submap(int s, int e);
+        bool search(string const s);
+        int index_of(string const s);
+        Maps &operator=(const Maps &s);
+        string operator[](const int &s);
+        Maps &operator[](const string &s);
 
         void print();
         void operator=(const char &s);

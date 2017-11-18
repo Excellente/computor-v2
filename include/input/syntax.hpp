@@ -12,6 +12,7 @@ class SyntaxAnalyzer{
 
         string look_ahead();
         string getNextToken();
+        bool isAtomic(Maps m);
 
         void node_eval();
         void paranScan(char *l);

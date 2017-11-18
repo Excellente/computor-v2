@@ -44,8 +44,8 @@ using namespace std;
 
 bool isdigit(char c);
 bool isalpha(char c);
-bool isname(string &s);
-bool isnumber(string &s);
+bool isname(string s);
+bool isnumber(string s);
 string tolower(string s);
 bool iswhitespace(char c);
 string _substr(string l, int s, int e);

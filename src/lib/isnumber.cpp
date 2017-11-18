@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-bool isnumber(string &s)
+bool isnumber(string s)
 {
     regex rn("[0-9]+");
 

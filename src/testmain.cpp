@@ -5,6 +5,7 @@
 #include <regex>
 #include <exception>
 #include "input/map.hpp"
+#include "common.hpp"
 
 using namespace std;
 
@@ -135,6 +136,15 @@ int BTree::getValue() const
     return (value);
 }
 
+bool isAtomic(Maps m)
+{
+    if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
+        cout << "yep is atomic" << endl;
+    else
+        cout << "nope needs eval" << endl;
+    return (true);
+}
+
 int main(int ac, char *av[])
 {
     try
@@ -151,12 +161,15 @@ int main(int ac, char *av[])
         map["go"] = "hamba";
 
         map2 = map._submap(1);
-        map3 = map._submap(2, 4);
-        if (map2.search(st))
-            cout << "found" << endl;
-        else
-            cout << "not found" << endl;
-        map3.print();
+        // cout << map.index_of("letter") << endl;
+        map3 = map._submap(2, 2);
+        cout << map3.length() << endl;
+        isAtomic(map2);
+        // if (map2.search(st))
+        //     cout << "found" << endl;
+        // else
+        //     cout << "not found" << endl;
+        map2.print();
         // BTree *node = new BTree(2);
         // node->insert(4);
         // node->insert(5);

@@ -27,22 +27,39 @@ string SyntaxAnalyzer::getNextToken()
     return (st);
 }
 
+bool SyntaxAnalyzer::isAtomic(Maps m)
+{
+    if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
+        cout << "yep is atomic" << endl;
+    else
+        cout << "nope needs eval" << endl;
+    return (true);
+}
+
 void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
 {
     // string la("");
     // string tmp_tkn("");
+    int i;
+    bool found;
     string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
 
     this->_tkns = _tk;
-    if (_tkns.search(ops[0]))
+    for (i = 0; !(found = _tkns.search(ops[i])); i++);
+    if (found)
     {
-        bt = new BTree(ops[0]);
+        bt = new BTree(ops[i]);
         bt->set_operands(_tkns);
-        print(bt->getOperand1());
-        print(bt->getOperand2());       // wrong results since more values have key -> NAME
-                                        // find index_of() and use index to get value_at(locations);
-        // node_eval();
-        // cout << OP_EQU << ": found" << endl;
+        bt->getOperand1().print();
+        cout << endl;
+        bt->getOperand2().print();
+        cout << endl << endl;        
+        // node_eval(left_operand: Maps, parent: BTree):
+        //      -> if isAtomic(left_operand)
+        //          parent->left = new Btree(left_operand[0]);
+        //      -> else
+        //          parse(left_operand, left);
+        // node_eval(right_operand):
     }
     else
         cout << OP_EQU << ": not found" << endl;
@@ -68,8 +85,5 @@ void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
         //     if (la == (string(1, TOK_LP)))
         //         ;// _function();
         // }
-        // to do:
-        // -> template classes: for ast implimentation
-        // -> build ast class;
     // }
 }

@@ -9,26 +9,22 @@ BTree::BTree(string op) : _op(op)
     _right = NULL;
 }
 
-vector<string> BTree::getOperand1() const{
+Maps BTree::getOperand1() const{
     return (_oprnd1);
 }
 
-vector<string> BTree::getOperand2() const{
+Maps BTree::getOperand2() const{
     return (_oprnd2);
 }
 
 void BTree::set_operands(Maps _tkns)
 {
     int i = 0;
+    int j = 0;
     mapit_t _end = _tkns.end();
     mapit_t _bgn = _tkns.begin();
 
-    for (; *_bgn != _op; _bgn++)
-    {
-        _oprnd1.push_back(_tkns.value_at(*_bgn));
-    }
-    if (*_bgn == _op)
-        _bgn++;
-    for (; _bgn != _end; _bgn++)
-        _oprnd2.push_back(_tkns.value_at(*_bgn));
+    i = j = _tkns.index_of(_op);
+    _oprnd1 = _tkns._submap(0, --i);
+    _oprnd2 = _tkns._submap(++j);
 }
