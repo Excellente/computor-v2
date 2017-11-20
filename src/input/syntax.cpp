@@ -34,44 +34,60 @@ bool SyntaxAnalyzer::isAtomic(Maps m)
     return (false);
 }
 
-void SyntaxAnalyzer::parse(Maps _tk, BTree *bt, int flag)
+// void SyntaxAnalyzer::parse(Lexer _le, BTree *bt)
+// {
+//     string _tkn = _le.getNextToken();
+//     if (isname(_tkn) && le.look_ahead() == "=")
+//         cout << "possible var_declaration" << endl;
+//     else
+//         cout << "not yet handled" << endl;
+// }
+
+void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
 {
     // string la("");
     // string tmp_tkn("");
-    int i;
-    bool found;
+    // while (1)
+    // {
+    //     for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++);
+    //     if (found)
+    //     {
+    //         bt = new BTree(ops[i]);
+    //         bt->set_operands(_tkns);
+    //     }
+    // }
+    // // while[ tree is not atomic]
+    //  -> node_eval[unamtomic node];
+    //  -> go further down the tree;
+    // int i;
+    // bool found;
     string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
-
-    this->_tkns = _tk;
-    for (i = 0; !(found = _tkns.search(ops[i])); i++);
-    if (flag == 0)
-    {
-        cout << found << endl;
-        _tk.print();
-    }
-    if (found)
-    {
-        bt = new BTree(ops[i]);
-        bt->set_operands(_tkns);
-        cout << "********* start ***********" << endl;
-        bt->getOperand1().print();
-        cout << endl;
-        bt->getOperand2().print();
-        cout << "********* end ***********" << endl;
-        cout << endl << endl;
-        if (bt->getOperand1().length())
-            parse(bt->getOperand1(), bt->getLeft(), flag++);
-        // if (bt->getOperand2().length())
-        //     parse(bt->getOperand2(), bt->getRight());
+    // for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++);    
+    // this->_tkns = _tk;
+    // if (found)
+    // {
+        bt = new BTree(ops[0]);
+        // bt->set_operands(_tkns);
+        // cout << bt->getOp() << endl;
+        // bt->getOperand1().print();
+        // cout << endl;
+        // bt->getOperand2().print();
+        // cout << endl << endl;
+        // parse(bt->getOperand1(), bt->getLeft());
+        // parse(bt->getOperand2(), bt->getRight());
         // node_eval(left_operand: Maps, parent: BTree):
         //      -> if isAtomic(left_operand)
         //          parent->left = new Btree(left_operand[0]);
         //      -> else
         //          parse(left_operand, left);
         // node_eval(right_operand):
-    }
-    else
-        bt = new BTree(ops[i]);
+    // }
+    // else
+    // {
+    //     bt = new BTree(_tk[0]);
+    // }
+    // bt->print();
+    // cout << endl;
     // while (ops[i] != _NUL_)
     // {
         // -> search for operator in token stream

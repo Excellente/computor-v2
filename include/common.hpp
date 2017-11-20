@@ -27,7 +27,7 @@
 #define OP_EXP "OP_EXP"
 #define OP_EQU "OP_EQU"
 
-#define _EOF_ "^\0"
+#define _EOF_ "^:\0"
 #define _NULL_ "-1\0"
 #define BUFF_SIZE 1024
 #define __sqrt(x) sqrt(x)

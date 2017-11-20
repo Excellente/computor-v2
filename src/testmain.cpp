@@ -139,11 +139,11 @@ int BTree::getValue() const
 bool isAtomic(Maps m)
 {
     if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
-        cout << "yep is atomic" << endl;
-    else
-        cout << "nope needs eval" << endl;
-    return (true);
+        return (true);
+    return (false);
 }
+
+
 
 int main(int ac, char *av[])
 {
@@ -154,22 +154,26 @@ int main(int ac, char *av[])
         Maps map3;
         string st("human");
     
-        map["human"] = "zamani";
-        map["greeting"] = "dawg";
-        map["letter"] = "h";
-        map["newme"] = "fini";
-        map["go"] = "hamba";
+        map["NAME"] = "a";
+        map["OP_ADD"] = "+";
+        map["NUMBER"] = "2";
+        map["OP_EQU"] = "=";
+        map["NUMBER"] = "3";
+// ====================================== testing zone ==========================================
 
-        map2 = map._submap(1);
-        // cout << map.index_of("letter") << endl;
-        map3 = map._submap(2, 2);
-        cout << map3.length() << endl;
-        isAtomic(map2);
+// ====================================== testing zone ==========================================
+        
+        // cout << map.search("f") << endl;
+        // map2 = map._submap(1);
+        // // cout << map.index_of("letter") << endl;
+        // map3 = map._submap(2, 2);
+        // cout << map3.length() << endl;
+        // isAtomic(map2);
         // if (map2.search(st))
         //     cout << "found" << endl;
         // else
         //     cout << "not found" << endl;
-        map2.print();
+        // map2.print();
         // BTree *node = new BTree(2);
         // node->insert(4);
         // node->insert(5);

@@ -80,7 +80,7 @@ Maps Maps::_submap(int start, int fin)
     return (retmap);
 }
 
-string Maps::value_at(const string &s) throw (IndexOutOfBounds)
+string Maps::value_at(string const &s) throw (IndexOutOfBounds)
 {
     IndexOutOfBounds iob;
     const_i_t end_key_i = _k.end();
@@ -124,6 +124,14 @@ string Maps::operator[](const int &s){
     return (value_at(s));
 }
 
+Maps &Maps::operator=(const Maps &rhs)
+{
+    _k = rhs._k;
+    _v = rhs._v;
+    _len = rhs._len;
+    return (*this);
+}
+
 void Maps::operator=(const string &s){
     _v.push_back(s);
 }
@@ -132,14 +140,6 @@ void Maps::operator=(const char &s)
 {
     string I(1, s);
     _v.push_back(I);
-}
-
-Maps &Maps::operator=(const Maps &rhs)
-{
-    _k = rhs._k;
-    _v = rhs._v;
-    _len = rhs._len;
-    return (*this);
 }
 
 void Maps::insert(string &k, string &v)

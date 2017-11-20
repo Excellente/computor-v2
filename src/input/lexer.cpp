@@ -1,18 +1,47 @@
 #include "input/lexer.hpp"
 
-Lexer::Lexer(){}
 Lexer::~Lexer(){}
 
-Maps Lexer::getTokens()
+Lexer::Lexer()
 {
+    _index = 0;
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
+}
+
+string Lexer::look_ahead()
+{
+    int i = _index;
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
+
+    while (i--) _bgn++;
+    if ((_bgn + 1) == _end) return (_EOF_);
+    return (_tkns.value_at(_index + 1));
+}
+
+Maps Lexer::getTokens() const{
     return (_tkns);
+}
+
+string Lexer::getNextToken()
+{
+    int i = _index;
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
+
+    while (i--) _bgn++;
+    if (_bgn == _end) return (_EOF_);
+    string ret = _tkns.value_at(_index);
+    _index++;
+    return (ret);
 }
 
 void Lexer::printmap()
 {
     int len = _tkns.length();
-    vector<string>::iterator ecit = _tkns.end();
-    vector<string>::iterator bcit = _tkns.begin();
+    mapit_t ecit = _tkns.end();
+    mapit_t bcit = _tkns.begin();
     for (int i = 0; i < len; i++, bcit++)
         cout << *bcit << " -> " << _tkns[i] << endl;
 }

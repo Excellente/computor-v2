@@ -4,6 +4,7 @@
 #include "map.hpp"
 #include "common.hpp"
 #include "eval/btree.hpp"
+#include "input/lexer.hpp"
 
 class SyntaxAnalyzer{
     public:
@@ -15,8 +16,9 @@ class SyntaxAnalyzer{
         bool isAtomic(Maps m);
 
         void node_eval();
+        void var_declaration();
         void paranScan(char *l);
-        void parse(Maps _tk, BTree *bt, int flag);
+        void parse(Maps _tk, BTree *bt);
 
     private:
         Maps _tkns;

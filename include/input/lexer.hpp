@@ -9,13 +9,18 @@ class Lexer{
         Lexer();
         ~Lexer();
 
-        Maps getTokens();
+        string look_ahead();
+        string getNextToken();
+        Maps getTokens() const;
 
         void printmap();
         void tokenize(char *s);
 
     private:
+        int _index;
         Maps _tkns;
+        mapit_t _bgn;
+        mapit_t _end;
 };
 
 #endif

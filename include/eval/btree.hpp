@@ -10,15 +10,18 @@ class BTree{
         ~BTree();
         BTree(string op = "");
 
+        string getName() const;
         BTree *getLeft() const;
         BTree *getRight() const;
         Maps getOperand1() const;
         Maps getOperand2() const;
 
+        void visit();
+        void print();
         void set_operands(Maps _tkns);
     
     private:
-        string _op;
+        string _name;
         float _value;
         BTree *_left;
         BTree *_right;

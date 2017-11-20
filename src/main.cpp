@@ -5,11 +5,11 @@
 
 int main(int argc, char *argv[])
 {
-    Lexer le;
     char *line;
+    BTree *root;
     IOStream ios;
     SyntaxAnalyzer sa;
-    BTree *root;
+    Lexer le = Lexer();
 
     cout << "\nComputor-v2 (c) November 2017, [rap]dean\n free software, dean-techonlogies inc.\n" << endl;
     while (1)
@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            sa.parse(le.getTokens(), root, 0);
+            sa.parse(le.getTokens(), root);
+            // root->print();
             // le.printmap();
             // cout << line << endl;
         }
