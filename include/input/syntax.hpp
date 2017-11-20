@@ -33,7 +33,8 @@ class SyntaxAnalyzer{
         Maps _tkns;
         mapit_t _bgn;
         mapit_t _end;
-        map<string, string> _funct;
+        BTree *_bt;
+        map<string, BTree *> _funct;
         map<string, string> _vars_int;
 };
 

@@ -29,6 +29,7 @@ class BTree{
         float operator-(BTree const &r);
         float operator*(BTree const &r);
         float operator/(BTree const &r);
+        BTree &operator=(BTree const &r);
     
     private:
         string _name;

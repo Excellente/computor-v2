@@ -64,6 +64,17 @@ float BTree::operator/(BTree const &r){
     return (_value / r.getValue());
 }
 
+BTree &BTree::operator=(BTree const &r)
+{
+    _name = r._name;
+    _left = r._left;
+    _value = r._value;
+    _right = r._right;
+    _oprnd1 = r._oprnd1;
+    _oprnd2 = r._oprnd2;
+    return (*this);
+}
+
 void BTree::print()
 {
     if (_left != NULL)

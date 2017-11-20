@@ -73,7 +73,10 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     string vname = bt->_left->getName().substr(++lp, 1);
 
     if (isnumber(bt->_right->getName()))
-            _funct[fname] = bt->_right->getName();
+    {
+        _bt = bt->_right;
+        _funct[fname] = bt->_right;
+    }
     // else if (isname(bt->_right->getName()))
     // {
     //     if (search_map(bt->_right->getName()))
