@@ -25,13 +25,15 @@ class SyntaxAnalyzer{
         bool search_map(string s);
         void delete_tree(BTree *&b);
         void var_declaration(BTree *&b);
-        void build_ast(Maps _t, BTree *&b);
+        void function_declaration(BTree *&bt);
+        void build_ast(Maps _t, BTree *&b) throw (InvalidSyntaxException);
 
     private:
+        int _index;
         Maps _tkns;
-        int _tkn_num;
         mapit_t _bgn;
         mapit_t _end;
+        map<string, string> _funct;
         map<string, string> _vars_int;
 };
 

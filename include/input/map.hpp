@@ -2,19 +2,11 @@
 #define MAP_HPP
 
 #include "common.hpp"
+#include "exceptions.hpp"
 
 #define _npos_ -1
 
 typedef vector<string>::const_iterator const_i_t;
-
-class IndexOutOfBounds : public exception{
-    using exception::what;
-    public:
-        virtual const char *what() const throw()
-        {
-            return ("Error: IndexOutOfBoundsException");
-        }
-};
 
 class Maps{
     public:

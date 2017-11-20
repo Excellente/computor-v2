@@ -30,13 +30,14 @@ void Lexer::delete_map(){
 
 string Lexer::getNextToken()
 {
+    string ret;
     int i = _index;
     _end = _tkns.end();
     _bgn = _tkns.begin();
 
     while (i--) _bgn++;
     if (_bgn == _end) return (_EOF_);
-    string ret = _tkns.value_at(_index);
+    ret = _tkns.value_at(_index);
     _index++;
     return (ret);
 }

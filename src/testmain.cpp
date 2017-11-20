@@ -153,51 +153,20 @@ bool isAtomic(Maps m)
     return (false);
 }
 
-
+bool isfunction(string s)
+{
+    regex rf("[a-zA-Z]+\\([a-zA-Z]\\)");
+    return (regex_match(s, rf));
+}
 
 int main(int ac, char *av[])
 {
     try
     {
-        // Maps map;
-        Maps map2;
-        Maps map3;
-        string st("human");
-        map<string, string> m;
-    
-        // map["NAME"] = "a";
-        // map["OP_ADD"] = "+";
-        // map["NUMBER"] = "2";
-        // map["OP_EQU"] = "=";
-        // map["NUMBER"] = "3";
-        m["NAME"] = "zamani";
-// ====================================== testing zone ==========================================
-
-// ====================================== testing zone ==========================================
-        // cout << m[0] << endl;
-        cout << m["me"] << endl;
-        // cout << map.search("f") << endl;
-        // map2 = map._submap(1);
-        // // cout << map.index_of("letter") << endl;
-        // map3 = map._submap(2, 2);
-        // cout << map3.length() << endl;
-        // isAtomic(map2);
-        // if (map2.search(st))
-        //     cout << "found" << endl;
-        // else
-        //     cout << "not found" << endl;
-        // map2.print();
-        // BTree *node = new BTree(2);
-        // node->print();
-        // node->insert(4);
-        // node->insert(5);
-        // node->insert(1);
-        // node->insert(0);
-        // node->traverse();
-        // cout << node->getValue() << endl;
-        // cout << node->getLeft()->getValue() << endl;
-        // cout << node->getRight()->getValue() << endl;
-        // cout << node->getRight()->getRight()->getValue() << endl;
+        if (isfunction("fname(x)"))
+            cout << "yep is function" << endl;
+        else
+            cout << "nope" << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

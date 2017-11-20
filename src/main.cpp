@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
     char *line;
     BTree *root;
     IOStream ios;
-    SyntaxAnalyzer sa;
     Lexer le = Lexer();
+    SyntaxAnalyzer sa = SyntaxAnalyzer();
 
     cout << "\nComputor-v2 (c) November 2017, [rap]dean\n mathware, dean-techonlogies inc.\n" << endl;
     while (1)
@@ -24,19 +24,15 @@ int main(int argc, char *argv[])
             sa.parse(root);
             le.delete_map();
             sa.delete_tree(root);
-            // root->print();
-            // le.printmap();
-            // cout << line << endl;
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;
             exit(EXIT_FAILURE);
         }
-        // catch(...){
-        //     cerr << "Error: UnknownException" << endl;
-        //     exit(EXIT_FAILURE);
-        // }
-
+        catch(InvalidSyntaxException &e){
+            cerr << e.what() << endl;
+            exit(EXIT_FAILURE);
+        }
     }
     return (0);
 }

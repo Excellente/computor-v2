@@ -1,11 +1,9 @@
 #include "input/syntax.hpp"
 
 SyntaxAnalyzer::~SyntaxAnalyzer(){}
-SyntaxAnalyzer::SyntaxAnalyzer()
-{
-    _tkn_num = 0;
-    _end = _tkns.end();
-    _bgn = _tkns.begin();
+
+SyntaxAnalyzer::SyntaxAnalyzer(){
+    _index = 0;
 }
 
 string SyntaxAnalyzer::look_ahead()
@@ -15,16 +13,16 @@ string SyntaxAnalyzer::look_ahead()
 
 string SyntaxAnalyzer::getNextToken()
 {
-    string st;
-    if (_bgn != _end)
-    {
-        st = _tkns.value_at(*_bgn);
-        _bgn++;
-        _tkn_num++;
-    }
-    else
-        return (_EOF_);
-    return (st);
+    string ret;
+    int i = _index;
+    _end = _tkns.end();
+    _bgn = _tkns.begin();
+
+    while (i--) _bgn++;
+    if (_bgn == _end) return (_EOF_);
+    ret = _tkns.value_at(_index);
+    _index++;
+    return (ret);
 }
 
 bool SyntaxAnalyzer::isAtomic(Maps m)
@@ -66,6 +64,25 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     }
     else if (isop(bt->_right->getName()))
         _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+}
+
+void SyntaxAnalyzer::function_declaration(BTree *&bt)
+{
+    size_t lp = bt->_left->getName().find("(");
+    string fname = bt->_left->getName().substr(0, lp - 0);
+    string vname = bt->_left->getName().substr(++lp, 1);
+
+    if (isnumber(bt->_right->getName()))
+            _funct[fname] = bt->_right->getName();
+    // else if (isname(bt->_right->getName()))
+    // {
+    //     if (search_map(bt->_right->getName()))
+    //         _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
+    //     else
+    //         cout << bt->_right->getName() << ": has not been declared" << endl;
+    // }
+    // else if (isop(bt->_right->getName()))
+    //     _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
 }
 
 void SyntaxAnalyzer::getVal(BTree *&bt)
@@ -125,8 +142,12 @@ float SyntaxAnalyzer::eval_exp(BTree *&bt)
 void SyntaxAnalyzer::op_equal(BTree *&bt)
 {
     // Q_MARK
-    if (isname(bt->_left->getName()) && (isnumber(bt->_right->getName()) || isname(bt->getName()) || isop(bt->getName())))
+    if (isname(bt->_left->getName()) && (isnumber(bt->_right->getName()) ||
+        isname(bt->getName()) || isop(bt->getName())))
         var_declaration(bt);
+    else if (isfunction(bt->_left->getName()) && (isnumber(bt->_right->getName()) ||
+        isname(bt->getName()) || isop(bt->getName())))
+        function_declaration(bt);
     // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
 }
 
@@ -154,10 +175,13 @@ void SyntaxAnalyzer::parse(BTree *&bt)
     }
 }
 
-void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt)
+void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
 {
     int i;
     bool found;
+    string str;
+    string tmp = "";
+    InvalidSyntaxException ise;
     string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
 
     this->_tkns = _tk;
@@ -173,13 +197,18 @@ void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt)
     }
     else
     {
-        if (_tk.length() == 1)
-            bt = new BTree(_tk[0]);
+        if (_tkns.length() == 1)
+            bt = new BTree(_tkns[0]);
         else
             {
-                // concatenate all tokens
-                // verify if result is a function
-                // create a function node
+                while ((str = getNextToken()) != _EOF_)
+                    tmp = tmp + str;
+                if (isfunction(tmp))
+                    bt = new BTree(tmp);
+                else
+                    throw ise;
+                _index = 0;
             }
     }
+    _tkns.delete_m();
 }
