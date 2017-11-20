@@ -88,8 +88,18 @@ class BTree{
         BTree *getRight() const;
 
         void visit();
+        void print();
         void traverse();
 };
+
+void BTree::print()
+{
+    if (left != NULL)
+        left->print();
+    visit();
+    if (right != NULL)
+        right->print();
+}
 
 BTree::BTree(int v) : value(v)
 {
@@ -174,7 +184,8 @@ int main(int ac, char *av[])
         // else
         //     cout << "not found" << endl;
         // map2.print();
-        // BTree *node = new BTree(2);
+        BTree *node = new BTree(2);
+        node->print();
         // node->insert(4);
         // node->insert(5);
         // node->insert(1);

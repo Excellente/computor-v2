@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
             sa.parse(le.getTokens(), root);
-            cout << root->getName() << endl;
             // root->print();
             // le.printmap();
             // cout << line << endl;

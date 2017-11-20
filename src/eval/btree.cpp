@@ -1,6 +1,13 @@
 #include "eval/btree.hpp"
 
 BTree::~BTree(){}
+BTree::BTree()
+{
+    _value = 0;
+    _name = "";
+    _left = NULL;
+    _right = NULL;
+}
 
 BTree::BTree(string op) : _name(op)
 {
@@ -49,8 +56,7 @@ void BTree::set_operands(Maps _tkns)
     mapit_t _end = _tkns.end();
     mapit_t _bgn = _tkns.begin();
 
-    cout << getName() << endl;
-    // i = j = _tkns.index_of(_name);
-    // _oprnd1 = _tkns._submap(0, --i);
-    // _oprnd2 = _tkns._submap(++j);
+    i = j = _tkns.index_of(_name);
+    _oprnd1 = _tkns._submap(0, --i);
+    _oprnd2 = _tkns._submap(++j);
 }

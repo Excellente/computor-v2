@@ -18,7 +18,7 @@ class SyntaxAnalyzer{
         void node_eval();
         void var_declaration();
         void paranScan(char *l);
-        void parse(Maps _tk, BTree *bt);
+        void parse(Maps _tk, BTree *&bt);
 
     private:
         Maps _tkns;

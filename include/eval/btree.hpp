@@ -7,6 +7,10 @@
 class BTree{
 
     public:
+        BTree *_left;
+        BTree *_right;
+
+        BTree();
         ~BTree();
         BTree(string op = "");
 
@@ -23,8 +27,6 @@ class BTree{
     private:
         string _name;
         float _value;
-        BTree *_left;
-        BTree *_right;
         Maps _oprnd1;
         Maps _oprnd2;
 };
