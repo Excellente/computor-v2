@@ -42,6 +42,7 @@
 
 using namespace std;
 
+bool isop(string s);
 bool isdigit(char c);
 bool isalpha(char c);
 bool isname(string s);

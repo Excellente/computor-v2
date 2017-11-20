@@ -1,0 +1,5 @@
+valid variable instructions
+    a = 2 -> assigns 2 to a :: DONE
+    a -> returns the value stored in a :: DONE
+    a = expression
+    a + 2 = ? -> returns the value of the expression

@@ -14,6 +14,7 @@ class Lexer{
         Maps getTokens() const;
 
         void printmap();
+        void delete_map();
         void tokenize(char *s);
 
     private:

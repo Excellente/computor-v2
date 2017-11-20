@@ -38,6 +38,7 @@ class Maps{
         Maps &operator[](const string &s);
 
         void print();
+        void delete_m();
         void operator=(const char &s);
         void operator=(const string &s);
         void insert(string &k, string &v);
