@@ -83,10 +83,10 @@ Maps Maps::_submap(int start, int fin)
 string Maps::value_at(string const &s) throw (IndexOutOfBounds)
 {
     IndexOutOfBounds iob;
+    const_i_t eval_i = _v.end();
+    const_i_t bval_i = _v.begin();
     const_i_t end_key_i = _k.end();
     const_i_t begin_key_i = _k.begin();
-    const_i_t bval_i = _v.begin();
-    const_i_t eval_i = _v.end();
 
     if (!_len)
         throw iob;
@@ -130,6 +130,17 @@ Maps &Maps::operator=(const Maps &rhs)
     _v = rhs._v;
     _len = rhs._len;
     return (*this);
+}
+
+void Maps::delete_m()
+{
+    const_i_t eval_i = _v.end();
+    const_i_t bval_i = _v.begin();
+    const_i_t end_key_i = _k.end();
+    const_i_t begin_key_i = _k.begin();
+
+    _v.erase(bval_i, eval_i);
+    _k.erase(begin_key_i, end_key_i);
 }
 
 void Maps::operator=(const string &s){

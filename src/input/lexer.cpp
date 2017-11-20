@@ -24,6 +24,10 @@ Maps Lexer::getTokens() const{
     return (_tkns);
 }
 
+void Lexer::delete_map(){
+    _tkns.delete_m();
+}
+
 string Lexer::getNextToken()
 {
     int i = _index;

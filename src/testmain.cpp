@@ -159,20 +159,23 @@ int main(int ac, char *av[])
 {
     try
     {
-        Maps map;
+        // Maps map;
         Maps map2;
         Maps map3;
         string st("human");
+        map<string, string> m;
     
-        map["NAME"] = "a";
-        map["OP_ADD"] = "+";
-        map["NUMBER"] = "2";
-        map["OP_EQU"] = "=";
-        map["NUMBER"] = "3";
+        // map["NAME"] = "a";
+        // map["OP_ADD"] = "+";
+        // map["NUMBER"] = "2";
+        // map["OP_EQU"] = "=";
+        // map["NUMBER"] = "3";
+        m["NAME"] = "zamani";
 // ====================================== testing zone ==========================================
 
 // ====================================== testing zone ==========================================
-        
+        // cout << m[0] << endl;
+        cout << m["me"] << endl;
         // cout << map.search("f") << endl;
         // map2 = map._submap(1);
         // // cout << map.index_of("letter") << endl;
@@ -184,8 +187,8 @@ int main(int ac, char *av[])
         // else
         //     cout << "not found" << endl;
         // map2.print();
-        BTree *node = new BTree(2);
-        node->print();
+        // BTree *node = new BTree(2);
+        // node->print();
         // node->insert(4);
         // node->insert(5);
         // node->insert(1);

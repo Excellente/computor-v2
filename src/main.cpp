@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     SyntaxAnalyzer sa;
     Lexer le = Lexer();
 
-    cout << "\nComputor-v2 (c) November 2017, [rap]dean\n free software, dean-techonlogies inc.\n" << endl;
+    cout << "\nComputor-v2 (c) November 2017, [rap]dean\n mathware, dean-techonlogies inc.\n" << endl;
     while (1)
     {
         try{
@@ -20,7 +20,10 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            sa.parse(le.getTokens(), root);
+            sa.build_ast(le.getTokens(), root);
+            sa.parse(root);
+            le.delete_map();
+            sa.delete_tree(root);
             // root->print();
             // le.printmap();
             // cout << line << endl;
