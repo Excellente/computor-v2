@@ -14,6 +14,7 @@ class BTree{
         ~BTree();
         BTree(string op = "");
 
+        float getValue() const;
         string getName() const;
         BTree *getLeft() const;
         BTree *getRight() const;
@@ -22,7 +23,12 @@ class BTree{
 
         void visit();
         void print();
-        void set_operands(Maps _tkns);
+        void setValue(float v);
+        void set_operands(Maps _t);
+        float operator+(BTree const &r);
+        float operator-(BTree const &r);
+        float operator*(BTree const &r);
+        float operator/(BTree const &r);
     
     private:
         string _name;

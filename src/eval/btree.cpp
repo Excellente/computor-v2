@@ -16,6 +16,14 @@ BTree::BTree(string op) : _name(op)
     _right = NULL;
 }
 
+void BTree::setValue(float _v){
+    _value = _v;
+}
+
+float BTree::getValue() const{
+    return (_value);
+}
+
 string BTree::getName() const{
     return (_name);
 }
@@ -38,6 +46,22 @@ Maps BTree::getOperand2() const{
 
 void BTree::visit(){
     cout << _name << endl;
+}
+
+float BTree::operator+(BTree const &r){
+    return (_value + r.getValue());
+}
+
+float BTree::operator-(BTree const &r){
+    return (_value - r.getValue());
+}
+
+float BTree::operator*(BTree const &r){
+    return (_value * r.getValue());
+}
+
+float BTree::operator/(BTree const &r){
+    return (_value / r.getValue());
 }
 
 void BTree::print()

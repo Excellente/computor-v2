@@ -14,16 +14,18 @@ class SyntaxAnalyzer{
         string look_ahead();
         string getNextToken();
         bool isAtomic(Maps m);
+        float eval_exp(BTree *&b);
 
         void node_eval();
-        void parse(BTree *&bt);
-        void var_declaration();
+        void parse(BTree *&b);
+        void getVal(BTree *&bt);
         void value_of(string s);
         void paranScan(char *l);
+        void op_equal(BTree *&b);
         bool search_map(string s);
-        void op_equal(BTree *&bt);
-        void delete_tree(BTree *&bt);
-        void build_ast(Maps _tk, BTree *&bt);
+        void delete_tree(BTree *&b);
+        void var_declaration(BTree *&b);
+        void build_ast(Maps _t, BTree *&b);
 
     private:
         Maps _tkns;

@@ -53,11 +53,80 @@ void SyntaxAnalyzer::value_of(string s)
         cout << 0 << endl;
 }
 
+void SyntaxAnalyzer::var_declaration(BTree *&bt)
+{
+    if (isnumber(bt->_right->getName()))
+            _vars_int[bt->_left->getName()] = bt->_right->getName();
+    else if (isname(bt->_right->getName()))
+    {
+        if (search_map(bt->_right->getName()))
+            _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
+        else
+            cout << bt->_right->getName() << ": has not been declared" << endl;
+    }
+    else if (isop(bt->_right->getName()))
+        _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+}
+
+void SyntaxAnalyzer::getVal(BTree *&bt)
+{
+    if (isname(bt->getName()))
+    {
+        if (search_map(bt->getName()))
+            bt->setValue(stof(_vars_int[bt->getName()]));
+        else
+        {
+            cout << bt->_right->getName() << ": has not been declared" << endl;
+            return;
+        }
+    }
+    else if (isnumber(bt->getName()))
+        bt->setValue(stof(bt->getName()));
+}
+
+float SyntaxAnalyzer::eval_exp(BTree *&bt)
+{
+    float res;
+
+    if (bt->_left != NULL)
+        eval_exp(bt->_left);
+    getVal(bt);
+    if (bt->_right != NULL)
+        eval_exp(bt->_right);
+    if (isop(bt->getName()))
+    {
+        if (bt->getName() == "OP_ADD")
+        {
+            res = *bt->_left + *bt->_right;
+            bt->setValue(res);
+        }
+        else if (bt->getName() == "OP_SUB")
+        {
+            res = *bt->_left - *bt->_right;
+            bt->setValue(res);
+        }
+        else if (bt->getName() == "OP_MUL")
+        {
+            res = *bt->_left * *bt->_right;
+            bt->setValue(res);
+        }
+        else if (bt->getName() == "OP_DIV")
+        {
+            if (bt->_right->getValue() != 0)
+                res = *bt->_left / *bt->_right;
+            else
+                cout << "Error: InvalidOperandException" << endl;
+            bt->setValue(res);
+        }
+    }
+    return (bt->getValue());
+}
+
 void SyntaxAnalyzer::op_equal(BTree *&bt)
 {
     // Q_MARK
     if (isname(bt->_left->getName()) && (isnumber(bt->_right->getName()) || isname(bt->getName()) || isop(bt->getName())))
-        eval_exp(bt);
+        var_declaration(bt);
     // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
 }
 
@@ -104,7 +173,7 @@ void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt)
     }
     else
     {
-        if (_tk.length())
+        if (_tk.length() == 1)
             bt = new BTree(_tk[0]);
         else
             {

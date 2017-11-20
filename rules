@@ -1,5 +1,12 @@
 valid variable instructions
     a = 2 -> assigns 2 to a :: DONE
     a -> returns the value stored in a :: DONE
-    a = expression
+    a = expression :: DONE
     a + 2 = ? -> returns the value of the expression
+
+$> a = 2
+$> b = 4
+$> c = a * b + 5 - 1
+$> c
+12.000000
+$> d = c * a / 6 - 3
