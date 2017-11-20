@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
             sa.parse(le.getTokens(), root);
+            cout << root->getName() << endl;
             // root->print();
             // le.printmap();
             // cout << line << endl;
@@ -29,10 +30,10 @@ int main(int argc, char *argv[])
             cerr << e.what() << endl;
             exit(EXIT_FAILURE);
         }
-        catch(...){
-            cerr << "Error: UnknownException" << endl;
-            exit(EXIT_FAILURE);
-        }
+        // catch(...){
+        //     cerr << "Error: UnknownException" << endl;
+        //     exit(EXIT_FAILURE);
+        // }
 
     }
     return (0);

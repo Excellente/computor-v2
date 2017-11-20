@@ -67,7 +67,7 @@ void SyntaxAnalyzer::parse(Maps _tk, BTree *bt)
     // if (found)
     // {
         bt = new BTree(ops[0]);
-        // bt->set_operands(_tkns);
+        bt->set_operands(_tkns);
         // cout << bt->getOp() << endl;
         // bt->getOperand1().print();
         // cout << endl;
