@@ -20,7 +20,7 @@ void BTree::setValue(float _v){
     _value = _v;
 }
 
-float BTree::getValue() const{
+int BTree::getValue() const{
     return (_value);
 }
 
@@ -48,19 +48,19 @@ void BTree::visit(){
     cout << _name << endl;
 }
 
-float BTree::operator+(BTree const &r){
+int BTree::operator+(BTree const &r){
     return (_value + r.getValue());
 }
 
-float BTree::operator-(BTree const &r){
+int BTree::operator-(BTree const &r){
     return (_value - r.getValue());
 }
 
-float BTree::operator*(BTree const &r){
+int BTree::operator*(BTree const &r){
     return (_value * r.getValue());
 }
 
-float BTree::operator/(BTree const &r){
+int BTree::operator/(BTree const &r){
     return (_value / r.getValue());
 }
 

@@ -14,7 +14,7 @@ class SyntaxAnalyzer{
         string look_ahead();
         string getNextToken();
         bool isAtomic(Maps m);
-        float eval_exp(BTree *&b);
+        int eval_exp(BTree *&b);
 
         void node_eval();
         void parse(BTree *&b);

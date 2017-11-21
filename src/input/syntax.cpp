@@ -93,7 +93,7 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
     if (isname(bt->getName()))
     {
         if (search_map(bt->getName()))
-            bt->setValue(stof(_vars_int[bt->getName()]));
+            bt->setValue(stoi(_vars_int[bt->getName()]));
         else
         {
             cout << bt->_right->getName() << ": has not been declared" << endl;
@@ -101,12 +101,12 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
         }
     }
     else if (isnumber(bt->getName()))
-        bt->setValue(stof(bt->getName()));
+        bt->setValue(stoi(bt->getName()));
 }
 
-float SyntaxAnalyzer::eval_exp(BTree *&bt)
+int SyntaxAnalyzer::eval_exp(BTree *&bt)
 {
-    float res;
+    int res;
 
     if (bt->_left != NULL)
         eval_exp(bt->_left);
