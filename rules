@@ -10,12 +10,8 @@ to be handled:
     -> scan tree for errors : semantic analyzer
 
 Tested cases:
-$> a = 2
-$> b = 4
-$> c = a * b + 5 - 1
-$> c
-$> d = c * a / 6 - 3
-$> b = a + b - 1
+a = (1)
+a = - (1)
 
 Working test cases:
 $> a = 2
