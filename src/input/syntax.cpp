@@ -50,7 +50,6 @@ void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxExcepti
         bt->set_operands(_tkns);
         build_ast(bt->getOperand1(), bt->_left);
         build_ast(bt->getOperand2(), bt->_right);
-
     }
     else
     {
@@ -136,6 +135,7 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     }
     else if (isop(val))
         _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+    value_of(bt->_left->getName());
 }
 
 void SyntaxAnalyzer::function_declaration(BTree *&bt)
@@ -167,10 +167,7 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
         if (search_map(bt->getName()))
             bt->setValue(stoi(_vars_int[bt->getName()]));
         else
-        {
-            cout << bt->_right->getName() << ": has not been declared" << endl;
             return;
-        }
     }
     else if (isnumber(bt->getName()))
         bt->setValue(stoi(bt->getName()));

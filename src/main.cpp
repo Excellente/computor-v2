@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     Lexer le = Lexer();
     SyntaxAnalyzer sa = SyntaxAnalyzer();
 
-    cout << "\nComputor-v2 (c) November 2017, [rap]dean\n mathware, dean-techonlogies inc.\n" << endl;
+    cout << "Computor-v2 1.0\n  Free Software(c) November 2017, [rap]dean\n   mathware, dean-techonlogies inc.\n" << endl;
     while (1)
     {
         try{
@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
             sa.build_ast(le.getTokens(), root);
+            // root->print();
             sa.parse(root);
             le.delete_map();
             sa.delete_tree(root);

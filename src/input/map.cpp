@@ -67,9 +67,16 @@ Maps Maps::_submap(int start, int fin)
     mapit_t _end = end();
     mapit_t _beg = begin();
 
-    if (start < 0 || fin < 0 )
+    if (start < 0)
         exit(EXIT_FAILURE);
     while (i--) _beg++;
+    if (fin == -1)
+    {
+        retmap._len++;
+        retmap._k.push_back("NUMBER");
+        retmap._v.push_back("0");
+        return (retmap);
+    }
     if (start > fin) exit(EXIT_FAILURE);
     for (int j = start; j <= fin; j++)
     {
