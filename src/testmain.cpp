@@ -46,15 +46,6 @@ bool isalpha(char c)
     return (false);
 }
 
-bool isnumber(string s)
-{
-    regex rn("[0-9]+");
-
-    if (regex_match(s, rn))
-        return (true);
-    return (false);
-}
-
 class ErrorException : public exception {
     using exception::what;
     public:
@@ -159,14 +150,20 @@ bool isfunction(string s)
     return (regex_match(s, rf));
 }
 
+bool isnumber(string s)
+{
+    regex rn("[0-9]+\\.[0-9]+|[0-9]+");
+    return (regex_match(s, rn));
+}
+
 int main(int ac, char *av[])
 {
     try
     {
-        if (isfunction("fname(x)"))
-            cout << "yep is function" << endl;
+        if (isnumber("134.4343"))
+            cout << "yep is number" << endl;
         else
-            cout << "nope" << endl;
+            cout << "nope not number" << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

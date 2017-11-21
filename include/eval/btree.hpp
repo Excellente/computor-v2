@@ -36,6 +36,7 @@ class BTree{
         int _value;
         Maps _oprnd1;
         Maps _oprnd2;
+        float _value1;
 };
 
 #endif

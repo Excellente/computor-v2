@@ -46,34 +46,19 @@ bool isop(string s);
 bool isdigit(char c);
 bool isalpha(char c);
 bool isname(string s);
+bool isfloat(string s);
 bool isnumber(string s);
-string tolower(string s);
+bool isinteger(string s);
 bool isfunction(string s);
 bool iswhitespace(char c);
-string _substr(string l, int s, int e);
 
-// template <class T>
 void print(vector<string> s);
+
+string tolower(string s);
+string _substr(string l, int s, int e);
+vector<string> strsplit(string del, string _exp);
 
 typedef vector<string>::iterator mapit_t;
 
-static vector<string> strsplit(string del, string _exp)
-{
-    int len;
-    size_t pos;
-    vector<int> delpos;
-    vector<string> terms;
-
-    len = 0;
-    for (int i = 0; i != string::npos;)
-    {
-        delpos.push_back((i = _exp.find(del, i + 1)));
-        len++;
-    }
-    terms.push_back(_exp.substr(0, delpos[0]));
-    for (int i = 1; i < len; i++)
-        terms.push_back(_exp.substr(delpos[i - 1] + 1, (delpos[i] - delpos[i - 1]) - 1));
-    return (terms);
-}
 
 #endif

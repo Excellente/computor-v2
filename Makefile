@@ -4,14 +4,13 @@ EXE		= computorv2
 INC 	= ./include/
 SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp	\
 		  input/lexer.cpp input/map.cpp input/iostream.cpp eval/btree.cpp 	\
+		  eval/var.cpp
 
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
 LIBDIR	= $(SRCDIR)lib/
 LIBOBJ	= ./obj/
-LIBSRCS	= isalpha.cpp iswhitespace.cpp tolower.cpp isdigit.cpp isnumber.cpp	\
-		  isname.cpp substr.cpp print.cpp isop.cpp isfunction.cpp
-LIBSRC	= $(addprefix $(LIBDIR), $(LIBSRCS))
+LIBSRC	= $(wildcard $(LIBDIR)*.cpp)
 LIB		= libstr.a
 
 all: $(LIB)

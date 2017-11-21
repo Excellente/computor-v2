@@ -2,9 +2,6 @@
 
 bool isnumber(string s)
 {
-    regex rn("[0-9]+");
-
-    if (regex_match(s, rn))
-        return (true);
-    return (false);
+    regex rn("[0-9]+\\.[0-9]+|[0-9]+");
+    return (regex_match(s, rn));
 }

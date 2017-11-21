@@ -36,6 +36,7 @@ class SyntaxAnalyzer{
         BTree *_bt;
         map<string, BTree *> _funct;
         map<string, string> _vars_int;
+        map<string, string> _vars_float;
 };
 
 #endif

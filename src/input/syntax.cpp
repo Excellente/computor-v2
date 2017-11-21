@@ -32,6 +32,58 @@ bool SyntaxAnalyzer::isAtomic(Maps m)
     return (false);
 }
 
+void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
+{
+    int i;
+    bool found;
+    string str;
+    string tmp = "";
+    InvalidSyntaxException ise;
+    string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
+
+    this->_tkns = _tk;
+    for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++)
+        ;
+    if (found)
+    {
+        bt = new BTree(ops[i]);
+        bt->set_operands(_tkns);
+        build_ast(bt->getOperand1(), bt->_left);
+        build_ast(bt->getOperand2(), bt->_right);
+
+    }
+    else
+    {
+        if (_tkns.length() == 1)
+            bt = new BTree(_tkns[0]);
+        else
+            {
+                while ((str = getNextToken()) != _EOF_)
+                    tmp = tmp + str;
+                if (isfunction(tmp) || isnumber(tmp))
+                    bt = new BTree(tmp);
+                else
+                    throw ise;
+                _index = 0;
+            }
+    }
+    _tkns.delete_m();
+}
+
+void SyntaxAnalyzer::parse(BTree *&bt)
+{
+    if (isop(bt->getName()))
+    {
+        if (bt->getName() == "OP_EQU")
+            op_equal(bt);
+    }
+    else if (isname(bt->getName()))
+    {
+        if (bt->_left == NULL && bt->_right == NULL)
+            value_of(bt->getName());
+    }
+}
+
 bool SyntaxAnalyzer::search_map(string s)
 {
     map<string, string>::const_iterator _e = _vars_int.end();
@@ -51,18 +103,38 @@ void SyntaxAnalyzer::value_of(string s)
         cout << 0 << endl;
 }
 
+void SyntaxAnalyzer::op_equal(BTree *&bt)
+{
+    string _lft = bt->_left->getName();
+    string _rht = bt->_right->getName();
+
+    if (isname(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
+        var_declaration(bt);
+    else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
+        function_declaration(bt);
+    else if ((isname(_lft) || isnumber(_lft) || isop(_lft)) && _rht == "?")
+        cout << eval_exp(bt->_left) << endl;
+    // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
+}
+
 void SyntaxAnalyzer::var_declaration(BTree *&bt)
 {
-    if (isnumber(bt->_right->getName()))
-            _vars_int[bt->_left->getName()] = bt->_right->getName();
-    else if (isname(bt->_right->getName()))
+    string val = bt->_right->getName();
+    if (isnumber(val))
     {
-        if (search_map(bt->_right->getName()))
+        if (isinteger(val))
+            _vars_int[bt->_left->getName()] = bt->_right->getName();
+        else if (isfloat(val))
+            _vars_float[bt->_left->getName()] = bt->_right->getName();
+    }
+    else if (isname(val))
+    {
+        if (search_map(val))
             _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
         else
             cout << bt->_right->getName() << ": has not been declared" << endl;
     }
-    else if (isop(bt->_right->getName()))
+    else if (isop(val))
         _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
 }
 
@@ -142,18 +214,6 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
     return (bt->getValue());
 }
 
-void SyntaxAnalyzer::op_equal(BTree *&bt)
-{
-    // Q_MARK
-    if (isname(bt->_left->getName()) && (isnumber(bt->_right->getName()) ||
-        isname(bt->getName()) || isop(bt->getName())))
-        var_declaration(bt);
-    else if (isfunction(bt->_left->getName()) && (isnumber(bt->_right->getName()) ||
-        isname(bt->getName()) || isop(bt->getName())))
-        function_declaration(bt);
-    // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
-}
-
 void SyntaxAnalyzer::delete_tree(BTree *&bt)
 {
     if (bt->_left != NULL)
@@ -162,56 +222,4 @@ void SyntaxAnalyzer::delete_tree(BTree *&bt)
         delete_tree(bt->_right);
     delete bt;
     bt = NULL;
-}
-
-void SyntaxAnalyzer::parse(BTree *&bt)
-{
-    if (isop(bt->getName()))
-    {
-        if (bt->getName() == "OP_EQU")
-            op_equal(bt);
-    }
-    else if (isname(bt->getName()))
-    {
-        if (bt->_left == NULL && bt->_right == NULL)
-            value_of(bt->getName());
-    }
-}
-
-void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
-{
-    int i;
-    bool found;
-    string str;
-    string tmp = "";
-    InvalidSyntaxException ise;
-    string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
-
-    this->_tkns = _tk;
-    for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++)
-        ;
-    if (found)
-    {
-        bt = new BTree(ops[i]);
-        bt->set_operands(_tkns);
-        build_ast(bt->getOperand1(), bt->_left);
-        build_ast(bt->getOperand2(), bt->_right);
-
-    }
-    else
-    {
-        if (_tkns.length() == 1)
-            bt = new BTree(_tkns[0]);
-        else
-            {
-                while ((str = getNextToken()) != _EOF_)
-                    tmp = tmp + str;
-                if (isfunction(tmp))
-                    bt = new BTree(tmp);
-                else
-                    throw ise;
-                _index = 0;
-            }
-    }
-    _tkns.delete_m();
 }

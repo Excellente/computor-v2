@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-static vector<string> strsplit(string del, string _exp)
+vector<string> strsplit(string del, string _exp)
 {
     int len;
     size_t pos;

@@ -2,7 +2,11 @@ valid variable instructions
     a = 2 -> assigns 2 to a :: DONE
     a -> returns the value stored in a :: DONE
     a = expression :: DONE
-    a + 2 = ? -> returns the value of the expression
+    a + 2 = ? -> returns value of the exp ::DONE
+
+to be handled:
+    -> bracets in expressions
+    -> leading sign
 
 $> a = 2
 $> b = 4
