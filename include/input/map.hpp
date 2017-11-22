@@ -22,6 +22,7 @@ class Maps{
 
         int length() const;
         Maps _submap(int e);
+        string getNextToken();
         Maps _submap(int s, int e);
         bool search(string const s);
         int index_of(string const s);
@@ -37,6 +38,9 @@ class Maps{
 
     private:
         int _len;
+        int _index;
+        mapit_t _bgn;
+        mapit_t _end;
         vector<string> _k;
         vector<string> _v;
 };

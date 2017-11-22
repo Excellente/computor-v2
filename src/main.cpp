@@ -1,6 +1,7 @@
 #include "eval/btree.hpp"
 #include "input/lexer.hpp"
 #include "input/syntax.hpp"
+#include "eval/shunting.hpp"
 #include "input/iostream.hpp"
 
 int main(int argc, char *argv[])
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
     char *line;
     BTree *root;
     IOStream ios;
+    Shunting sy;
     Lexer le = Lexer();
     SyntaxAnalyzer sa = SyntaxAnalyzer();
 
@@ -20,11 +22,12 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            sa.build_ast(le.getTokens(), root);
+            sy.shuntingYard(le.getTokens());
+            // sa.build_ast(le.getTokens(), root);
             // root->print();
-            sa.parse(root);
-            le.delete_map();
-            sa.delete_tree(root);
+            // sa.parse(root);
+            // le.delete_map();
+            // sa.delete_tree(root);
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;

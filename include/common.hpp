@@ -34,6 +34,7 @@
 
 #include <map>
 #include <regex>
+#include <stack>
 #include <vector>
 #include <string>
 #include <math.h>

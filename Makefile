@@ -4,7 +4,7 @@ EXE		= computorv2
 INC 	= ./include/
 SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp	\
 		  input/lexer.cpp input/map.cpp input/iostream.cpp eval/btree.cpp 	\
-		  eval/var.cpp
+		  eval/var.cpp eval/shunting.cpp eval/stoken.cpp
 
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))

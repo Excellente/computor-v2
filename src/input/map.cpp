@@ -2,6 +2,7 @@
 
 Maps::Maps(){
     _len = 0;
+    _index = 0;
 }
 
 Maps::~Maps(){}
@@ -20,6 +21,20 @@ mapit_t Maps::begin(){
 
 int Maps::length() const{
     return (_len);
+}
+
+string Maps::getNextToken()
+{
+    string ret;
+    int i = _index;
+    _end = end();
+    _bgn = begin();
+
+    while (i--) _bgn++;
+    if (_bgn == _end) return (_EOF_);
+    ret = value_at(_index);
+    _index++;
+    return (ret);
 }
 
 int Maps::index_of(string const s)
