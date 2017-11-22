@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
             // sa.build_ast(le.getTokens(), root);
             // root->print();
             // sa.parse(root);
-            // le.delete_map();
+            le.delete_map();
             // sa.delete_tree(root);
         }
         catch(IndexOutOfBounds &e){
