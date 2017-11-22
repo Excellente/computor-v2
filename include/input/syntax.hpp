@@ -5,6 +5,9 @@
 #include "common.hpp"
 #include "eval/btree.hpp"
 #include "input/lexer.hpp"
+#include "eval/stoken.hpp"
+
+void print_stack(stack<SToken> st);
 
 class SyntaxAnalyzer{
     public:
@@ -27,6 +30,7 @@ class SyntaxAnalyzer{
         void var_declaration(BTree *&b);
         void function_declaration(BTree *&bt);
         void build_ast(Maps _t, BTree *&b) throw (InvalidSyntaxException);
+        void build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException);
 
     private:
         int _index;

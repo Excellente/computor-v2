@@ -7,9 +7,10 @@
 int main(int argc, char *argv[])
 {
     char *line;
-    BTree *root;
     IOStream ios;
     Shunting sy;
+    stack<SToken> tmp;
+    BTree *root = NULL;
     Lexer le = Lexer();
     SyntaxAnalyzer sa = SyntaxAnalyzer();
 
@@ -22,12 +23,13 @@ int main(int argc, char *argv[])
             if (!strcmp(line, "quit") || !strcmp(line, "exit"))
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
-            sy.shuntingYard(le.getTokens());
+            tmp = sy.shuntingYard(le.getTokens());
+            sa.build_ast(tmp, root);
             // sa.build_ast(le.getTokens(), root);
             // root->print();
-            // sa.parse(root);
+            sa.parse(root);
             le.delete_map();
-            // sa.delete_tree(root);
+            sa.delete_tree(root);
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;

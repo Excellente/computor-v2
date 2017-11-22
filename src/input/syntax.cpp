@@ -32,6 +32,46 @@ bool SyntaxAnalyzer::isAtomic(Maps m)
     return (false);
 }
 
+void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException)
+{
+    BTree *tb;
+    stack<SToken> tmp;
+
+    // print_stack(s);    
+    // if (s.empty()) return;
+    while (!isop(s.top().getValue()) && !s.empty())
+    {
+        tmp.push(s.top());
+        s.pop();
+    }
+    if (b == NULL)
+    {
+        b = new BTree(s.top().getValue());
+        s.pop();
+        b->_right = new BTree(tmp.top().getValue());
+        tmp.pop();
+        b->_left = new BTree(tmp.top().getValue());
+        tmp.pop();
+    } else {
+        tb = new BTree(s.top().getValue());
+        s.pop();
+        tb->_right = b;
+        tb->_left = new BTree(tmp.top().getValue());
+        tmp.pop();        
+        b = tb;
+    }
+    while (!tmp.empty())
+    {
+        s.push(tmp.top());
+        tmp.pop();
+    }
+    // b->print();
+    // print_stack(s);
+    // print_stack(tmp);
+    if (!s.empty())
+        build_ast(s, b);
+}
+
 void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
 {
     int i;
@@ -73,7 +113,7 @@ void SyntaxAnalyzer::parse(BTree *&bt)
 {
     if (isop(bt->getName()))
     {
-        if (bt->getName() == "OP_EQU")
+        if (bt->getName() == "=")
             op_equal(bt);
     }
     else if (isname(bt->getName()))

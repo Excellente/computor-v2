@@ -62,11 +62,11 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         rstack.push(lstack.top());
         lstack.pop();
     }
-    while (!rstack.empty())
-    {
-        cout << rstack.top().getValue() << " ";
-        rstack.pop();
-    }
-    cout << endl;
+    // while (!rstack.empty())
+    // {
+    //     cout << rstack.top().getValue() << " ";
+    //     rstack.pop();
+    // }
+    // cout << endl;
     return (rstack);
 }

@@ -7,6 +7,7 @@
 
 class Shunting{
     public:
+        void print(stack<SToken> st);
         stack<SToken> shuntingYard(Maps t);
 };
 

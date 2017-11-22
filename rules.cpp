@@ -5,23 +5,20 @@ valid variable instructions
     a + 2 = ? -> returns value of the exp ::DONE
 
 to be handled:
+    -> -1 + 2
     -> different data types
     -> brackets in expressions
     -> scan tree for errors : semantic analyzer
 
 Tested cases:
-a = (1)
-a = - (1)
+// a = (1)
+// a = - (1)
 
 Working test cases:
-$> a = 2
-$> b = 4
-$> c = a * b + 5 - 1
-$> c
-$> d = c * a / 6 - 3
-$> b = a + b - 1
-$> a = -1
-
-shunting yard
-12 + 4 * 3 / 5 - 2: input
-12 4 3 * 5 / + 2 -
+// $> a = 2
+// $> b = 4
+// $> c = a * b + 5 - 1
+// $> c
+// $> d = c * a / 6 - 3
+// $> b = a + b - 1
+// $> a = -1

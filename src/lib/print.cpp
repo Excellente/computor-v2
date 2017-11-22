@@ -1,4 +1,5 @@
 #include "common.hpp"
+#include "eval/stoken.hpp"
 
 void print(vector<string> s)
 {
@@ -9,6 +10,16 @@ void print(vector<string> s)
     {
         cout << *start << " ";
         start++;
+    }
+    cout << endl;
+}
+
+void print_stack(stack<SToken> st)
+{
+    while (!st.empty())
+    {
+        cout << st.top().getValue() << " ";
+        st.pop();
     }
     cout << endl;
 }
