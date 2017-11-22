@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
             le.tokenize(line);
             tmp = sy.shuntingYard(le.getTokens());
             sa.build_ast(tmp, root);
-            // sa.build_ast(le.getTokens(), root);
-            // root->print();
             sa.parse(root);
+            // root->print();
+            // sa.build_ast(le.getTokens(), root);
             le.delete_map();
             sa.delete_tree(root);
         }

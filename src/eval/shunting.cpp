@@ -47,7 +47,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
                 lstack.push(st);
             }
             opstack.pop();
-        } else {
+        } else if (isname(tmp) || isnumber(tmp) || tmp == "?") {
             st = SToken(false, tmp);
             lstack.push(st);
         }

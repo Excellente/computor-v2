@@ -16,10 +16,21 @@ void print(vector<string> s)
 
 void print_stack(stack<SToken> st)
 {
+    vector<SToken> tmp;
+    vector<SToken>::iterator bg;
+    vector<SToken>::iterator en;
+
     while (!st.empty())
     {
-        cout << st.top().getValue() << " ";
+        tmp.push_front(st.top());
         st.pop();
     }
+    en = tmp.end();
+    bg = tmp.begin();
+    for (; bg != en; bg++)
+        cout << bg->getValue() << " ";
+    bg = tmp.begin();
+    for (; bg != en; bg++)
+        st.push(*bg);
     cout << endl;
 }

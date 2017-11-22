@@ -97,10 +97,15 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
         tmp.pop();
     }
     // b->print();
-    // print_stack(s);
+    // if (i++ < 10)
+    // {
+        // print_stack(s);
+    // }
+    // else
+    //     return;
     // print_stack(tmp);
-    // if (!s.empty())
-    //     build_ast(s, b);
+    if (!s.empty())
+        build_ast(s, b);
 }
 
 void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
@@ -182,8 +187,8 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
         var_declaration(bt);
     else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
         function_declaration(bt);
-    else if ((isname(_lft) || isnumber(_lft) || isop(_lft)) && _rht == "?")
-        cout << eval_exp(bt->_left) << endl;
+    else if ((isname(_rht) || isnumber(_rht) || isop(_rht)) && _lft == "?")
+        cout << eval_exp(bt->_right) << endl;
     // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
 }
 
@@ -237,8 +242,6 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
     {
         if (search_map(bt->getName()))
             bt->setValue(stoi(_vars_int[bt->getName()]));
-        else
-            return;
     }
     else if (isnumber(bt->getName()))
         bt->setValue(stoi(bt->getName()));

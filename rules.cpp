@@ -14,6 +14,7 @@ Working test cases:
 $> a
 $> a = 2
 $> a = (1)
+$> a = a + 2
 
 Tested cases:
 // a = - (1)

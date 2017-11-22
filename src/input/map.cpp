@@ -162,6 +162,7 @@ void Maps::delete_m()
     const_i_t begin_key_i = _k.begin();
 
     _len = 0;
+    _index = 0;
     _v.erase(bval_i, eval_i);
     _k.erase(begin_key_i, end_key_i);
 }
