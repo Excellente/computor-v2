@@ -22,7 +22,7 @@ void print_stack(stack<SToken> st)
 
     while (!st.empty())
     {
-        tmp.push_front(st.top());
+        tmp.push_back(st.top());
         st.pop();
     }
     en = tmp.end();
