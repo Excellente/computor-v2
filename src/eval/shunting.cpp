@@ -31,8 +31,8 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
                 {
                     lstack.push(opstack.top());
                     opstack.pop();
-                if (!opstack.empty())
-                    str = opstack.top().getValue();
+                    if (!opstack.empty())
+                        str = opstack.top().getValue();
                 }
             }
             opstack.push(st);
