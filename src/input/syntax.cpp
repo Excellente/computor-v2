@@ -99,8 +99,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     // b->print();
     // print_stack(s);
     // print_stack(tmp);
-    if (!s.empty())
-        build_ast(s, b);
+    // if (!s.empty())
+    //     build_ast(s, b);
 }
 
 void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
@@ -255,22 +255,22 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
         eval_exp(bt->_right);
     if (isop(bt->getName()))
     {
-        if (bt->getName() == "OP_ADD")
+        if (bt->getName() == "+")
         {
             res = *bt->_left + *bt->_right;
             bt->setValue(res);
         }
-        else if (bt->getName() == "OP_SUB")
+        else if (bt->getName() == "-")
         {
             res = *bt->_left - *bt->_right;
             bt->setValue(res);
         }
-        else if (bt->getName() == "OP_MUL")
+        else if (bt->getName() == "*")
         {
             res = *bt->_left * *bt->_right;
             bt->setValue(res);
         }
-        else if (bt->getName() == "OP_DIV")
+        else if (bt->getName() == "/")
         {
             if (bt->_right->getValue() != 0)
                 res = *bt->_left / *bt->_right;

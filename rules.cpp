@@ -10,12 +10,13 @@ to be handled:
     -> brackets in expressions
     -> scan tree for errors : semantic analyzer
 
-Tested cases:
+Working test cases:
+$> a
 $> a = 2
 $> a = (1)
-// a = - (1)
 
-Working test cases:
+Tested cases:
+// a = - (1)
 // $> b = 4
 // $> c = a * b + 5 - 1
 // $> c
