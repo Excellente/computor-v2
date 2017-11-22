@@ -37,28 +37,59 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     BTree *tb;
     stack<SToken> tmp;
 
-    // print_stack(s);    
-    // if (s.empty()) return;
-    while (!isop(s.top().getValue()) && !s.empty())
+    // print_stack(s);
+    while (!s.empty())
     {
+        if (isop(s.top().getValue()))
+            break;
         tmp.push(s.top());
         s.pop();
     }
     if (b == NULL)
     {
-        b = new BTree(s.top().getValue());
-        s.pop();
-        b->_right = new BTree(tmp.top().getValue());
-        tmp.pop();
-        b->_left = new BTree(tmp.top().getValue());
-        tmp.pop();
+        if (!s.empty())
+        {
+            b = new BTree(s.top().getValue());
+            s.pop();
+            if (!tmp.empty())
+            {
+                b->_right = new BTree(tmp.top().getValue());
+                tmp.pop();
+                if (!tmp.empty())
+                {
+                    b->_left = new BTree(tmp.top().getValue());
+                    tmp.pop();
+                }
+            }
+        }
+        else if (!tmp.empty())
+        {
+            b = new BTree(tmp.top().getValue());
+            tmp.pop();
+            if (!tmp.empty())
+            {
+                b->_right = new BTree(tmp.top().getValue());
+                tmp.pop();
+                if (!tmp.empty())
+                {
+                    b->_left = new BTree(tmp.top().getValue());
+                    tmp.pop();
+                }
+            }
+        }
     } else {
-        tb = new BTree(s.top().getValue());
-        s.pop();
-        tb->_right = b;
-        tb->_left = new BTree(tmp.top().getValue());
-        tmp.pop();        
-        b = tb;
+        if (!s.empty())
+        {
+            tb = new BTree(s.top().getValue());
+            s.pop();
+            tb->_right = b;
+            b = tb;
+            if (!tmp.empty())
+            {
+                tb->_left = new BTree(tmp.top().getValue());
+                tmp.pop();        
+            }
+        }
     }
     while (!tmp.empty())
     {

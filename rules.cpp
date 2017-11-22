@@ -11,11 +11,11 @@ to be handled:
     -> scan tree for errors : semantic analyzer
 
 Tested cases:
-// a = (1)
+$> a = 2
+$> a = (1)
 // a = - (1)
 
 Working test cases:
-// $> a = 2
 // $> b = 4
 // $> c = a * b + 5 - 1
 // $> c
