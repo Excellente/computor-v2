@@ -11,11 +11,13 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     stack<SToken> opstack;
     map<string, int> o_pre;
 
-    o_pre["+"] = 0;
-    o_pre["-"] = 0;
-    o_pre["*"] = 1;
-    o_pre["/"] = 2;
-    o_pre["^"] = 4;
+    o_pre["="] = 0;
+    o_pre["+"] = 1;
+    o_pre["-"] = 1;
+    o_pre["*"] = 2;
+    o_pre["/"] = 3;
+    o_pre["%"] = 4;
+    o_pre["^"] = 5;
     while (1)
     {
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
