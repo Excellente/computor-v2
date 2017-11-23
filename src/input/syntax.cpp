@@ -37,7 +37,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     BTree *tb;
     stack<SToken> tmp;
 
-    // print_stack(s);
+    print_stack(s);
+    return;
     while (!s.empty())
     {
         if (isop(s.top().getValue()))
@@ -104,8 +105,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     // else
     //     return;
     // print_stack(tmp);
-    if (!s.empty())
-        build_ast(s, b);
+    // if (!s.empty())
+    //     build_ast(s, b);
 }
 
 void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
@@ -260,11 +261,14 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
     {
         if (bt->getName() == "+")
         {
+            cout << bt->_left->getValue() << " + " << bt->_right->getValue() << endl;
             res = *bt->_left + *bt->_right;
             bt->setValue(res);
         }
         else if (bt->getName() == "-")
         {
+            
+            cout << bt->_left->getValue() << " - " << bt->_right->getValue() << endl;
             res = *bt->_left - *bt->_right;
             bt->setValue(res);
         }

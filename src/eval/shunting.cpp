@@ -4,6 +4,9 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
 {
     SToken st;
     string tmp;
+    int sign = 1;
+    string psign;
+    int inBrace = 0;
     string str = "";
     stack<SToken> t_stck;
     stack<SToken> lstack;
@@ -23,6 +26,19 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
         if (isop(tmp) || tmp == "(")
         {
+            // new code
+            if (tmp == "(") inBrace += 1;
+            if (tmp == ")") inBrace -= 1;
+            if (tmp == "-")
+            {
+                tmp = "+";
+                sign = -1;
+                if (inBrace && sign == -1)
+                    sign = 1;
+            }
+            else if (tmp == "+" && inBrace == 0) sign = 1;
+            // if (inBrace && sign == -1 && )
+            // new code
             st = SToken(true, tmp);
             if (isop(tmp))
             {
@@ -49,6 +65,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
             opstack.pop();
         } else if (isname(tmp) || isnumber(tmp) || tmp == "?") {
             st = SToken(false, tmp);
+            st.setSign(sign);
             lstack.push(st);
         }
     }

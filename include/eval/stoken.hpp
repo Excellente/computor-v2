@@ -4,6 +4,7 @@
 #include "common.hpp"
 
 class SToken{
+    int _sign;
     bool _isOp;
     string _value;
 
@@ -11,8 +12,11 @@ class SToken{
         ~SToken();
         SToken(bool b = false, string v = "");
         
+        int getSign() const;
         string getValue() const;
         SToken &operator=(const SToken &r);
+
+        void setSign(int s);
 };
 
 #endif

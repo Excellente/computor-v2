@@ -23,6 +23,17 @@ int Maps::length() const{
     return (_len);
 }
 
+string Maps::look_ahead()
+{
+    int i = _index;
+    _end = end();
+    _bgn = begin();
+
+    while (i--) _bgn++;
+    if ((_bgn + 1) == _end) return (_EOF_);
+    return (value_at(_index + 1));
+}
+
 string Maps::getNextToken()
 {
     string ret;

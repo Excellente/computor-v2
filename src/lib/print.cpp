@@ -28,7 +28,13 @@ void print_stack(stack<SToken> st)
     en = tmp.end();
     bg = tmp.begin();
     for (; bg != en; bg++)
+    { 
+        if (bg->getSign() == -1)
+            cout << "- ";
+        else if (bg->getSign() == 1)
+            cout << "+ ";
         cout << bg->getValue() << " ";
+    }
     bg = tmp.begin();
     for (; bg != en; bg++)
         st.push(*bg);

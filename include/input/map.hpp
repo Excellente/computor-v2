@@ -21,6 +21,7 @@ class Maps{
         mapit_t begin();
 
         int length() const;
+        string look_ahead();
         Maps _submap(int e);
         string getNextToken();
         Maps _submap(int s, int e);
