@@ -32,10 +32,15 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
             if (tmp == "-")
             {
                 tmp = "+";
+                if (inBrace > 0)
+                {
+                    if (sign == -1)
+                        sign = 1;
+                    else
+                        sign = -1;
+                }
                 if (inBrace == 0) sign = -1;
-                if (inBrace > 0) sign = -1;
-                if (inBrace > 0 && sign == -1) sign = 1;
-            }               
+            }
             else if (tmp == "+")
             {
                 if (!inBrace && sign == -1)
