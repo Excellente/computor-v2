@@ -12,8 +12,9 @@ class BTree{
 
         BTree();
         ~BTree();
-        BTree(string op = "");
+        BTree(string op = "", int sign = 1);
 
+        int getSign() const;
         int getValue() const;
         string getName() const;
         BTree *getLeft() const;
@@ -32,8 +33,9 @@ class BTree{
         BTree &operator=(BTree const &r);
     
     private:
-        string _name;
+        int _sign;
         int _value;
+        string _name;
         Maps _oprnd1;
         Maps _oprnd2;
         float _value1;

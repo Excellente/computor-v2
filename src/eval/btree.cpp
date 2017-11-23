@@ -9,15 +9,15 @@ BTree::BTree()
     _right = NULL;
 }
 
-BTree::BTree(string op) : _name(op)
+BTree::BTree(string op, int sign) : _name(op), _sign(sign)
 {
     _value = 0;
     _left = NULL;
     _right = NULL;
 }
 
-void BTree::setValue(float _v){
-    _value = _v;
+int BTree::getSign() const{
+    return (_sign);
 }
 
 int BTree::getValue() const{
@@ -44,6 +44,10 @@ Maps BTree::getOperand2() const{
     return (_oprnd2);
 }
 
+void BTree::setValue(float _v){
+    _value = _v;
+}
+
 void BTree::visit(){
     cout << _name << endl;
 }
@@ -66,6 +70,7 @@ int BTree::operator/(BTree const &r){
 
 BTree &BTree::operator=(BTree const &r)
 {
+    _sign = r._sign;
     _name = r._name;
     _left = r._left;
     _value = r._value;

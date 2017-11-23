@@ -26,19 +26,21 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
         if (isop(tmp) || tmp == "(")
         {
-            // new code
+            // new code signing numbers
             if (tmp == "(") inBrace += 1;
             if (tmp == ")") inBrace -= 1;
             if (tmp == "-")
             {
                 tmp = "+";
-                sign = -1;
-                if (inBrace && sign == -1)
+                if (inBrace == 0) sign = -1;
+                if (inBrace > 0 && sign == -1) sign = 1;
+            }               
+            else if (tmp == "+")
+            {
+                if (!inBrace && sign == -1)
                     sign = 1;
             }
-            else if (tmp == "+" && inBrace == 0) sign = 1;
-            // if (inBrace && sign == -1 && )
-            // new code
+            // new code signing numbers
             st = SToken(true, tmp);
             if (isop(tmp))
             {

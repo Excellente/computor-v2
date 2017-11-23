@@ -37,8 +37,7 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     BTree *tb;
     stack<SToken> tmp;
 
-    print_stack(s);
-    return;
+    // print_stack(s);
     while (!s.empty())
     {
         if (isop(s.top().getValue()))
@@ -50,30 +49,30 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     {
         if (!s.empty())
         {
-            b = new BTree(s.top().getValue());
+            b = new BTree(s.top().getValue(), s.top().getSign());
             s.pop();
             if (!tmp.empty())
             {
-                b->_right = new BTree(tmp.top().getValue());
+                b->_right = new BTree(tmp.top().getValue(), tmp.top().getSign());
                 tmp.pop();
                 if (!tmp.empty())
                 {
-                    b->_left = new BTree(tmp.top().getValue());
+                    b->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
                     tmp.pop();
                 }
             }
         }
         else if (!tmp.empty())
         {
-            b = new BTree(tmp.top().getValue());
+            b = new BTree(tmp.top().getValue(), tmp.top().getSign());
             tmp.pop();
             if (!tmp.empty())
             {
-                b->_right = new BTree(tmp.top().getValue());
+                b->_right = new BTree(tmp.top().getValue(), tmp.top().getSign());
                 tmp.pop();
                 if (!tmp.empty())
                 {
-                    b->_left = new BTree(tmp.top().getValue());
+                    b->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
                     tmp.pop();
                 }
             }
@@ -81,13 +80,13 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     } else {
         if (!s.empty())
         {
-            tb = new BTree(s.top().getValue());
+            tb = new BTree(s.top().getValue(), s.top().getSign());
             s.pop();
             tb->_right = b;
             b = tb;
             if (!tmp.empty())
             {
-                tb->_left = new BTree(tmp.top().getValue());
+                tb->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
                 tmp.pop();        
             }
         }
@@ -105,8 +104,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     // else
     //     return;
     // print_stack(tmp);
-    // if (!s.empty())
-    //     build_ast(s, b);
+    if (!s.empty())
+        build_ast(s, b);
 }
 
 void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
@@ -245,7 +244,7 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
             bt->setValue(stoi(_vars_int[bt->getName()]));
     }
     else if (isnumber(bt->getName()))
-        bt->setValue(stoi(bt->getName()));
+        bt->setValue(stoi(bt->getName()) * bt->getSign());
 }
 
 int SyntaxAnalyzer::eval_exp(BTree *&bt)
@@ -274,6 +273,7 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
         }
         else if (bt->getName() == "*")
         {
+            cout << bt->_left->getValue() << " * " << bt->_right->getValue() << endl;
             res = *bt->_left * *bt->_right;
             bt->setValue(res);
         }
