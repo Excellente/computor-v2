@@ -8,7 +8,6 @@ to be handled:
     -> -1 + 2
     -> a + = ?
     -> different data types
-    -> brackets in expressions
     -> scan tree for errors : semantic analyzer
 
 Working test cases:
@@ -24,9 +23,8 @@ $> a + a - (3 + 4 + (1 - a))
 $> a * b = ?
 $> a * b - (3 + (4 - 2)) = ?
 $> a = b / (2 -  1)
+$> d = c * a / 6 - 3
 
 Test cases:
 // a = - (1)
-// $> d = c * a / 6 - 3
-// $> b = a + b - 1
-// $> a = -1
+// a = -1

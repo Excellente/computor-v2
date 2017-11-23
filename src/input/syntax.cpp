@@ -96,14 +96,6 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
         s.push(tmp.top());
         tmp.pop();
     }
-    // b->print();
-    // if (i++ < 10)
-    // {
-        // print_stack(s);
-    // }
-    // else
-    //     return;
-    // print_stack(tmp);
     if (!s.empty())
         build_ast(s, b);
 }
@@ -183,8 +175,10 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
     string _lft = bt->_left->getName();
     string _rht = bt->_right->getName();
 
+    // name = name | number | functionCall | exp
     if (isname(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
         var_declaration(bt);
+    // functionDeclare = name | number | functionCall | exp    
     else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
         function_declaration(bt);
     else if ((isname(_rht) || isnumber(_rht) || isop(_rht)) && _lft == "?")
@@ -222,8 +216,7 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
 
     if (isnumber(bt->_right->getName()))
     {
-        _bt = bt->_right;
-        _funct[fname] = bt->_right;
+        _funct[fname] = bt->_right->getName();
     }
     // else if (isname(bt->_right->getName()))
     // {
@@ -279,6 +272,7 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
         }
         else if (bt->getName() == "/")
         {
+            cout << bt->_left->getValue() << " / " << bt->_right->getValue() << endl;
             if (bt->_right->getValue() != 0)
                 res = *bt->_left / *bt->_right;
             else

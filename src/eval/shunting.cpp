@@ -1,14 +1,35 @@
 #include "eval/shunting.hpp"
 
+void Shunting::_token_sign(string &tmp, int &inBrace, int &sign)
+{
+    if (tmp == "(") inBrace += 1;
+    if (tmp == ")") inBrace -= 1;
+    if (tmp == "-")
+    {
+        tmp = "+";
+        if (inBrace > 0)
+        {
+            if (sign == -1)
+                sign = 1;
+            else
+                sign = -1;
+        }
+        if (inBrace == 0) sign = -1;
+    }
+    else if (tmp == "+")
+    {
+        if (!inBrace && sign == -1)
+            sign = 1;
+    }
+}
+
 stack<SToken> Shunting::shuntingYard(Maps _tkns)
 {
     SToken st;
     string tmp;
     int sign = 1;
-    string psign;
     int inBrace = 0;
     string str = "";
-    stack<SToken> t_stck;
     stack<SToken> lstack;
     stack<SToken> rstack;
     stack<SToken> opstack;
@@ -24,29 +45,10 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     while (1)
     {
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
+        _tkns.check_funct(tmp);
         if (isop(tmp) || tmp == "(")
         {
-            // new code signing numbers
-            if (tmp == "(") inBrace += 1;
-            if (tmp == ")") inBrace -= 1;
-            if (tmp == "-")
-            {
-                tmp = "+";
-                if (inBrace > 0)
-                {
-                    if (sign == -1)
-                        sign = 1;
-                    else
-                        sign = -1;
-                }
-                if (inBrace == 0) sign = -1;
-            }
-            else if (tmp == "+")
-            {
-                if (!inBrace && sign == -1)
-                    sign = 1;
-            }
-            // new code signing numbers
+            _token_sign(tmp, inBrace, sign);
             st = SToken(true, tmp);
             if (isop(tmp))
             {
@@ -71,7 +73,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
                 lstack.push(st);
             }
             opstack.pop();
-        } else if (isname(tmp) || isnumber(tmp) || tmp == "?") {
+        } else if (isname(tmp) || isnumber(tmp) || isfunction(tmp) || tmp == "?") {
             st = SToken(false, tmp);
             st.setSign(sign);
             lstack.push(st);
@@ -87,11 +89,5 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         rstack.push(lstack.top());
         lstack.pop();
     }
-    // while (!rstack.empty())
-    // {
-    //     cout << rstack.top().getValue() << " ";
-    //     rstack.pop();
-    // }
-    // cout << endl;
     return (rstack);
 }

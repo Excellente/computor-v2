@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
             tmp = sy.shuntingYard(le.getTokens());
             sa.build_ast(tmp, root);
             sa.parse(root);
-            // root->print();
+            root->print();
             // sa.build_ast(le.getTokens(), root);
-            le.delete_map();
-            sa.delete_tree(root);
+            // le.delete_map();
+            // sa.delete_tree(root);
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;

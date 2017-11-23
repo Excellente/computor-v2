@@ -23,7 +23,7 @@ int Maps::length() const{
     return (_len);
 }
 
-string Maps::look_ahead()
+string Maps::look_ahead(int l)
 {
     int i = _index;
     _end = end();
@@ -31,7 +31,7 @@ string Maps::look_ahead()
 
     while (i--) _bgn++;
     if ((_bgn + 1) == _end) return (_EOF_);
-    return (value_at(_index + 1));
+    return (value_at(_index + l));
 }
 
 string Maps::getNextToken()
@@ -176,6 +176,19 @@ void Maps::delete_m()
     _index = 0;
     _v.erase(bval_i, eval_i);
     _k.erase(begin_key_i, end_key_i);
+}
+
+void Maps::check_funct(string &t)
+{
+    int i;
+
+    if (isname(t) && look_ahead(0) == "(" && (isname(look_ahead(1)) ||
+        isnumber(look_ahead(1))) && look_ahead(2) == ")")
+    {
+        for (i = 0; i < 3; i++)
+            t = t + look_ahead(i);
+        _index += i;
+    }
 }
 
 void Maps::operator=(const string &s){

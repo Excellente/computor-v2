@@ -7,8 +7,10 @@
 
 class Shunting{
     public:
-        void print(stack<SToken> st);
         stack<SToken> shuntingYard(Maps t);
+        
+        void print(stack<SToken> s);
+        void _token_sign(string &t, int &i, int &s);
 };
 
 #endif

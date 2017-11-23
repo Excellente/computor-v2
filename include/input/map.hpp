@@ -21,9 +21,9 @@ class Maps{
         mapit_t begin();
 
         int length() const;
-        string look_ahead();
         Maps _submap(int e);
         string getNextToken();
+        string look_ahead(int l);
         Maps _submap(int s, int e);
         bool search(string const s);
         int index_of(string const s);
@@ -33,6 +33,7 @@ class Maps{
 
         void print();
         void delete_m();
+        void check_funct(string &tmp);
         void operator=(const char &s);
         void operator=(const string &s);
         void insert(string &k, string &v);
