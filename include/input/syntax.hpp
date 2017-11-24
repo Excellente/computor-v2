@@ -38,7 +38,7 @@ class SyntaxAnalyzer{
         mapit_t _bgn;
         mapit_t _end;
         BTree *_bt;
-        map<string, BTree *> _funct;
+        map<string, string> _funct;
         map<string, string> _vars_int;
         map<string, string> _vars_float;
 };

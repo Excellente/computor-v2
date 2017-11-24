@@ -38,6 +38,7 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     stack<SToken> tmp;
 
     // print_stack(s);
+    // return ;
     while (!s.empty())
     {
         if (isop(s.top().getValue()))
@@ -144,7 +145,7 @@ void SyntaxAnalyzer::parse(BTree *&bt)
         if (bt->getName() == "=")
             op_equal(bt);
     }
-    else if (isname(bt->getName()))
+    else if (isname(bt->getName()) || isfunction(bt->getName()))
     {
         if (bt->_left == NULL && bt->_right == NULL)
             value_of(bt->getName());
@@ -153,21 +154,47 @@ void SyntaxAnalyzer::parse(BTree *&bt)
 
 bool SyntaxAnalyzer::search_map(string s)
 {
-    map<string, string>::const_iterator _e = _vars_int.end();
-    map<string, string>::const_iterator _b = _vars_int.begin();
+    size_t lp;
+    string fname;
+    
+    map<string, string>::const_iterator _ef = _funct.end();
+    map<string, string>::const_iterator _bf = _funct.begin();
 
-    for (; _b != _e; _b++)
-        if (s == _b->first)
-            return (true);
+    map<string, string>::const_iterator _ev = _vars_int.end();
+    map<string, string>::const_iterator _bv = _vars_int.begin();
+
+    if (isfunction(s))
+    {
+        lp = s.find("(");
+        fname = s.substr(0, lp - 0);
+        for (; _bf != _ef; _bf++)
+            if (fname == _bf->first)
+                return (true);
+    
+    } else {
+        for (; _bv != _ev; _bv++)
+            if (s == _bv->first)
+                return (true);
+    }
     return (false);
 }
 
 void SyntaxAnalyzer::value_of(string s)
 {
-    if (search_map(s))
+    size_t lp;
+    string fname;
+
+    if (isfunction(s) && search_map(s))
+    {
+        lp = s.find("(");
+        fname = s.substr(0, lp - 0);
+        cout << _funct[fname] << endl;
+    }
+    else if (isname(s) && search_map(s))
         cout << _vars_int[s] << endl;
     else
-        cout << 0 << endl;
+        cout << "error: " << s << ": hasn't been declared" << endl;
+        // cout << 0 << endl;
 }
 
 void SyntaxAnalyzer::op_equal(BTree *&bt)

@@ -182,8 +182,8 @@ void Maps::check_funct(string &t)
 {
     int i;
 
-    if (isname(t) && look_ahead(0) == "(" && (isname(look_ahead(1)) ||
-        isnumber(look_ahead(1))) && look_ahead(2) == ")")
+    if (_len > 3 && isname(t) && look_ahead(0) == "(" &&
+       (isname(look_ahead(1)) || isnumber(look_ahead(1))) && look_ahead(2) == ")")
     {
         for (i = 0; i < 3; i++)
             t = t + look_ahead(i);
