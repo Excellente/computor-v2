@@ -44,14 +44,6 @@ Maps BTree::getOperand2() const{
     return (_oprnd2);
 }
 
-void BTree::setValue(float _v){
-    _value = _v;
-}
-
-void BTree::visit(){
-    cout << _name << endl;
-}
-
 int BTree::operator+(BTree const &r){
     return (_value + r.getValue());
 }
@@ -78,6 +70,23 @@ BTree &BTree::operator=(BTree const &r)
     _oprnd1 = r._oprnd1;
     _oprnd2 = r._oprnd2;
     return (*this);
+}
+
+void BTree::tostring(string s)
+{
+    if (_left != NULL)
+        tostring(s);
+    cout << _name << s;
+    if (_right != NULL)
+        tostring(s);
+}
+
+void BTree::setValue(float _v){
+    _value = _v;
+}
+
+void BTree::visit(){
+    cout << _name << endl;
 }
 
 void BTree::print()

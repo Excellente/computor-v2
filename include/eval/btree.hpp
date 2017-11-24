@@ -12,6 +12,7 @@ class BTree{
 
         BTree();
         ~BTree();
+        BTree(BTree const &);
         BTree(string op = "", int sign = 1);
 
         int getSign() const;
@@ -21,17 +22,18 @@ class BTree{
         BTree *getRight() const;
         Maps getOperand1() const;
         Maps getOperand2() const;
+        int operator+(BTree const &);
+        int operator-(BTree const &);
+        int operator*(BTree const &);
+        int operator/(BTree const &);
+        BTree &operator=(BTree const &);
 
         void visit();
         void print();
-        void setValue(float v);
-        void set_operands(Maps _t);
-        int operator+(BTree const &r);
-        int operator-(BTree const &r);
-        int operator*(BTree const &r);
-        int operator/(BTree const &r);
-        BTree &operator=(BTree const &r);
-    
+        void tostring(string);
+        void setValue(float);
+        void set_operands(Maps);
+
     private:
         int _sign;
         int _value;
