@@ -6,25 +6,6 @@ SyntaxAnalyzer::SyntaxAnalyzer(){
     _index = 0;
 }
 
-string SyntaxAnalyzer::look_ahead()
-{
-    return (_tkns.value_at(*_bgn));
-}
-
-string SyntaxAnalyzer::getNextToken()
-{
-    string ret;
-    int i = _index;
-    _end = _tkns.end();
-    _bgn = _tkns.begin();
-
-    while (i--) _bgn++;
-    if (_bgn == _end) return (_EOF_);
-    ret = _tkns.value_at(_index);
-    _index++;
-    return (ret);
-}
-
 bool SyntaxAnalyzer::isAtomic(Maps m)
 {
     if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
@@ -126,13 +107,13 @@ void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxExcepti
             bt = new BTree(_tkns[0]);
         else
             {
-                while ((str = getNextToken()) != _EOF_)
-                    tmp = tmp + str;
-                if (isfunction(tmp) || isnumber(tmp))
-                    bt = new BTree(tmp);
-                else
-                    throw ise;
-                _index = 0;
+                // while ((str = getNextToken()) != _EOF_)
+                //     tmp = tmp + str;
+                // if (isfunction(tmp) || isnumber(tmp))
+                //     bt = new BTree(tmp);
+                // else
+                //     throw ise;
+                // _index = 0;
             }
     }
     _tkns.delete_m();
@@ -147,6 +128,7 @@ void SyntaxAnalyzer::parse(BTree *&bt)
     }
     else if (isname(bt->getName()) || isfunction(bt->getName()))
     {
+        
         if (bt->_left == NULL && bt->_right == NULL)
             value_of(bt->getName());
     }
@@ -245,13 +227,13 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     {
         _funct[fname] = bt->_right->getName();
     }
-    // else if (isname(bt->_right->getName()))
-    // {
-    //     if (search_map(bt->_right->getName()))
-    //         _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
-    //     else
-    //         cout << bt->_right->getName() << ": has not been declared" << endl;
-    // }
+    else if (isname(bt->_right->getName()))
+    {
+        if (search_map(bt->_right->getName()))
+            _funct[fname] = _vars_int[bt->_right->getName()];
+        else
+            cout << bt->_right->getName() << ": has not been declared" << endl;
+    }
     // else if (isop(bt->_right->getName()))
     //     _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
 }

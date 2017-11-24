@@ -45,7 +45,8 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     while (1)
     {
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
-        _tkns.check_funct(tmp);
+        if (_tkns.look_ahead(0) == "(")
+            _tkns.check_funct(tmp);
         if (isop(tmp) || tmp == "(")
         {
             _token_sign(tmp, inBrace, sign);

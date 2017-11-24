@@ -14,8 +14,6 @@ class SyntaxAnalyzer{
         SyntaxAnalyzer();
         ~SyntaxAnalyzer();
 
-        string look_ahead();
-        string getNextToken();
         bool isAtomic(Maps m);
         int eval_exp(BTree *&b);
 

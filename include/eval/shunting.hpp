@@ -5,6 +5,8 @@
 #include "eval/btree.hpp"
 #include "eval/stoken.hpp"
 
+void print_stack(stack<SToken> st);
+
 class Shunting{
     public:
         stack<SToken> shuntingYard(Maps t);

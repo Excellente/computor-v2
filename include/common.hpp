@@ -26,6 +26,7 @@
 #define OP_MOD "OP_MOD"
 #define OP_EXP "OP_EXP"
 #define OP_EQU "OP_EQU"
+// ================= operator macros ===================
 
 #define _EOF_ "^:\0"
 #define _NULL_ "-1\0"

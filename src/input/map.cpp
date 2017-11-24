@@ -29,8 +29,9 @@ string Maps::look_ahead(int l)
     _end = end();
     _bgn = begin();
 
-    while (i--) _bgn++;
-    if ((_bgn + 1) == _end) return (_EOF_);
+    while (i-- && _bgn != _end) _bgn++;
+    if ((_bgn + 1) == _end || _bgn == _end)
+        return (_EOF_);
     return (value_at(_index + l));
 }
 
@@ -41,7 +42,7 @@ string Maps::getNextToken()
     _end = end();
     _bgn = begin();
 
-    while (i--) _bgn++;
+    while (i-- && _bgn != _end) _bgn++;
     if (_bgn == _end) return (_EOF_);
     ret = value_at(_index);
     _index++;
@@ -181,13 +182,18 @@ void Maps::delete_m()
 void Maps::check_funct(string &t)
 {
     int i;
+    bool ret;
 
-    if (_len > 3 && isname(t) && look_ahead(0) == "(" &&
-       (isname(look_ahead(1)) || isnumber(look_ahead(1))) && look_ahead(2) == ")")
+    ret = look_ahead(0) == _EOF_ | look_ahead(1) == _EOF_ | look_ahead(2) == _EOF_;
+    if (!ret)
     {
-        for (i = 0; i < 3; i++)
-            t = t + look_ahead(i);
-        _index += i;
+        if (isname(t) && look_ahead(0) == "(" && (isname(look_ahead(1))
+            || isnumber(look_ahead(1))) && look_ahead(2) == ")")
+        {
+            for (i = 0; i < 3; i++)
+                t = t + look_ahead(i);
+            _index += i;
+        }
     }
 }
 
