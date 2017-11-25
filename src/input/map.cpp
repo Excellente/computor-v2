@@ -23,6 +23,21 @@ int Maps::length() const{
     return (_len);
 }
 
+string Maps::look_back(int l)
+{
+    int i;
+    
+    if (_index > 1) i = l + 1;
+    else i = l;
+    _end = end();
+    _bgn = begin();
+
+    while (i-- && _bgn != begin()) _bgn--;
+    if ((_bgn - 1) == begin())
+        return (_EOF_);
+    return (value_at(_index - l));
+}
+
 string Maps::look_ahead(int l)
 {
     int i = _index;

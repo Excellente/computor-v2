@@ -42,9 +42,22 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     o_pre["/"] = 3;
     o_pre["%"] = 4;
     o_pre["^"] = 5;
+    int _tok = 0;
     while (1)
     {
+        _tok++;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
+        if ((_tok == 1 || _tkns.look_back(2) == "=") && isop(tmp))
+        {
+            if (tmp == "-" || tmp == "+")
+            {
+                st = SToken(false, "0");
+                st.setSign(1);
+                lstack.push(st);
+            }
+            else
+                cout << "computorv2: InvalidOperandException" << endl;
+        }
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
         if (isop(tmp) || tmp == "(")

@@ -5,13 +5,14 @@ valid variable instructions
     a + 2 = ? -> returns value of the exp ::DONE
 
 to be handled:
-    -> -1 + 2
+
     -> a + = ?
     -> different data types
     -> scan tree for errors : semantic analyzer
 
 Working test cases:
 $> a
+$> -1 + 2
 $> a = 2
 $> a = (1)
 $> a = a + 2

@@ -138,6 +138,8 @@ void SyntaxAnalyzer::parse(BTree *&bt)
     {
         if (bt->getName() == "=")
             op_equal(bt);
+        else
+            cout << eval_exp(bt) << endl;
     }
     else if (isname(bt->getName()) || isfunction(bt->getName()))
     {
@@ -276,7 +278,7 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
     if (isname(bt->getName()))
     {
         if (search_map(bt->getName()))
-            bt->setValue(stoi(_vars_int[bt->getName()]));
+            bt->setValue(stoi(_vars_int[bt->getName()]) * bt->getSign());
     }
     else if (isnumber(bt->getName()))
         bt->setValue(stoi(bt->getName()) * bt->getSign());

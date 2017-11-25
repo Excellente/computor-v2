@@ -23,6 +23,7 @@ class Maps{
         int length() const;
         Maps _submap(int e);
         string getNextToken();
+        string look_back(int l);
         string look_ahead(int l);
         Maps _submap(int s, int e);
         bool search(string const s);
