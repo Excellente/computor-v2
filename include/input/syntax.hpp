@@ -8,28 +8,28 @@
 #include "eval/stoken.hpp"
 #include "eval/function.hpp"
 
-void print_stack(stack<SToken> st);
+void print_stack(stack<SToken>);
 
 class SyntaxAnalyzer{
     public:
         SyntaxAnalyzer();
         ~SyntaxAnalyzer();
 
-        bool isAtomic(Maps m);
         int eval_exp(BTree *&b);
+        bool can_eval(BTree *, string);
 
         void node_eval();
-        void parse(BTree *&b);
-        void getVal(BTree *&bt);
-        void value_of(string s);
-        void paranScan(char *l);
-        void op_equal(BTree *&b);
-        bool search_map(string s);
-        void delete_tree(BTree *&b);
-        void var_declaration(BTree *&b);
-        void function_declaration(BTree *&bt);
-        void build_ast(Maps _t, BTree *&b) throw (InvalidSyntaxException);
-        void build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException);
+        void parse(BTree *&);
+        void getVal(BTree *&);
+        void value_of(string);
+        void paranScan(char *);
+        void op_equal(BTree *&);
+        bool search_map(string);
+        void delete_tree(BTree *&);
+        void var_declaration(BTree *&);
+        void function_declaration(BTree *&);
+        void build_ast(Maps, BTree *&) throw (InvalidSyntaxException);
+        void build_ast(stack<SToken> &, BTree *&) throw (InvalidSyntaxException);
 
     private:
         int _index;

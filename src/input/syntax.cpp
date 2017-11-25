@@ -6,11 +6,20 @@ SyntaxAnalyzer::SyntaxAnalyzer(){
     _index = 0;
 }
 
-bool SyntaxAnalyzer::isAtomic(Maps m)
+bool SyntaxAnalyzer::can_eval(BTree *r, string v)
 {
-    if (m.length() == 1 && (isnumber(m[0]) || isname(m[0])))
-        return (true);
-    return (false);
+    bool retval = true;
+    string name = r->getName();
+
+    if (isname(name) && name != v)
+        retval = true;
+    else if (isname(r->getName()) && name == v)
+        retval = false;
+    // if (r->_right != NULL)
+    //     retval &= can_eval(r, v);
+    // if (r->_left != NULL)
+    //     retval &= can_eval(r, v);
+    return (retval);
 }
 
 void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException)
@@ -221,21 +230,20 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
 void SyntaxAnalyzer::function_declaration(BTree *&bt)
 {
     Function *f = new Function(bt->_right);
-    _f_rhs = f->getFrhs();
     size_t lp = bt->_left->getName().find("(");
     string fname = bt->_left->getName().substr(0, lp - 0);
     string vname = bt->_left->getName().substr(++lp, 1);
 
-    _f_rhs = bt->_right;
-    if (isnumber(bt->_right->getName()))
+    _f_rhs = f->getFrhs();
+    if (isnumber(_f_rhs->getName()))
     {
         _funct[fname] = f;
         cout << eval_exp(_f_rhs) << endl;
     }
-    else if (isname(bt->_right->getName()) && vname != bt->_right->getName())
+    else if (isname(_f_rhs->getName()) && vname != _f_rhs->getName())
     {
         cout << "var: " << vname << endl;
-        if (search_map(bt->_right->getName()))
+        if (search_map(_f_rhs->getName()))
         {
             _funct[fname] = f;
             cout << eval_exp(_f_rhs) << endl;
@@ -243,9 +251,15 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
         else
             cout << _f_rhs->getName() << ": has not been declared" << endl;
     }
-    else if (isop(bt->_right->getName()))
-    ;
-        // _funct[fname] = to_string(eval_exp(_f_rhs));
+    else if (isop(_f_rhs->getName()))
+    {
+        _funct[fname] = f;
+        if (can_eval(_f_rhs->_right, vname))
+            cout << "can definatetly eval" << endl;
+        else
+            cout << "impossible" << endl;
+            // _funct[fname] = to_string(eval_exp(_f_rhs));
+    }
 }
 
 void SyntaxAnalyzer::getVal(BTree *&bt)
