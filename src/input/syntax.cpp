@@ -139,8 +139,8 @@ bool SyntaxAnalyzer::search_map(string s)
     size_t lp;
     string fname;
     
-    map<string, BTree*>::const_iterator _ef = _funct.end();
-    map<string, BTree*>::const_iterator _bf = _funct.begin();
+    map<string, Function*>::const_iterator _ef = _funct.end();
+    map<string, Function*>::const_iterator _bf = _funct.begin();
 
     map<string, string>::const_iterator _ev = _vars_int.end();
     map<string, string>::const_iterator _bv = _vars_int.begin();
@@ -170,7 +170,8 @@ void SyntaxAnalyzer::value_of(string s)
     {
         lp = s.find("(");
         fname = s.substr(0, lp - 0);
-        cout << eval_exp(_funct[fname]) << endl;
+        cout << _funct[fname]->getFrhs()->getName() << " = ";
+        cout << eval_exp(_funct[fname]->_f_rhs) << endl;
     }
     else if (isname(s) && search_map(s))
         cout << _vars_int[s] << endl;
@@ -219,6 +220,8 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
 
 void SyntaxAnalyzer::function_declaration(BTree *&bt)
 {
+    Function *f = new Function(bt->_right);
+    _f_rhs = f->getFrhs();
     size_t lp = bt->_left->getName().find("(");
     string fname = bt->_left->getName().substr(0, lp - 0);
     string vname = bt->_left->getName().substr(++lp, 1);
@@ -226,21 +229,23 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     _f_rhs = bt->_right;
     if (isnumber(bt->_right->getName()))
     {
-        _funct[fname] = _f_rhs;
+        _funct[fname] = f;
         cout << eval_exp(_f_rhs) << endl;
     }
-    else if (isname(bt->_right->getName()))
+    else if (isname(bt->_right->getName()) && vname != bt->_right->getName())
     {
+        cout << "var: " << vname << endl;
         if (search_map(bt->_right->getName()))
         {
-            _funct[fname] = _f_rhs;
+            _funct[fname] = f;
             cout << eval_exp(_f_rhs) << endl;
         }
         else
             cout << _f_rhs->getName() << ": has not been declared" << endl;
     }
-    // else if (isop(bt->_right->getName()))
-    //     _funct[fname] = to_string(eval_exp(bt->_right));
+    else if (isop(bt->_right->getName()))
+    ;
+        // _funct[fname] = to_string(eval_exp(_f_rhs));
 }
 
 void SyntaxAnalyzer::getVal(BTree *&bt)

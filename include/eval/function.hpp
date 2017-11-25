@@ -5,18 +5,21 @@
 #include "eval/btree.hpp"
 #include "eval/stoken.hpp"
 
+void print_stack(stack<SToken> st);
+
 class Function{
     private:
-        BTree *_f_rhs;
-        string _str_val;
-        stack<SToken> _stk_val;
+        int _val;
 
     public:
-        ~Function();
-        Function(BTree *);
+        BTree *_f_rhs;
 
-        void tostack(BTree *);
-        void tostring(BTree *);
+        ~Function();
+        Function(BTree *&);
+
+        BTree *getFrhs() const;
+
+        void tostring(BTree *&);
 };
 
 #endif

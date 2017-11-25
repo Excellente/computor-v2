@@ -16,6 +16,23 @@ BTree::BTree(string op, int sign) : _name(op), _sign(sign)
     _right = NULL;
 }
 
+BTree::BTree(const BTree &r)
+{
+    _sign = r._sign;
+    _name = r._name;
+    _value = r._value;
+    _oprnd1 = r._oprnd1;
+    _oprnd2 = r._oprnd2;
+    if (r._left != NULL)
+        _left = new BTree(*r._left);
+    else
+        _left = r._left;
+    if (r._right != NULL)
+        _right = new BTree(*r._right);
+    else
+        _right = r._right;
+}
+
 int BTree::getSign() const{
     return (_sign);
 }
@@ -86,6 +103,8 @@ void BTree::setValue(float _v){
 }
 
 void BTree::visit(){
+    if (_sign == -1)
+        cout << "- ";
     cout << _name << endl;
 }
 

@@ -6,6 +6,7 @@
 #include "eval/btree.hpp"
 #include "input/lexer.hpp"
 #include "eval/stoken.hpp"
+#include "eval/function.hpp"
 
 void print_stack(stack<SToken> st);
 
@@ -37,7 +38,7 @@ class SyntaxAnalyzer{
         mapit_t _end;
         BTree *_bt;
         BTree *_f_rhs;
-        map<string, BTree*> _funct;
+        map<string, Function*> _funct;
         map<string, string> _vars_int;
         map<string, string> _vars_float;
 };

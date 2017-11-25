@@ -12,7 +12,7 @@ class BTree{
 
         BTree();
         ~BTree();
-        BTree(BTree const &);
+        BTree(const BTree &);
         BTree(string op = "", int sign = 1);
 
         int getSign() const;

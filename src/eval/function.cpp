@@ -2,14 +2,12 @@
 
 Function::~Function(){}
 
-Function::Function(BTree *r)
+Function::Function(BTree *&r)
 {
-    tostack(r);
+    _val = 0;
+    _f_rhs = new BTree(*r);
 }
 
-void tostack(BTree *r)
-{
-    // initialize stoken with tree node and send to stack
-    //
-    SToken st;
+BTree *Function::getFrhs() const{
+    return (_f_rhs);
 }
