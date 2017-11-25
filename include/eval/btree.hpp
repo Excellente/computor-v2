@@ -30,8 +30,9 @@ class BTree{
 
         void visit();
         void print();
-        void tostring(string);
+        void setName(string);
         void setValue(float);
+        void tostring(string);
         void set_operands(Maps);
 
     private:

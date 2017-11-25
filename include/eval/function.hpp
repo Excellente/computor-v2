@@ -9,7 +9,7 @@ void print_stack(stack<SToken> st);
 
 class Function{
     private:
-        int _val;
+        string _str;
 
     public:
         BTree *_f_rhs;
@@ -18,8 +18,9 @@ class Function{
         Function(BTree *&);
 
         BTree *getFrhs() const;
+        string getString() const;
 
-        void tostring(BTree *&);
+        void tostring(BTree *);
 };
 
 #endif

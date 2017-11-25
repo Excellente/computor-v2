@@ -12,13 +12,17 @@ bool SyntaxAnalyzer::can_eval(BTree *r, string v)
     string name = r->getName();
 
     if (isname(name) && name != v)
+    {
+        getVal(r);
+        r->setName(to_string(r->getValue()));
         retval = true;
+    }
     else if (isname(r->getName()) && name == v)
         retval = false;
-    // if (r->_right != NULL)
-    //     retval &= can_eval(r, v);
-    // if (r->_left != NULL)
-    //     retval &= can_eval(r, v);
+    if (r->_right != NULL)
+        retval &= can_eval(r->_right, v);
+    if (r->_left != NULL)
+        retval &= can_eval(r->_left, v);
     return (retval);
 }
 
@@ -174,11 +178,14 @@ void SyntaxAnalyzer::value_of(string s)
 {
     size_t lp;
     string fname;
+    string vname;
 
     if (isfunction(s) && search_map(s))
     {
         lp = s.find("(");
         fname = s.substr(0, lp - 0);
+        vname = s.substr(++lp, 1);
+        if (isname(vname)){}
         cout << _funct[fname]->getFrhs()->getName() << " = ";
         cout << eval_exp(_funct[fname]->_f_rhs) << endl;
     }
@@ -253,12 +260,14 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     }
     else if (isop(_f_rhs->getName()))
     {
-        _funct[fname] = f;
-        if (can_eval(_f_rhs->_right, vname))
-            cout << "can definatetly eval" << endl;
+        if (can_eval(_f_rhs, vname))
+            cout << eval_exp(_f_rhs) << endl;
         else
-            cout << "impossible" << endl;
-            // _funct[fname] = to_string(eval_exp(_f_rhs));
+        {
+            f->tostring(_f_rhs);
+            cout << f->getString() << endl;
+        }
+        _funct[fname] = f;
     }
 }
 

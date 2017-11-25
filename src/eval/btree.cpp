@@ -98,6 +98,10 @@ void BTree::tostring(string s)
         tostring(s);
 }
 
+void BTree::setName(string _n){
+    _name = _n;
+}
+
 void BTree::setValue(float _v){
     _value = _v;
 }
