@@ -15,6 +15,7 @@ class BTree{
         BTree(const BTree &);
         BTree(string op = "", int sign = 1);
 
+        int pow(int, int);
         int getSign() const;
         int getValue() const;
         string getName() const;

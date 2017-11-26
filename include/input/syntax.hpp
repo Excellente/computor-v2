@@ -16,7 +16,9 @@ class SyntaxAnalyzer{
         ~SyntaxAnalyzer();
 
         int eval_exp(BTree *&b);
+        int eval_exp(BTree *&, string);
         bool can_eval(BTree *, string);
+        int eval_func(BTree *, string);
 
         void node_eval();
         void parse(BTree *&);

@@ -33,6 +33,15 @@ BTree::BTree(const BTree &r)
         _right = r._right;
 }
 
+int BTree::pow(int b, int e)
+{
+    int res = 1;
+
+    for (int i = 0; i < e; i++)
+        res *= b;
+    return (res);
+}
+
 int BTree::getSign() const{
     return (_sign);
 }
