@@ -26,14 +26,15 @@ int Maps::length() const{
 string Maps::look_back(int l)
 {
     int i;
+    mapit_t bgin;
     
-    if (_index > 1) i = l + 1;
+    bgin = _bgn;
+    if (_index > 1)
+        i = l + 1;
     else i = l;
-    _end = end();
-    _bgn = begin();
 
-    while (i-- && _bgn != begin()) _bgn--;
-    if ((_bgn - 1) == begin())
+    while (i-- && bgin != begin()) bgin--;
+    if (bgin == begin() || (_index - l) < 0)
         return (_EOF_);
     return (value_at(_index - l));
 }
@@ -41,11 +42,10 @@ string Maps::look_back(int l)
 string Maps::look_ahead(int l)
 {
     int i = _index;
-    _end = end();
-    _bgn = begin();
+    mapit_t bgn = begin();
 
-    while (i-- && _bgn != _end) _bgn++;
-    if ((_bgn + 1) == _end || _bgn == _end)
+    while (i-- && bgn != _end) bgn++;
+    if (bgn == _end || (_index + l) >= _len)
         return (_EOF_);
     return (value_at(_index + l));
 }
@@ -194,24 +194,6 @@ void Maps::delete_m()
     _k.erase(begin_key_i, end_key_i);
 }
 
-void Maps::check_funct(string &t)
-{
-    int i;
-    bool ret;
-
-    ret = look_ahead(0) == _EOF_ | look_ahead(1) == _EOF_ | look_ahead(2) == _EOF_;
-    if (!ret)
-    {
-        if (isname(t) && look_ahead(0) == "(" && (isname(look_ahead(1))
-            || isnumber(look_ahead(1))) && look_ahead(2) == ")")
-        {
-            for (i = 0; i < 3; i++)
-                t = t + look_ahead(i);
-            _index += i;
-        }
-    }
-}
-
 void Maps::operator=(const string &s){
     _v.push_back(s);
 }
@@ -235,4 +217,43 @@ void Maps::print()
     vector<string>::iterator vit = _v.begin(); 
     for (; kit != _k.end() && vit != _v.end(); kit++, vit++)
         cout << *kit << " -> " << *vit << endl;
+}
+
+void Maps::check_funct(string &t)
+{
+    int i;
+    bool ret;
+
+    ret = look_ahead(0) == _EOF_ | look_ahead(1) == _EOF_ | look_ahead(2) == _EOF_;
+    if (!ret)
+    {
+        if (isname(t) && look_ahead(0) == "(" && (isname(look_ahead(1))
+            || isnumber(look_ahead(1))) && look_ahead(2) == ")")
+        {
+            for (i = 0; i < 3; i++)
+                t = t + look_ahead(i);
+            _index += i;
+        }
+    }
+}
+
+void Maps::check_matrix(string &t)
+{
+    int i;
+    int sbrace;
+    // [[1,2];[2,3]]
+    for (i = 0, sbrace = 1; i < _len; i++)
+    {
+        if (look_ahead(i) == "[")
+            sbrace++;
+        if (look_ahead(i) == "]")
+            sbrace--;
+        if (!sbrace)
+            break;
+        t += look_ahead(i);
+    }
+    t += look_ahead(i);
+    if (ismatrix(t)) _index += i;
+    else
+        cout << "error: InvalidOperandException" << endl;
 }

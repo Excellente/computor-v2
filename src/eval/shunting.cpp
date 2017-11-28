@@ -47,6 +47,11 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     {
         _tok++;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
+        if (isnumber(tmp) && isname(_tkns.look_ahead(0)) && _tkns.look_ahead(1) != "(")
+        {
+            st = SToken(false, "*");
+            opstack.push(st);
+        }
         if ((_tok == 1 || _tkns.look_back(2) == "=") && isop(tmp))
         {
             if (tmp == "-" || tmp == "+")
@@ -60,6 +65,18 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         }
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
+        if (tmp == "[" && _tkns.look_ahead(0) == "[")
+        {
+            _tkns.check_matrix(tmp);
+            // debugging
+            cout << "found possible matrix" << endl;
+            if (ismatrix(tmp))
+            {
+                cout << tmp << endl;
+                return opstack;
+            }
+            // debugging
+        }
         if (isop(tmp) || tmp == "(")
         {
             _token_sign(tmp, inBrace, sign);
@@ -103,5 +120,6 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         rstack.push(lstack.top());
         lstack.pop();
     }
+    print_stack(rstack);
     return (rstack);
 }

@@ -158,12 +158,13 @@ bool isnumber(string s)
 
 int main(int ac, char *av[])
 {
+    regex rm("(\\s+)?\\[(\\s+)?\\[(\\s+)?([0-9]+((\\s+)?,(\\s+)?[0-9]+)?)?(\\s+)?\\]((\\s+)?;(\\s+)?(\\s+)?\\[(\\s+)?[0-9]+((\\s+)?,(\\s+)?[0-9]+)?(\\s+)?\\](\\s+)?)?(\\s+)?\\](\\s+)?");
     try
     {
-        if (isnumber("134.4343"))
-            cout << "yep is number" << endl;
+        if (regex_match("[ [ 1 , 9 ] ;[ 2 ,8] ]", rm))
+            cout << "yep is matrix" << endl;
         else
-            cout << "nope not number" << endl;
+            cout << "nope not matrix" << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

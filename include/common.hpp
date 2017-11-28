@@ -49,6 +49,7 @@ bool isdigit(char c);
 bool isalpha(char c);
 bool isname(string s);
 bool isfloat(string s);
+bool ismatrix(string s);
 bool isnumber(string s);
 bool isinteger(string s);
 bool isfunction(string s);

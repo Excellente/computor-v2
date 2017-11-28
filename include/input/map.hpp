@@ -36,6 +36,7 @@ class Maps{
         void delete_m();
         void check_funct(string &tmp);
         void operator=(const char &s);
+        void check_matrix(string &tmp);
         void operator=(const string &s);
         void insert(string &k, string &v);
 
