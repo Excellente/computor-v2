@@ -156,15 +156,23 @@ bool isnumber(string s)
     return (regex_match(s, rn));
 }
 
+bool isop(string s)
+{
+    regex ro("OP_ADD|OP_SUB|OP_DIV|OP_MUL|OP_MOD|OP_EXP|OP_EQU|\\+|-|/|\\*|\\^|\\%|=");
+    if (regex_match(s, ro) || s == "**")
+        return (true);
+    return (false);
+}
+
 int main(int ac, char *av[])
 {
     regex rm("(\\s+)?\\[(\\s+)?\\[(\\s+)?([0-9]+((\\s+)?,(\\s+)?[0-9]+)?)?(\\s+)?\\]((\\s+)?;(\\s+)?(\\s+)?\\[(\\s+)?[0-9]+((\\s+)?,(\\s+)?[0-9]+)?(\\s+)?\\](\\s+)?)?(\\s+)?\\](\\s+)?");
     try
     {
-        if (regex_match("[ [ 1 , 9 ] ;[ 2 ,8] ]", rm))
-            cout << "yep is matrix" << endl;
+        if (isop("0"))
+            cout << "yep is operator" << endl;
         else
-            cout << "nope not matrix" << endl;
+            cout << "nope not operator" << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

@@ -252,7 +252,7 @@ void Maps::check_matrix(string &t)
             break;
         t += look_ahead(i);
     }
-    t += look_ahead(i);
+    t += look_ahead(i++);
     if (ismatrix(t)) _index += i;
     else
         cout << "error: InvalidOperandException" << endl;

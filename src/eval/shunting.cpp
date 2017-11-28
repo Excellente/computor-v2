@@ -27,6 +27,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
 {
     SToken st;
     string tmp;
+    string prev;
     int sign = 1;
     int inBrace = 0;
     string str = "";
@@ -39,6 +40,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     o_pre["+"] = 1;
     o_pre["-"] = 1;
     o_pre["*"] = 2;
+    o_pre["**"] = 2;
     o_pre["/"] = 3;
     o_pre["%"] = 4;
     o_pre["^"] = 5;
@@ -46,7 +48,10 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     while (1)
     {
         _tok++;
+        prev = tmp;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
+        if (ismatrix(prev) && tmp == "*" && tmp == _tkns.look_ahead(0))
+            tmp += _tkns.getNextToken();
         if (isnumber(tmp) && isname(_tkns.look_ahead(0)) && _tkns.look_ahead(1) != "(")
         {
             st = SToken(false, "*");
@@ -66,17 +71,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
         if (tmp == "[" && _tkns.look_ahead(0) == "[")
-        {
             _tkns.check_matrix(tmp);
-            // debugging
-            cout << "found possible matrix" << endl;
-            if (ismatrix(tmp))
-            {
-                cout << tmp << endl;
-                return opstack;
-            }
-            // debugging
-        }
         if (isop(tmp) || tmp == "(")
         {
             _token_sign(tmp, inBrace, sign);
@@ -104,7 +99,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
                 lstack.push(st);
             }
             opstack.pop();
-        } else if (isname(tmp) || isnumber(tmp) || isfunction(tmp) || tmp == "?") {
+        } else if (isname(tmp) || isnumber(tmp) || isfunction(tmp) || tmp == "?" || ismatrix(tmp)) {
             st = SToken(false, tmp);
             st.setSign(sign);
             lstack.push(st);

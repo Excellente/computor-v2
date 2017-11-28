@@ -5,8 +5,10 @@
 
 class Matrix{
     private:
+        double matNN[1020][1020];
         map<string, string> rows;
         map<string, string> columns;
+
     public:
         Matrix();
         ~Matrix();
