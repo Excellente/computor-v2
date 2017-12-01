@@ -255,5 +255,5 @@ void Maps::check_matrix(string &t)
     t += look_ahead(i++);
     if (ismatrix(t)) _index += i;
     else
-        cout << "error: InvalidOperandException" << endl;
+        cout << "error: matrix InvalidOperandException" << endl;
 }

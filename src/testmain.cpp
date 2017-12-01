@@ -166,10 +166,10 @@ bool isop(string s)
 
 int main(int ac, char *av[])
 {
-    string name = "[[2, 3]]";
+    string name = "[[2,3];[3,4,5,6];[43,3,34]]";
     try
     {
-        cout << name.find("[", name.find("[") + 1) << endl;
+        cout << ismatrix(name) << endl;
     }
     catch(ErrorException &e){
         cerr << e.what() << endl;

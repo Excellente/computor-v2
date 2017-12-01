@@ -1,4 +1,4 @@
-CC		= clang++
+CC		= g++#clang++
 CFLAGS	= -std=c++11
 EXE		= computorv2
 INC 	= ./include/
