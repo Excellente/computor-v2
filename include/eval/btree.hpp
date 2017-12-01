@@ -3,10 +3,12 @@
 
 #include "common.hpp"
 #include "input/map.hpp"
+#include "eval/matrix.hpp"
 
 class BTree{
 
     public:
+        Matrix *_mat;
         BTree *_left;
         BTree *_right;
 
@@ -20,6 +22,7 @@ class BTree{
         int getValue() const;
         string getName() const;
         BTree *getLeft() const;
+        Matrix *getMat() const;
         BTree *getRight() const;
         Maps getOperand1() const;
         Maps getOperand2() const;

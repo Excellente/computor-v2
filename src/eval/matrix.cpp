@@ -3,6 +3,68 @@
 Matrix::Matrix(){}
 Matrix::~Matrix(){}
 
+double Matrix::getRowLen() const{
+    return (_row_length);
+}
+
+double Matrix::getColLen() const{
+    return (_col_length);
+}
+
+Matrix &Matrix::operator+(const Matrix &r)
+{
+    for (int i = 0; i < _col_length; i++)
+    {
+        for (int j = 0; j < _row_length; j++)
+            matNN[i][j] = matNN[i][j] + r.matNN[i][j];
+    }
+    return (*this);
+}
+
+Matrix &Matrix::operator-(const Matrix &r)
+{
+    for (int i = 0; i < _col_length; i++)
+    {
+        for (int j = 0; j < _row_length; j++)
+            matNN[i][j] = matNN[i][j] - r.matNN[i][j];
+    }
+    return (*this);
+}
+
+Matrix &Matrix::operator*(const double r)
+{
+    for (int i = 0; i < _col_length; i++)
+    {
+        for (int j = 0; j < _row_length; j++)
+            matNN[i][j] = matNN[i][j] * r;
+    }
+    return (*this);
+}
+
+Matrix &Matrix::operator|(const Matrix &r)
+{
+    int sum;
+    double res[1020][1020];
+
+    for (int i = 0; i < _col_length; i++)
+    {
+        for (int j = 0; j < r.getRowLen(); j++)
+        {
+            sum = 0;
+            for (int x = 0; x < _row_length; x++)
+                sum += matNN[i][x] * r.matNN[x][j];
+            res[i][j] = sum;
+        }
+    }
+    _col_length = _row_length = _col_length;
+    for (int i = 0; i < _row_length; i++)
+    {
+        for (int j = 0; j < _col_length; j++)
+            matNN[i][j] = res[i][j];
+    }
+    return (*this);
+}
+
 void Matrix::tomatrix(string st)
 {
     int _l;

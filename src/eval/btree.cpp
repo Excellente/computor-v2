@@ -54,6 +54,10 @@ string BTree::getName() const{
     return (_name);
 }
 
+Matrix *BTree::getMat() const{
+    return (_mat);
+}
+
 BTree *BTree::getLeft() const{
     return (_left);
 }

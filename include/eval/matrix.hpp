@@ -10,15 +10,17 @@ class Matrix{
         double _col_length;
         double _row_length;
         double matNN[1020][1020];
-        map<string, string> rows;
-        map<string, string> columns;
 
     public:
         Matrix();
         ~Matrix();
 
-        map<string, string> getRows() const;
-        map<string, string> getColumns() const;
+        double getColLen() const;
+        double getRowLen() const;
+        Matrix &operator*(const double);
+        Matrix &operator+(const Matrix &);
+        Matrix &operator-(const Matrix &);
+        Matrix &operator|(const Matrix &);
 
         void print_mat();
         void tomatrix(string);
