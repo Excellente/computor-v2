@@ -15,6 +15,9 @@ class Matrix{
 
         map<string, string> getRows() const;
         map<string, string> getColumns() const;
+
+        void tomatrix(string m);
+        void row(string n, vector<string> m);
 };
 
 #endif

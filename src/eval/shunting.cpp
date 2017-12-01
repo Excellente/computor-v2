@@ -115,6 +115,5 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         rstack.push(lstack.top());
         lstack.pop();
     }
-    print_stack(rstack);
     return (rstack);
 }

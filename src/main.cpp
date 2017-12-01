@@ -27,13 +27,12 @@ int main(int argc, char *argv[])
                 exit(EXIT_SUCCESS);
             le.tokenize(line);
             tmp = sy.shuntingYard(le.getTokens());
-            // sa.build_ast(tmp, root);
-            // sa.parse(root);
-            // root->tostring(" ");
+            sa.build_ast(tmp, root);
+            sa.parse(root);
             // root->print();
             // sa.build_ast(le.getTokens(), root);
             le.delete_map();
-            // sa.delete_tree(root);
+            sa.delete_tree(root);
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;

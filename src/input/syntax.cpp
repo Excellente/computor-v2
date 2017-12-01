@@ -225,7 +225,8 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
     string _rht = bt->_right->getName();
 
     // name = name | number | functionCall | exp
-    if (isname(_lft) && (isnumber(_rht) || isname(_rht) || isfunction(_rht) || isop(_rht)))
+    if (isname(_lft) && (isnumber(_rht) || isname(_rht) || isfunction(_rht) ||
+        ismatrix(_rht) || isop(_rht)))
         var_declaration(bt);
     // functionDeclare = name | number | functionCall | exp    
     else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
@@ -251,6 +252,7 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     }
     else if (isname(val))
     {
+        //todo: check to if val is not a matrix
         if (search_map(val))
             _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
         else
@@ -263,6 +265,12 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
         vname = val.substr(++lp, 1);
         _vars_int[bt->_left->getName()] = to_string(eval_func(_funct[fname]->_f_rhs, vname));
         value_of(val);
+    }
+    else if (ismatrix(val))
+    {
+        Matrix *ma = new Matrix();
+        ma->tomatrix(val);
+        _matrices[bt->_left->getName()] = ma;
     }
     else if (isop(val))
         _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));

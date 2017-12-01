@@ -7,6 +7,7 @@
 #include "input/lexer.hpp"
 #include "eval/stoken.hpp"
 #include "eval/function.hpp"
+#include "eval/matrix.hpp"
 
 void print_stack(stack<SToken>);
 
@@ -42,6 +43,7 @@ class SyntaxAnalyzer{
         BTree *_f_rhs;
         map<string, Function*> _funct;
         map<string, string> _vars_int;
+        map<string, Matrix*> _matrices;
         map<string, string> _vars_float;
 };
 
