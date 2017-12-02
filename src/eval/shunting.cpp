@@ -50,7 +50,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         _tok++;
         prev = tmp;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
-        if (ismatrix(prev) && tmp == "*" && tmp == _tkns.look_ahead(0))
+        if (tmp == "*" && tmp == _tkns.look_ahead(0))
             tmp += _tkns.getNextToken();
         if (isnumber(tmp) && isname(_tkns.look_ahead(0)) && _tkns.look_ahead(1) != "(")
         {

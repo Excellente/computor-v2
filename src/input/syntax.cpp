@@ -15,16 +15,16 @@ bool SyntaxAnalyzer::is_matrix(string m)
 
 bool SyntaxAnalyzer::ismatrix_tree(BTree *r)
 {
-    bool res = true;
+    bool res = false;
 
     if (is_matrix(r->getName()))
         res = true;
-    else if (!isop(r->getName()))
-        res = false;
+    // else if (!isop(r->getName()))
+    //     res = false;
     if (r->_left != NULL)
-        res &= ismatrix_tree(r->_left);
+        res |= ismatrix_tree(r->_left);
     if (r->_right != NULL)
-        res &= ismatrix_tree(r->_right);
+        res |= ismatrix_tree(r->_right);
     return (res);
 }
 
@@ -132,42 +132,42 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
         build_ast(s, b);
 }
 
-void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
-{
-    int i;
-    bool found;
-    string str;
-    string tmp = "";
-    InvalidSyntaxException ise;
-    string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
+// void SyntaxAnalyzer::build_ast(Maps _tk, BTree *&bt) throw (InvalidSyntaxException)
+// {
+//     int i;
+//     bool found;
+//     string str;
+//     string tmp = "";
+//     InvalidSyntaxException ise;
+//     string ops[] = {OP_EQU, OP_ADD, OP_SUB, OP_DIV, OP_MUL, OP_MOD, OP_EXP, _NULL_};
 
-    this->_tkns = _tk;
-    for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++)
-        ;
-    if (found)
-    {
-        bt = new BTree(ops[i]);
-        bt->set_operands(_tkns);
-        build_ast(bt->getOperand1(), bt->_left);
-        build_ast(bt->getOperand2(), bt->_right);
-    }
-    else
-    {
-        if (_tkns.length() == 1)
-            bt = new BTree(_tkns[0]);
-        else
-            {
-                // while ((str = getNextToken()) != _EOF_)
-                //     tmp = tmp + str;
-                // if (isfunction(tmp) || isnumber(tmp))
-                //     bt = new BTree(tmp);
-                // else
-                //     throw ise;
-                // _index = 0;
-            }
-    }
-    _tkns.delete_m();
-}
+//     this->_tkns = _tk;
+//     for (i = 0; ops[i] != _NULL_ && !(found = _tkns.search(ops[i])); i++)
+//         ;
+//     if (found)
+//     {
+//         bt = new BTree(ops[i]);
+//         bt->set_operands(_tkns);
+//         build_ast(bt->getOperand1(), bt->_left);
+//         build_ast(bt->getOperand2(), bt->_right);
+//     }
+//     else
+//     {
+//         if (_tkns.length() == 1)
+//             bt = new BTree(_tkns[0]);
+//         else
+//             {
+//                 // while ((str = getNextToken()) != _EOF_)
+//                 //     tmp = tmp + str;
+//                 // if (isfunction(tmp) || isnumber(tmp))
+//                 //     bt = new BTree(tmp);
+//                 // else
+//                 //     throw ise;
+//                 // _index = 0;
+//             }
+//     }
+//     _tkns.delete_m();
+// }
 
 void SyntaxAnalyzer::parse(BTree *&bt)
 {
@@ -269,56 +269,63 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     string vname;
     string val = bt->_right->getName();
 
-    if (isnumber(val))
+    if (bt->_left->getName() == "i")
+        cerr << "\033[1;31merror\033[0m: forbidden var_name: " << bt->_left->getName() << endl;
+    else
     {
-        if (isinteger(val))
+        if (isnumber(val))
+        {
+            if (isinteger(val))
+            {
+                if (_matrices.find(bt->_left->getName()) != _matrices.end())
+                    _matrices.erase(bt->_left->getName());
+                _vars_int[bt->_left->getName()] = val;
+            }
+            else if (isfloat(val))
+                _vars_float[bt->_left->getName()] = val;
+        }
+        else if (isname(val))
+        {
+            //todo: check to if val is not a matrix
+            if (_matrices.find(val) != _matrices.end())
+                _matrices[bt->_left->getName()] = _matrices[val];
+            else if (_vars_int.find(val) != _vars_int.end()) 
+                _vars_int[bt->_left->getName()] = _vars_int[val];
+            else
+                cout << bt->_right->getName() << ": has not been declared" << endl;
+        }
+        else if (isfunction(val))
+        {
+            lp = val.find("(");
+            fname = val.substr(0, lp - 0);
+            vname = val.substr(++lp, 1);
+            _vars_int[bt->_left->getName()] = to_string(eval_func(_funct[fname]->_f_rhs, vname));
+            value_of(val);
+        }
+        else if (ismatrix(val))
+        {
+            if (_vars_int.find(bt->_left->getName()) != _vars_int.end())
+                _vars_int.erase(bt->_left->getName());
+            Matrix *ma = new Matrix();
+            ma->tomatrix(val);
+            _matrices[bt->_left->getName()] = ma;
+        }
+        else if (isop(val))
+        {
+            if (ismatrix_tree(bt->_right))
+            {
+                _matrices[bt->_left->getName()] = matrix_eval(bt->_right);
+            }
+            else
+                _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+        }
+        if (!isfunction(bt->_right->getName()))
         {
             if (_matrices.find(bt->_left->getName()) != _matrices.end())
-                _matrices.erase(bt->_left->getName());
-            _vars_int[bt->_left->getName()] = bt->_right->getName();
+                _matrices[bt->_left->getName()]->print_mat();
+            else
+                cout << eval_exp(bt->_right) << endl;
         }
-        else if (isfloat(val))
-            _vars_float[bt->_left->getName()] = bt->_right->getName();
-    }
-    else if (isname(val))
-    {
-        //todo: check to if val is not a matrix
-        if (_matrices.find(bt->_left->getName()) != _matrices.end())
-            _matrices[bt->_left->getName()] = _matrices[bt->_right->getName()];
-        else if (_vars_int.find(bt->_left->getName()) != _vars_int.end()) 
-            _vars_int[bt->_left->getName()] = _vars_int[bt->_right->getName()];
-        else
-            cout << bt->_right->getName() << ": has not been declared" << endl;
-    }
-    else if (isfunction(val))
-    {
-        lp = val.find("(");
-        fname = val.substr(0, lp - 0);
-        vname = val.substr(++lp, 1);
-        _vars_int[bt->_left->getName()] = to_string(eval_func(_funct[fname]->_f_rhs, vname));
-        value_of(val);
-    }
-    else if (ismatrix(val))
-    {
-        if (_vars_int.find(bt->_left->getName()) != _vars_int.end())
-            _vars_int.erase(bt->_left->getName());
-        Matrix *ma = new Matrix();
-        ma->tomatrix(val);
-        _matrices[bt->_left->getName()] = ma;
-    }
-    else if (isop(val))
-    {
-        if (ismatrix_tree(bt->_right))
-            _matrices[bt->_left->getName()] = matrix_eval(bt->_right);
-        else
-            _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
-    }
-    if (!isfunction(bt->_right->getName()))
-    {
-        if (_matrices.find(bt->_left->getName()) != _matrices.end())
-            _matrices[bt->_left->getName()]->print_mat();
-        else
-            cout << eval_exp(bt->_right) << endl;
     }
 }
 
@@ -550,72 +557,16 @@ Matrix *SyntaxAnalyzer::matrix_eval(BTree *&bt)
             *(bt->_mat) = *bt->_left->_mat + *bt->_right->_mat;
         else if (bt->getName() == "**")
             *(bt->_mat) = *bt->_left->_mat | *bt->_right->_mat;
+        else if (bt->getName() == "*")
+        {
+            if (ismatrix(bt->_left->getName()))
+                *(bt->_mat) = *bt->_left->_mat * bt->_right->getValue();
+            else
+                *(bt->_mat) = *bt->_right->_mat * bt->_left->getValue();
+        }        
     }
     return (bt->_mat);
 }
-
-// Matrix *SyntaxAnalyzer::matrix_eval(BTree *&bt)
-// {
-//     bt->_mat = new Matrix();
-//     Matrix *tmp = new Matrix();
-//     Matrix *tmp2 = new Matrix();
-
-//     if (bt->_left != NULL)
-//         matrix_eval(bt->_left);
-//     if (bt->_right != NULL)
-//         matrix_eval(bt->_right);
-//     // ==================== matrix addition =========================
-//     if (isop(bt->getName()))
-//     {
-//         if (bt->getName() == "+")
-//         {
-//             if (ismatrix(bt->_left->getName()))
-//                 tmp->tomatrix(bt->_left->getName());
-//             else
-//             {
-//                 delete tmp;
-//                 tmp = _matrices[bt->_left->getName()];
-//             }
-//             if (ismatrix(bt->_right->getName()))
-//                 tmp2->tomatrix(bt->_right->getName());
-//             else
-//             {
-//                 delete tmp2;
-//                 tmp2 = _matrices[bt->_right->getName()];
-//             }
-//             if (tmp->getRowLen() == tmp2->getRowLen() &&
-//                 tmp->getColLen() == tmp2->getColLen())
-//                 {
-//                     *tmp = *tmp * bt->_left->getSign();
-//                     *tmp2 = *tmp2 * bt->_right->getSign();
-//                     *(bt->_mat) = *tmp + *tmp2;
-//                 }
-//             else
-//                 cout << "error: different dimensions: can't be added" << endl;
-//         } else if (bt->getName() == "**")
-//         {
-//             if (ismatrix(bt->_left->getName()))
-//                 tmp->tomatrix(bt->_left->getName());
-//             else
-//             {
-//                 delete tmp;
-//                 tmp = _matrices[bt->_left->getName()];
-//             }
-//             if (ismatrix(bt->_right->getName()))
-//                 tmp2->tomatrix(bt->_right->getName());
-//             else
-//             {
-//                 delete tmp2;
-//                 tmp2 = _matrices[bt->_right->getName()];
-//             }
-//             if (tmp->getColLen() == tmp2->getRowLen())
-//                 *(bt->_mat) = *tmp | *tmp2;
-//             else
-//                 cout << "error: dimension don't match for ** be perfomed" << endl;
-//         }
-//     }
-//     return (bt->_mat);
-// }
 
 void SyntaxAnalyzer::delete_tree(BTree *&bt)
 {
