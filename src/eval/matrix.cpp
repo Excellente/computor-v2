@@ -13,9 +13,9 @@ double Matrix::getColLen() const{
 
 Matrix &Matrix::operator+(const Matrix &r)
 {
-    for (int i = 0; i < _col_length; i++)
+    for (int i = 0; i < _row_length; i++)
     {
-        for (int j = 0; j < _row_length; j++)
+        for (int j = 0; j < _col_length; j++)
             matNN[i][j] = matNN[i][j] + r.matNN[i][j];
     }
     return (*this);
@@ -23,9 +23,9 @@ Matrix &Matrix::operator+(const Matrix &r)
 
 Matrix &Matrix::operator-(const Matrix &r)
 {
-    for (int i = 0; i < _col_length; i++)
+    for (int i = 0; i < _row_length; i++)
     {
-        for (int j = 0; j < _row_length; j++)
+        for (int j = 0; j < _col_length; j++)
             matNN[i][j] = matNN[i][j] - r.matNN[i][j];
     }
     return (*this);
@@ -33,9 +33,9 @@ Matrix &Matrix::operator-(const Matrix &r)
 
 Matrix &Matrix::operator*(const double r)
 {
-    for (int i = 0; i < _col_length; i++)
+    for (int i = 0; i < _row_length; i++)
     {
-        for (int j = 0; j < _row_length; j++)
+        for (int j = 0; j < _col_length; j++)
             matNN[i][j] = matNN[i][j] * r;
     }
     return (*this);
@@ -46,17 +46,17 @@ Matrix &Matrix::operator|(const Matrix &r)
     int sum;
     double res[1020][1020];
 
-    for (int i = 0; i < _col_length; i++)
+    for (int i = 0; i < _row_length; i++)
     {
-        for (int j = 0; j < r.getRowLen(); j++)
+        for (int j = 0; j < r.getColLen(); j++)
         {
             sum = 0;
-            for (int x = 0; x < _row_length; x++)
+            for (int x = 0; x < _col_length; x++)
                 sum += matNN[i][x] * r.matNN[x][j];
             res[i][j] = sum;
         }
     }
-    _col_length = _row_length = _col_length;
+    _col_length = r.getColLen();
     for (int i = 0; i < _row_length; i++)
     {
         for (int j = 0; j < _col_length; j++)
@@ -94,14 +94,14 @@ void Matrix::tomatrix(string st)
     }
     ite = vals.end();
     itb = vals.begin();
-    _col_length = vals.size();
-    for (int i = 0; i < _col_length; i++, itb++)
+    _row_length = vals.size();
+    for (int i = 0; i < _row_length; i++, itb++)
     {
         ret = strsplit(",", *itb);
         ren = ret.end();
         rbe = ret.begin();
-        _row_length = ret.size();
-        for (int j = 0; j < _row_length; j++, rbe++)
+        _col_length = ret.size();
+        for (int j = 0; j < _col_length; j++, rbe++)
             matNN[i][j] = stod(*rbe);
     }
     // ite = vals.end();
@@ -113,12 +113,12 @@ void Matrix::tomatrix(string st)
 
 void Matrix::print_mat()
 {
-    for (int i = 0; i < _col_length; i++)
+    for (int i = 0; i < _row_length; i++)
     {
-        cout << "[";
-        for (int j = 0; j < _row_length; j++)
-            if (j < _row_length - 1)
-                cout << matNN[i][j] << " ";
+        cout << " [";
+        for (int j = 0; j < _col_length; j++)
+            if (j < _col_length - 1)
+                cout << matNN[i][j] << " , ";
             else 
                 cout << matNN[i][j];
         cout << "]" << endl;

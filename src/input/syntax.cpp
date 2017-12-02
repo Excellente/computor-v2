@@ -13,6 +13,21 @@ bool SyntaxAnalyzer::is_matrix(string m)
     return (false);
 }
 
+bool SyntaxAnalyzer::ismatrix_tree(BTree *r)
+{
+    bool res = true;
+
+    if (is_matrix(r->getName()))
+        res = true;
+    else if (!isop(r->getName()))
+        res = false;
+    if (r->_left != NULL)
+        res &= ismatrix_tree(r->_left);
+    if (r->_right != NULL)
+        res &= ismatrix_tree(r->_right);
+    return (res);
+}
+
 bool SyntaxAnalyzer::can_eval(BTree *r, string v)
 {
     int val;
@@ -292,7 +307,12 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
         _matrices[bt->_left->getName()] = ma;
     }
     else if (isop(val))
-        _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+    {
+        if (ismatrix_tree(bt->_right))
+            _matrices[bt->_left->getName()] = matrix_eval(bt->_right);
+        else
+            _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+    }
     if (!isfunction(bt->_right->getName()))
     {
         if (_matrices.find(bt->_left->getName()) != _matrices.end())
@@ -346,17 +366,28 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
     string vname;
     if (isname(bt->getName()))
     {
-        if (search_map(bt->getName()))
-            bt->setValue(stoi(_vars_int[bt->getName()]) * bt->getSign());
+        if (_matrices.find(bt->getName()) != _matrices.end())
+        {
+            bt->_mat = new Matrix();
+            *(bt->_mat) = *_matrices[bt->getName()] * bt->getSign();
+        }
+        else if (search_map(bt->getName()))
+            bt->setValue(stod(_vars_int[bt->getName()]) * bt->getSign());
     }
     else if (isnumber(bt->getName()))
-        bt->setValue(stoi(bt->getName()) * bt->getSign());
+        bt->setValue(stod(bt->getName()) * bt->getSign());
     else if (isfunction(bt->getName()))
     {
         lp = bt->getName().find("(");
         fname = bt->getName().substr(0, lp - 0);
         vname = bt->getName().substr(++lp, 1);
         bt->setValue(eval_func(_funct[fname]->_f_rhs, vname));
+    }
+    else if (is_matrix(bt->getName()))
+    {
+        bt->_mat = new Matrix();
+        bt->_mat->tomatrix(bt->getName());
+        *(bt->_mat) = *bt->_mat * bt->getSign();
     }
 }
 
@@ -451,123 +482,140 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
         eval_exp(bt->_right);
     if (isop(bt->getName()))
     {
-        if (is_matrix(bt->_left->getName()) && is_matrix(bt->_right->getName()))
+        if (bt->getName() == "^")
         {
-            matrix_eval(bt);
-            bt->_mat->print_mat();
+            if (bt->_left && bt->_right)
+            {
+                cout << bt->_left->getValue() << " ^ " << bt->_right->getValue() << endl;
+                res = bt->pow(bt->_left->getValue(), bt->_right->getValue());
+                bt->setValue(res);
+            }
         }
-        else
+        else if (bt->getName() == "+")
         {
-            if (bt->getName() == "^")
+            if (bt->_left && bt->_right)
             {
-                if (bt->_left && bt->_right)
+                cout << bt->_left->getValue() << " + " << bt->_right->getValue() << endl;
+                res = *bt->_left + *bt->_right;
+                bt->setValue(res);
+            }            
+        }
+        else if (bt->getName() == "-")
+        {
+            if (bt->_left && bt->_right)
+            {
+                cout << bt->_left->getValue() << " - " << bt->_right->getValue() << endl;
+                res = *bt->_left - *bt->_right;
+                bt->setValue(res);
+            }
+        }
+        else if (bt->getName() == "*")
+        {
+            if (bt->_left && bt->_right)
+            {
+                cout << bt->_left->getValue() << " * " << bt->_right->getValue() << endl;
+                res = *bt->_left * *bt->_right;
+                bt->setValue(res);
+            }
+        }
+        else if (bt->getName() == "/")
+        {
+            if (bt->_left && bt->_right)
+            {
+                cout << bt->_left->getValue() << " / " << bt->_right->getValue() << endl;
+                if (bt->_right->getValue() != 0)
                 {
-                    cout << bt->_left->getValue() << " ^ " << bt->_right->getValue() << endl;
-                    res = bt->pow(bt->_left->getValue(), bt->_right->getValue());
+                    res = *bt->_left / *bt->_right;
                     bt->setValue(res);
                 }
-            }
-            else if (bt->getName() == "+")
-            {
-                if (bt->_left && bt->_right)
-                {
-                    cout << bt->_left->getValue() << " + " << bt->_right->getValue() << endl;
-                    res = *bt->_left + *bt->_right;
-                    bt->setValue(res);
-                }            
-            }
-            else if (bt->getName() == "-")
-            {
-                if (bt->_left && bt->_right)
-                {
-                    cout << bt->_left->getValue() << " - " << bt->_right->getValue() << endl;
-                    res = *bt->_left - *bt->_right;
-                    bt->setValue(res);
-                }
-            }
-            else if (bt->getName() == "*")
-            {
-                if (bt->_left && bt->_right)
-                {
-                    cout << bt->_left->getValue() << " * " << bt->_right->getValue() << endl;
-                    res = *bt->_left * *bt->_right;
-                    bt->setValue(res);
-                }
-            }
-            else if (bt->getName() == "/")
-            {
-                if (bt->_left && bt->_right)
-                {
-                    cout << bt->_left->getValue() << " / " << bt->_right->getValue() << endl;
-                    if (bt->_right->getValue() != 0)
-                    {
-                        res = *bt->_left / *bt->_right;
-                        bt->setValue(res);
-                    }
-                    else
-                    cout << "Error: InvalidOperandException" << endl;
-                }
+                else
+                cout << "Error: InvalidOperandException" << endl;
             }
         }
     }
     return (bt->getValue());
 }
 
-void SyntaxAnalyzer::matrix_eval(BTree *&bt)
+Matrix *SyntaxAnalyzer::matrix_eval(BTree *&bt)
 {
-    bt->_mat = new Matrix();
-    Matrix *tmp = new Matrix();
-    Matrix *tmp2 = new Matrix();
-
-    // ==================== matrix addition =========================
-    // if (bt->getName() == "+")
-    // {
-    //     if (ismatrix(bt->_left->getName()))
-    //         tmp->tomatrix(bt->_left->getName());
-    //     else
-    //     {
-    //         delete tmp;
-    //         tmp = _matrices[bt->_left->getName()];
-    //     }
-    //     if (ismatrix(bt->_right->getName()))
-    //         tmp2->tomatrix(bt->_right->getName());
-    //     else
-    //     {
-    //         delete tmp2;
-    //         tmp2 = _matrices[bt->_right->getName()];
-    //     }
-    //     if (tmp->getRowLen() == tmp2->getRowLen() &&
-    //         tmp->getColLen() == tmp2->getColLen())
-    //         {
-    //             *tmp = *tmp * bt->_left->getSign();
-    //             *tmp2 = *tmp2 * bt->_right->getSign();
-    //             *(bt->_mat) = *tmp + *tmp2;
-    //         }
-    //     else
-    //         cout << "error: different dimensions: can't be added" << endl;
-    // }
-    // else if (bt->getName() == "**")
+    if (bt->_left != NULL)
+        matrix_eval(bt->_left);
+    getVal(bt);
+    if (bt->_right != NULL)
+        matrix_eval(bt->_right);
+    if (isop(bt->getName()))
     {
-        if (ismatrix(bt->_left->getName()))
-            tmp->tomatrix(bt->_left->getName());
-        else
-        {
-            delete tmp;
-            tmp = _matrices[bt->_left->getName()];
-        }
-        if (ismatrix(bt->_right->getName()))
-            tmp2->tomatrix(bt->_right->getName());
-        else
-        {
-            delete tmp2;
-            tmp2 = _matrices[bt->_right->getName()];
-        }
-        // if (tmp->getRowLen() == tmp->getColLen())
-            *(bt->_mat) = *tmp | *tmp2;
-        // else
-        //     cout << "error: different dimensions: can't be added" << endl;
+        bt->_mat = new Matrix();
+        if (bt->getName() == "+")
+            *(bt->_mat) = *bt->_left->_mat + *bt->_right->_mat;
+        else if (bt->getName() == "**")
+            *(bt->_mat) = *bt->_left->_mat | *bt->_right->_mat;
     }
+    return (bt->_mat);
 }
+
+// Matrix *SyntaxAnalyzer::matrix_eval(BTree *&bt)
+// {
+//     bt->_mat = new Matrix();
+//     Matrix *tmp = new Matrix();
+//     Matrix *tmp2 = new Matrix();
+
+//     if (bt->_left != NULL)
+//         matrix_eval(bt->_left);
+//     if (bt->_right != NULL)
+//         matrix_eval(bt->_right);
+//     // ==================== matrix addition =========================
+//     if (isop(bt->getName()))
+//     {
+//         if (bt->getName() == "+")
+//         {
+//             if (ismatrix(bt->_left->getName()))
+//                 tmp->tomatrix(bt->_left->getName());
+//             else
+//             {
+//                 delete tmp;
+//                 tmp = _matrices[bt->_left->getName()];
+//             }
+//             if (ismatrix(bt->_right->getName()))
+//                 tmp2->tomatrix(bt->_right->getName());
+//             else
+//             {
+//                 delete tmp2;
+//                 tmp2 = _matrices[bt->_right->getName()];
+//             }
+//             if (tmp->getRowLen() == tmp2->getRowLen() &&
+//                 tmp->getColLen() == tmp2->getColLen())
+//                 {
+//                     *tmp = *tmp * bt->_left->getSign();
+//                     *tmp2 = *tmp2 * bt->_right->getSign();
+//                     *(bt->_mat) = *tmp + *tmp2;
+//                 }
+//             else
+//                 cout << "error: different dimensions: can't be added" << endl;
+//         } else if (bt->getName() == "**")
+//         {
+//             if (ismatrix(bt->_left->getName()))
+//                 tmp->tomatrix(bt->_left->getName());
+//             else
+//             {
+//                 delete tmp;
+//                 tmp = _matrices[bt->_left->getName()];
+//             }
+//             if (ismatrix(bt->_right->getName()))
+//                 tmp2->tomatrix(bt->_right->getName());
+//             else
+//             {
+//                 delete tmp2;
+//                 tmp2 = _matrices[bt->_right->getName()];
+//             }
+//             if (tmp->getColLen() == tmp2->getRowLen())
+//                 *(bt->_mat) = *tmp | *tmp2;
+//             else
+//                 cout << "error: dimension don't match for ** be perfomed" << endl;
+//         }
+//     }
+//     return (bt->_mat);
+// }
 
 void SyntaxAnalyzer::delete_tree(BTree *&bt)
 {

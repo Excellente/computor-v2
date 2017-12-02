@@ -6,7 +6,7 @@ valid variable instructions
 
 to be handled:
 
-    -> a + = ?
+    -> a + = ? // for matrices
     -> different data types
     -> scan tree for errors : semantic analyzer
 
@@ -27,5 +27,4 @@ $> a = b / (2 -  1)
 $> d = c * a / 6 - 3
 
 Test cases:
-// a = - (1)
-// a = -1
+$> a = f(x) //segfault if f(x) hasn't been declared

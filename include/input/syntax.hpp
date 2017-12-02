@@ -16,11 +16,15 @@ class SyntaxAnalyzer{
         SyntaxAnalyzer();
         ~SyntaxAnalyzer();
 
-        bool is_matrix(string);
         int eval_exp(BTree *&b);
         int eval_exp(BTree *&, string);
-        bool can_eval(BTree *, string);
         int eval_func(BTree *, string);
+
+        bool is_matrix(string);
+        bool ismatrix_tree(BTree *r);
+        bool can_eval(BTree *, string);
+
+        Matrix *matrix_eval(BTree *&);
 
         void node_eval();
         void parse(BTree *&);
@@ -29,7 +33,6 @@ class SyntaxAnalyzer{
         void paranScan(char *);
         void op_equal(BTree *&);
         bool search_map(string);
-        void matrix_eval(BTree *&);
         void delete_tree(BTree *&);
         void var_declaration(BTree *&);
         void function_declaration(BTree *&);

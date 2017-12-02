@@ -36,6 +36,7 @@ class BTree{
         void print();
         void setName(string);
         void setValue(float);
+        void setMat(Matrix *);
         void tostring(string);
         void set_operands(Maps);
 
