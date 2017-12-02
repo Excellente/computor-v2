@@ -258,7 +258,12 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
     else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
         function_declaration(bt);
     else if ((isname(_rht) || isnumber(_rht) || isop(_rht)) && _lft == "?")
-        cout << eval_exp(bt->_right) << endl;
+    {
+        if (isop(_rht) && ismatrix_tree(bt->_right))
+            matrix_eval(bt->_right)->print_mat();
+        else
+           ; // cout << eval_exp(bt->_right) << endl;
+    }
     // if (isname(bt->_left->getName()) && isop(bt->_right->getName()));
 }
 
@@ -270,7 +275,7 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     string val = bt->_right->getName();
 
     if (bt->_left->getName() == "i")
-        cerr << "\033[1;31merror\033[0m: forbidden var_name: " << bt->_left->getName() << endl;
+        cerr << "\033[1;31merror:\033[0m forbidden var_name: " << bt->_left->getName() << endl;
     else
     {
         if (isnumber(val))

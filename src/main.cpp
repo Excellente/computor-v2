@@ -21,17 +21,19 @@ int main(int argc, char *argv[])
         try{
             cout << "\033[1;32m$> \033[0m";
             line = ios.read_line();
-            // if (!strcmp(line, "\t") || !strcmp(line, " ")) continue;
             if (!strcmp(line, "quit") || !strcmp(line, "exit") ||
                 !strcmp(line, "\\q"))
                 exit(EXIT_SUCCESS);
-            le.tokenize(line);
-            tmp = sy.shuntingYard(le.getTokens());
-            sa.build_ast(tmp, root);
-            sa.parse(root);
-            // root->print();
-            le.delete_map();
-            sa.delete_tree(root);
+            if (strcmp(line, "") && !regex_match(line, rw))
+            {
+                le.tokenize(line);
+                tmp = sy.shuntingYard(le.getTokens());
+                sa.build_ast(tmp, root);
+                sa.parse(root);
+                // root->print();
+                le.delete_map();
+                sa.delete_tree(root);
+            }
         }
         catch(IndexOutOfBounds &e){
             cerr << e.what() << endl;
