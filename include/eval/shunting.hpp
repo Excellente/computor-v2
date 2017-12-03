@@ -9,10 +9,13 @@ void print_stack(stack<SToken> st);
 
 class Shunting{
     public:
-        stack<SToken> shuntingYard(Maps t);
-        
-        void print(stack<SToken> s);
-        void _token_sign(string &t, int &i, int &s);
+        stack<SToken> shuntingYard(Maps);
+
+        void print(stack<SToken>);
+        void assembly_float(string &, Maps &);
+        void _token_sign(string &, int &, int &);
+        void assembly_matrix_multi(string &, Maps &);
+        void assembly_complex(string &, Maps &, SToken &, stack<SToken> &);
 };
 
 #endif

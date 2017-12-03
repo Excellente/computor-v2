@@ -23,6 +23,43 @@ void Shunting::_token_sign(string &tmp, int &inBrace, int &sign)
     }
 }
 
+void Shunting::assembly_float(string &t, Maps &_t)
+{
+    if (isnumber(t) && _t.look_ahead(0) == "." && isnumber(_t.look_ahead(1)))
+    {
+        int i = 2;
+
+        while (i--)
+            t += _t.getNextToken();
+    }
+}
+
+void Shunting::assembly_matrix_multi(string &tm, Maps &_tk)
+{
+    if (tm == "*" && tm == _tk.look_ahead(0))
+        tm += _tk.getNextToken();
+}
+
+void Shunting::assembly_complex(string &tm, Maps &_tk, SToken &st, stack<SToken> &ops)
+{
+    if (isnumber(tm) && _tk.look_ahead(0) == "*" && _tk.look_ahead(1) == "i")
+    {
+        int i = 2;
+        string tmp;
+
+        while (i--)
+            tmp = _tk.getNextToken();
+        tm += tmp;
+    }
+    else if (isnumber(tm) && _tk.look_ahead(0) == "i")
+        tm += _tk.getNextToken();
+    else if (isnumber(tm) && isname(_tk.look_ahead(0)) && _tk.look_ahead(1) != "(")
+    {
+        st = SToken(false, "*");
+        ops.push(st);
+    }
+}
+
 stack<SToken> Shunting::shuntingYard(Maps _tkns)
 {
     SToken st;
@@ -50,13 +87,16 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         _tok++;
         prev = tmp;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
-        if (tmp == "*" && tmp == _tkns.look_ahead(0))
-            tmp += _tkns.getNextToken();
-        if (isnumber(tmp) && isname(_tkns.look_ahead(0)) && _tkns.look_ahead(1) != "(")
-        {
-            st = SToken(false, "*");
-            opstack.push(st);
-        }
+        // if (isnumber(tmp) && _tkns.look_ahead(0) == "." && isnumber(_tkns.look_ahead(1)))
+        // {
+        //     int i = 2;
+
+        //     while (i--)
+        //         tmp += _tkns.getNextToken();
+        // }
+        assembly_float(tmp, _tkns);
+        assembly_matrix_multi(tmp, _tkns);
+        assembly_complex(tmp, _tkns, st, opstack);
         if ((_tok == 1 || _tkns.look_back(2) == "=") && isop(tmp))
         {
             if (tmp == "-" || tmp == "+")
@@ -99,7 +139,8 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
                 lstack.push(st);
             }
             opstack.pop();
-        } else if (isname(tmp) || isnumber(tmp) || isfunction(tmp) || tmp == "?" || ismatrix(tmp)) {
+        } else if (isname(tmp) || isnumber(tmp) || isfunction(tmp) ||
+                   tmp == "?" || ismatrix(tmp) || iscomplex(tmp)){
             st = SToken(false, tmp);
             st.setSign(sign);
             lstack.push(st);

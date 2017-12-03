@@ -52,6 +52,7 @@ bool isfloat(string s);
 bool ismatrix(string s);
 bool isnumber(string s);
 bool isinteger(string s);
+bool iscomplex(string s);
 bool isfunction(string s);
 bool iswhitespace(char c);
 

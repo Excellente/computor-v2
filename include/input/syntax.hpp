@@ -6,8 +6,9 @@
 #include "eval/btree.hpp"
 #include "input/lexer.hpp"
 #include "eval/stoken.hpp"
-#include "eval/function.hpp"
 #include "eval/matrix.hpp"
+#include "eval/complex.hpp"
+#include "eval/function.hpp"
 
 void print_stack(stack<SToken>);
 
@@ -21,10 +22,13 @@ class SyntaxAnalyzer{
         int eval_func(BTree *, string);
 
         bool is_matrix(string);
-        bool ismatrix_tree(BTree *r);
+        bool search_map(string);
+        bool ismatrix_tree(BTree *);
+        bool iscomplex_tree(BTree *);
         bool can_eval(BTree *, string);
 
         Matrix *matrix_eval(BTree *&);
+        Complex *complex_eval(BTree *&);
 
         void node_eval();
         void parse(BTree *&);
@@ -32,7 +36,6 @@ class SyntaxAnalyzer{
         void value_of(string);
         void paranScan(char *);
         void op_equal(BTree *&);
-        bool search_map(string);
         void delete_tree(BTree *&);
         void var_declaration(BTree *&);
         void function_declaration(BTree *&);
@@ -48,6 +51,7 @@ class SyntaxAnalyzer{
         BTree *_f_rhs;
         map<string, Function*> _funct;
         map<string, string> _vars_int;
+        map<string, Complex*> _complex;
         map<string, Matrix*> _matrices;
         map<string, string> _vars_float;
 };

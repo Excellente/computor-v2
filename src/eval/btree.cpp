@@ -6,6 +6,7 @@ BTree::BTree()
     _value = 0;
     _name = "";
     _mat = NULL;
+    _com = NULL;
     _left = NULL;
     _right = NULL;
 }
@@ -14,6 +15,7 @@ BTree::BTree(string op, int sign) : _name(op), _sign(sign)
 {
     _value = 0;
     _mat = NULL;
+    _com = NULL;
     _left = NULL;
     _right = NULL;
 }
@@ -61,6 +63,10 @@ Matrix *BTree::getMat() const{
     return (_mat);
 }
 
+Complex *BTree::getCom() const{
+    return (_com);
+}
+
 BTree *BTree::getLeft() const{
     return (_left);
 }
@@ -96,6 +102,7 @@ int BTree::operator/(BTree const &r){
 BTree &BTree::operator=(BTree const &r)
 {
     _mat = r._mat;
+    _com = r._com;
     _sign = r._sign;
     _name = r._name;
     _left = r._left;
@@ -117,6 +124,10 @@ void BTree::tostring(string s)
 
 void BTree::setMat(Matrix *_m){
     _mat = _m;
+}
+
+void BTree::setCom(Complex *_c){
+    _com = _c;
 }
 
 void BTree::setName(string _n){

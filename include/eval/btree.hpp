@@ -4,11 +4,13 @@
 #include "common.hpp"
 #include "input/map.hpp"
 #include "eval/matrix.hpp"
+#include "eval/complex.hpp"
 
 class BTree{
 
     public:
         Matrix *_mat;
+        Complex *_com;
         BTree *_left;
         BTree *_right;
 
@@ -23,6 +25,7 @@ class BTree{
         string getName() const;
         BTree *getLeft() const;
         Matrix *getMat() const;
+        Complex *getCom() const;
         BTree *getRight() const;
         Maps getOperand1() const;
         Maps getOperand2() const;
@@ -38,6 +41,7 @@ class BTree{
         void setValue(float);
         void setMat(Matrix *);
         void tostring(string);
+        void setCom(Complex *);
         void set_operands(Maps);
 
     private:
