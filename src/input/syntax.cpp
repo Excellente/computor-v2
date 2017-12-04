@@ -78,9 +78,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
 {
     BTree *tb;
     stack<SToken> tmp;
+    InvalidSyntaxException ise;
 
-    // print_stack(s);
-    // return ;
     while (!s.empty())
     {
         if (isop(s.top().getValue()))
@@ -133,6 +132,8 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
                 tmp.pop();        
             }
         }
+        else
+            throw ise;
     }
     while (!tmp.empty())
     {
@@ -145,6 +146,10 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
 
 void SyntaxAnalyzer::parse(BTree *&bt)
 {
+    Error err;
+
+    err.ScanTree(bt);
+    err.OperandScan(bt);
     if (isop(bt->getName()))
     {
         if (bt->getName() == "=")
@@ -152,10 +157,15 @@ void SyntaxAnalyzer::parse(BTree *&bt)
         else
             cout << eval_exp(bt) << endl;
     }
-    else if (isname(bt->getName()) || isfunction(bt->getName()))
+    else if (is_matrix(bt->getName()) || isname(bt->getName()) || isnumber(bt->getName()) || 
+             isfunction(bt->getName()) || iscomplex(bt->getName()))
     {
-        if (bt->_left == NULL && bt->_right == NULL)
+        if (isfunction(bt->getName()))
             value_of(bt->getName());
+        else
+            cout << "use: <exp> = ?: e.g 2 + a = ?" << endl;
+        // if (bt->_left == NULL && bt->_right == NULL)
+        //     value_of(bt->getName());
     }
 }
 
@@ -215,7 +225,7 @@ void SyntaxAnalyzer::value_of(string s)
             cout << _vars_int[s] << endl;
     }
     else
-        cout << "error: " << s << ": hasn't been declared" << endl;
+        cout << "\033[1;31merror:\033[0m " << s << ": hasn't been declared" << endl;
 }
 
 void SyntaxAnalyzer::op_equal(BTree *&bt)
@@ -223,21 +233,35 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
     string _lft = bt->_left->getName();
     string _rht = bt->_right->getName();
 
-    // name = name | number | functionCall | exp
+    // varDeclare = name | number | functionCall | exp
     if (isname(_lft) && (isnumber(_rht) || isname(_rht) || isfunction(_rht) ||
-        ismatrix(_rht) || isop(_rht)))
+        ismatrix(_rht) || iscomplex(_rht) || isop(_rht)))
         var_declaration(bt);
     // functionDeclare = name | number | functionCall | exp    
     else if (isfunction(_lft) && (isnumber(_rht) || isname(_rht) || isop(_rht)))
         function_declaration(bt);
-    else if ((isname(_rht) || isnumber(_rht) || isop(_rht)) && _lft == "?")
+    else if (_rht == "?" || _lft == "?")
     {
-        if (isfunction(_rht))
-            value_of(_rht);
-        else if (isop(_rht) && ismatrix_tree(bt->_right))
-            matrix_eval(bt->_right)->print_mat();
-        else
-           cout << eval_exp(bt->_right) << endl;
+        if (_lft == "?")
+        {
+            if (ismatrix_tree(bt->_right))
+                matrix_eval(bt->_right)->print_mat();
+            else if (iscomplex_tree(bt->_right))
+                complex_eval(bt->_right)->print_cn();
+            else
+                cout << eval_exp(bt->_right) << endl;
+        }
+        else if (_rht == "?")
+        {
+            if (isname(_lft))
+                value_of(_lft);
+            else if (iscomplex(_lft))
+                complex_eval(bt->_left)->print_cn();
+            else if (ismatrix(_lft))
+                matrix_eval(bt->_left)->print_mat();
+            else if (isnumber(_lft))
+                cout << _lft << endl;
+        }
     }
 }
 
@@ -291,15 +315,20 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
                 _vars_int[bt->_left->getName()] = _vars_int[val];
             }
             else
-                cout << bt->_right->getName() << ": has not been declared" << endl;
+                cout << "\033[1;31merror: \033[0m" << bt->_right->getName() << ": has not been declared." << endl;
         }
         else if (isfunction(val))
         {
             lp = val.find("(");
             fname = val.substr(0, lp - 0);
             vname = val.substr(++lp, 1);
-            _vars_int[bt->_left->getName()] = to_string(eval_func(_funct[fname]->_f_rhs, vname));
-            value_of(val);
+            if (_funct.find(fname) != _funct.end())
+            {
+                _vars_int[bt->_left->getName()] = to_string(eval_func(_funct[fname]->_f_rhs, vname));
+                value_of(val);
+            }
+            else
+                cout << "\033[1;31merror: \033[0m" << bt->_right->getName() << ": has not been declared." << endl;
         }
         else if (ismatrix(val))
         {
@@ -314,17 +343,35 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
         else if (isop(val))
         {
             if (ismatrix_tree(bt->_right))
+            {
+                if (_vars_int.find(bt->_left->getName()) != _vars_int.end())
+                    _vars_int.erase(bt->_left->getName());
+                else if (_complex.find(bt->_left->getName()) != _complex.end())
+                    _complex.erase(bt->_left->getName());
                 _matrices[bt->_left->getName()] = matrix_eval(bt->_right);
+            }
             else if (iscomplex_tree(bt->_right))
+            {
+                if (_matrices.find(bt->_left->getName()) != _matrices.end())
+                    _matrices.erase(bt->_left->getName());
+                else if (_vars_int.find(bt->_left->getName()) != _vars_int.end())
+                    _vars_int.erase(bt->_left->getName());
                 _complex[bt->_left->getName()] = complex_eval(bt->_right);
+            }
             else
+            {
+                if (_matrices.find(bt->_left->getName()) != _matrices.end())
+                    _matrices.erase(bt->_left->getName());
+                else if (_complex.find(bt->_left->getName()) != _complex.end())
+                    _complex.erase(bt->_left->getName());
                 _vars_int[bt->_left->getName()] = to_string(eval_exp(bt->_right));
+            }
         }
         if (!isfunction(bt->_right->getName()))
         {
             if (_matrices.find(bt->_left->getName()) != _matrices.end())
                 _matrices[bt->_left->getName()]->print_mat();
-            if (_complex.find(bt->_left->getName()) != _complex.end()) 
+            if (_complex.find(bt->_left->getName()) != _complex.end())
                 _complex[bt->_left->getName()]->print_cn();
             else if (_vars_int.find(bt->_left->getName()) != _vars_int.end())
                 cout << _vars_int[bt->_left->getName()] << endl;
@@ -390,6 +437,11 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
         }
         else if (search_map(bt->getName()))
             bt->setValue(stod(_vars_int[bt->getName()]) * bt->getSign());
+        else
+        {
+            cout << "\033[1;31merror: \033[0m" << bt->getName() << ": has not been declared." << endl;
+            return;
+        }
     }
     else if (isnumber(bt->getName()))
         bt->setValue(stod(bt->getName()) * bt->getSign());

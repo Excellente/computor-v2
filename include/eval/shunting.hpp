@@ -4,18 +4,20 @@
 #include "common.hpp"
 #include "eval/btree.hpp"
 #include "eval/stoken.hpp"
+#include "input/exceptions.hpp"
 
 void print_stack(stack<SToken> st);
 
 class Shunting{
     public:
-        stack<SToken> shuntingYard(Maps);
+        stack<SToken> shuntingYard(Maps) throw (InvalidSyntaxException);
 
         void print(stack<SToken>);
         void assembly_float(string &, Maps &);
         void _token_sign(string &, int &, int &);
         void assembly_matrix_multi(string &, Maps &);
         void assembly_complex(string &, Maps &, SToken &, stack<SToken> &);
+        void leading_sign(int, string, Maps &, SToken &, stack<SToken> &) throw (InvalidSyntaxException);
 };
 
 #endif

@@ -40,6 +40,23 @@ void Shunting::assembly_matrix_multi(string &tm, Maps &_tk)
         tm += _tk.getNextToken();
 }
 
+void Shunting::leading_sign(int _n, string t, Maps &_t, SToken &st, stack<SToken> &ls) throw (InvalidSyntaxException)
+{
+    InvalidSyntaxException ise;
+
+    if ((_n == 1 || _t.look_back(2) == "=") && isop(t))
+    {
+        if (t == "-" || t == "+")
+        {
+            st = SToken(false, "0");
+            st.setSign(1);
+            ls.push(st);
+        }
+        else
+            throw ise;
+    }
+}
+
 void Shunting::assembly_complex(string &tm, Maps &_tk, SToken &st, stack<SToken> &ops)
 {
     if (isnumber(tm) && _tk.look_ahead(0) == "*" && _tk.look_ahead(1) == "i")
@@ -60,7 +77,7 @@ void Shunting::assembly_complex(string &tm, Maps &_tk, SToken &st, stack<SToken>
     }
 }
 
-stack<SToken> Shunting::shuntingYard(Maps _tkns)
+stack<SToken> Shunting::shuntingYard(Maps _tkns) throw (InvalidSyntaxException)
 {
     SToken st;
     string tmp;
@@ -72,6 +89,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
     stack<SToken> rstack;
     stack<SToken> opstack;
     map<string, int> o_pre;
+    InvalidSyntaxException ise;
 
     o_pre["="] = 0;
     o_pre["+"] = 1;
@@ -87,27 +105,10 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
         _tok++;
         prev = tmp;
         if ((tmp = _tkns.getNextToken()) == _EOF_) break;
-        // if (isnumber(tmp) && _tkns.look_ahead(0) == "." && isnumber(_tkns.look_ahead(1)))
-        // {
-        //     int i = 2;
-
-        //     while (i--)
-        //         tmp += _tkns.getNextToken();
-        // }
         assembly_float(tmp, _tkns);
         assembly_matrix_multi(tmp, _tkns);
         assembly_complex(tmp, _tkns, st, opstack);
-        if ((_tok == 1 || _tkns.look_back(2) == "=") && isop(tmp))
-        {
-            if (tmp == "-" || tmp == "+")
-            {
-                st = SToken(false, "0");
-                st.setSign(1);
-                lstack.push(st);
-            }
-            else
-                cout << "computorv2: InvalidOperandException" << endl;
-        }
+        leading_sign(_tok, tmp, _tkns, st, lstack);
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
         if (tmp == "[" && _tkns.look_ahead(0) == "[")
@@ -145,6 +146,8 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns)
             st.setSign(sign);
             lstack.push(st);
         }
+        else
+            throw ise;
     }
     while (!opstack.empty())
     {

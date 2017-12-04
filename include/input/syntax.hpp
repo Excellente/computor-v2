@@ -6,6 +6,7 @@
 #include "eval/btree.hpp"
 #include "input/lexer.hpp"
 #include "eval/stoken.hpp"
+#include "input/error.hpp"
 #include "eval/matrix.hpp"
 #include "eval/complex.hpp"
 #include "eval/function.hpp"

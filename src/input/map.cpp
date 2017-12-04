@@ -27,11 +27,9 @@ string Maps::look_back(int l)
 {
     int i;
     mapit_t bgin;
-    
-    bgin = _bgn;
-    if (_index > 1)
-        i = l + 1;
-    else i = l;
+
+    i = l;    
+    bgin = _bgn + 1;
 
     while (i-- && bgin != begin()) bgin--;
     if (bgin == begin() || (_index - l) < 0)
@@ -254,6 +252,4 @@ void Maps::check_matrix(string &t)
     }
     t += look_ahead(i++);
     if (ismatrix(t)) _index += i;
-    else
-        cout << "error: matrix InvalidOperandException" << endl;
 }

@@ -39,9 +39,20 @@ int main(int argc, char *argv[])
             cerr << e.what() << endl;
             exit(EXIT_FAILURE);
         }
-        catch(InvalidSyntaxException &e){
-            cerr << e.what() << endl;
+        catch(InvalidOperatorException &e){
+            cerr << "\033[1;31merror:\033[0m " << e.what() << endl;
             exit(EXIT_FAILURE);
+        }
+        catch(InvalidOperandException &e){
+            cerr << "\033[1;31merror:\033[0m " << e.what() << endl;
+            exit(EXIT_FAILURE);
+        }
+        catch(InvalidSyntaxException &e){
+            cerr << "\033[1;31merror:\033[0m " << e.what() << endl;
+            exit(EXIT_FAILURE);
+        }
+        catch(invalid_argument &e){
+            cerr << "\033[1;31merror:\033[0m invalid_argument: " << e.what() << endl;
         }
     }
     return (0);

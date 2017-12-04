@@ -25,6 +25,8 @@ $> a * b = ?
 $> a * b - (3 + (4 - 2)) = ?
 $> a = b / (2 -  1)
 $> d = c * a / 6 - 3
+$> a = f(x) //segfault if f(x) hasn't been declared : fixed
+$> leading sign //ignore if tmp is = and next is +|- and next is num|name: fixed
 
-Test cases:
-$> a = f(x) //segfault if f(x) hasn't been declared
+Test cases to fix:
+$> a = ? // var / expression resolution

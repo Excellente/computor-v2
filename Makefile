@@ -5,7 +5,7 @@ INC 	= ./include/
 SRC 	= main.cpp polynom/computor.cpp polynom/term.cpp input/syntax.cpp	\
 		  input/lexer.cpp input/map.cpp input/iostream.cpp eval/btree.cpp 	\
 		  eval/var.cpp eval/shunting.cpp eval/stoken.cpp eval/function.cpp	\
-		  eval/matrix.cpp eval/complex.cpp
+		  eval/matrix.cpp eval/complex.cpp input/error.cpp
 
 SRCDIR 	= ./src/
 SRCS 	= $(addprefix $(SRCDIR), $(SRC))
