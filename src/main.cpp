@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[])
 {
+    int _e = 0;
     char *line;
     IOStream ios;
     Shunting sy;
@@ -27,12 +28,21 @@ int main(int argc, char *argv[])
             if (strcmp(line, "") && !regex_match(line, rw))
             {
                 le.tokenize(line);
-                tmp = sy.shuntingYard(le.getTokens());
-                sa.build_ast(tmp, root);
-                sa.parse(root);
-                // root->print();
+                tmp = sy.shuntingYard(le.getTokens(), _e);
+                if (_e)
+                {
+                    _e = 0;
+                    le.delete_map();
+                    continue;
+                }
+                if (!tmp.empty())
+                {
+                    sa.build_ast(tmp, root);
+                    sa.parse(root);
+                    // root->print();
+                    sa.delete_tree(root);
+                }
                 le.delete_map();
-                sa.delete_tree(root);
             }
         }
         catch(IndexOutOfBounds &e){
@@ -49,7 +59,7 @@ int main(int argc, char *argv[])
         }
         catch(InvalidSyntaxException &e){
             cerr << "\033[1;31merror:\033[0m " << e.what() << endl;
-            exit(EXIT_FAILURE);
+            // exit(EXIT_FAILURE);
         }
         catch(invalid_argument &e){
             cerr << "\033[1;31merror:\033[0m invalid_argument: " << e.what() << endl;

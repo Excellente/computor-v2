@@ -18,9 +18,9 @@ class SyntaxAnalyzer{
         SyntaxAnalyzer();
         ~SyntaxAnalyzer();
 
-        int eval_exp(BTree *&b);
-        int eval_exp(BTree *&, string);
-        int eval_func(BTree *, string);
+        double eval_exp(BTree *&b);
+        double eval_exp(BTree *&, string);
+        double eval_func(BTree *, string);
 
         bool is_matrix(string);
         bool search_map(string);
@@ -52,7 +52,7 @@ class SyntaxAnalyzer{
         BTree *_bt;
         BTree *_f_rhs;
         map<string, Function*> _funct;
-        map<string, string> _vars_int;
+        map<string, double> _vars_int;
         map<string, Complex*> _complex;
         map<string, Matrix*> _matrices;
         map<string, string> _vars_float;

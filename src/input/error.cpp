@@ -17,7 +17,8 @@ bool Error::hasop(BTree *bt)
 
     if (bt->_left != NULL)
         op |= hasop(bt->_left);
-    if (isop(bt->getName()));
+    if (isop(bt->getName()))
+        ;
         op = true;
     if (bt->_right != NULL)
         op |= hasop(bt->_right);

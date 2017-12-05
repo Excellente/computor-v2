@@ -19,7 +19,7 @@ class BTree{
         BTree(const BTree &);
         BTree(string op = "", int sign = 1);
 
-        int getSign() const;
+        double getSign() const;
         string getName() const;
         BTree *getLeft() const;
         Matrix *getMat() const;
@@ -32,7 +32,7 @@ class BTree{
         double operator+(BTree const &);
         double operator-(BTree const &);
         double operator*(BTree const &);
-        float operator/(BTree const &);
+        double operator/(BTree const &);
         BTree &operator=(BTree const &);
 
         void visit();
@@ -45,12 +45,12 @@ class BTree{
         void set_operands(Maps);
 
     private:
-        int _sign;
+        double _sign;
         string _name;
         Maps _oprnd1;
         Maps _oprnd2;
         float _value1;
-        float _value;
+        double _value;
 };
 
 #endif

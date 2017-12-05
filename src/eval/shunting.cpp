@@ -85,7 +85,7 @@ void Shunting::assembly_complex(string &tm, Maps &_tk, SToken &st, stack<SToken>
     }
 }
 
-stack<SToken> Shunting::shuntingYard(Maps _tkns) throw (InvalidSyntaxException)
+stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
 {
     SToken st;
     string tmp;
@@ -121,9 +121,14 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns) throw (InvalidSyntaxException)
             _tkns.check_funct(tmp);
         if (tmp == "[" && _tkns.look_ahead(0) == "[")
             _tkns.check_matrix(tmp);
+        if (!isvalid_syntax(tmp))
+        {
+            _err = 1;
+            cout << "\033[1;31merror: \033[0minvalid syntax: " << tmp << endl;
+            break;
+        }
         if (isop(tmp) || tmp == "(")
         {
-            _token_sign(tmp, inBrace, sign);
             st = SToken(true, tmp);
             if (isop(tmp))
             {

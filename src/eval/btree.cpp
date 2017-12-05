@@ -47,7 +47,7 @@ double BTree::pow(double b, double e)
     return (res);
 }
 
-int BTree::getSign() const{
+double BTree::getSign() const{
     return (_sign);
 }
 
@@ -95,7 +95,7 @@ double BTree::operator*(BTree const &r){
     return (_value * r.getValue());
 }
 
-float BTree::operator/(BTree const &r){
+double BTree::operator/(BTree const &r){
     return (_value / r.getValue());
 }
 
@@ -141,6 +141,11 @@ void BTree::setValue(float _v){
 void BTree::visit(){
     if (_sign == -1)
         cout << "- ";
+    // if (_left)
+    //     cout << _left->getName() << " " << _name << " ";
+    // if (_right)
+    //     cout << _right->getName() << endl;
+    // if (!_left && !_right)
     cout << _name << endl;
 }
 

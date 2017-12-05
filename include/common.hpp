@@ -55,12 +55,13 @@ bool isinteger(string s);
 bool iscomplex(string s);
 bool isfunction(string s);
 bool iswhitespace(char c);
-
-void print(vector<string> s);
+bool isvalid_syntax(string s);
 
 string tolower(string s);
 string _substr(string l, int s, int e);
 vector<string> strsplit(string del, string _exp);
+
+void print(vector<string> s);
 
 typedef vector<string>::iterator mapit_t;
 

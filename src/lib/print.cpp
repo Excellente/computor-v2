@@ -31,12 +31,13 @@ void print_stack(stack<SToken> st)
     { 
         if (bg->getSign() == -1)
             cout << "- ";
-        else if (bg->getSign() == 1)
-            cout << "+ ";
         cout << bg->getValue() << " ";
     }
     bg = tmp.begin();
-    for (; bg != en; bg++)
-        st.push(*bg);
+    for (; bg != en; en--)
+    {
+        if (en == tmp.end()) en--;
+            st.push(*en);
+    }
     cout << endl;
 }

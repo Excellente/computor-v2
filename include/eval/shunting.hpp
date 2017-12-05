@@ -10,7 +10,7 @@ void print_stack(stack<SToken> st);
 
 class Shunting{
     public:
-        stack<SToken> shuntingYard(Maps) throw (InvalidSyntaxException);
+        stack<SToken> shuntingYard(Maps, int &);
 
         void print(stack<SToken>);
         void assembly_float(string &, Maps &);
