@@ -13,6 +13,13 @@ bool SyntaxAnalyzer::is_matrix(string m)
     return (false);
 }
 
+bool SyntaxAnalyzer::is_complex(string m)
+{
+    if (iscomplex(m) || _complex.find(m) != _complex.end())
+        return (true);
+    return (false);
+}
+
 bool SyntaxAnalyzer::ismatrix_tree(BTree *r)
 {
     bool res = false;
@@ -51,7 +58,12 @@ bool SyntaxAnalyzer::can_eval(BTree *r, string v)
     if (isname(name) && name != v)
     {
         getVal(r);
-        r->setName(to_string(r->getValue()));
+        if (is_complex(r->getName()))
+            r->setName(_complex[r->getName()]->tostring());
+        else if (is_matrix(r->getName()))
+            r->setName(_matrices[r->getName()]->tostring());
+        else
+            r->setName(to_string(r->getValue()));
         retval = true;
     }
     else if (isfunction(name))
@@ -160,10 +172,7 @@ void SyntaxAnalyzer::parse(BTree *&bt)
     else if (is_matrix(bt->getName()) || isname(bt->getName()) || isnumber(bt->getName()) || 
              isfunction(bt->getName()) || iscomplex(bt->getName()))
     {
-        if (isfunction(bt->getName()))
-            value_of(bt->getName());
-        else
-            cout << "use: <exp> = ?: e.g 2 + a = ?" << endl;
+        cout << "use: <exp> = ?: e.g 2 + a = ?" << endl;
         // if (bt->_left == NULL && bt->_right == NULL)
         //     value_of(bt->getName());
     }
@@ -186,8 +195,7 @@ bool SyntaxAnalyzer::search_map(string s)
                 return (true);
     
     } else {
-        if (_matrices.find(s) != _matrices.end() ||
-            _vars_int.find(s) != _vars_int.end() ||
+        if (_matrices.find(s) != _matrices.end() || _vars_int.find(s) != _vars_int.end() ||
             _complex.find(s) != _complex.end())
             return (true);
     }
@@ -208,7 +216,14 @@ void SyntaxAnalyzer::value_of(string s)
         if (isname(vname))
         {
             if (search_map(vname))
-                cout << eval_func(_funct[fname]->_f_rhs, _vars_int[vname]) << endl;
+            {
+                if (_matrices.find(s) != _matrices.end())
+                    cout << eval_func(_funct[fname]->_f_rhs, _matrices[vname]->tostring()) << endl;
+                else if (_vars_int.find(s) != _vars_int.end())
+                    cout << eval_func(_funct[fname]->_f_rhs, _vars_int[vname]) << endl;
+                else if (_complex.find(s) != _complex.end())
+                    cout << eval_func(_funct[fname]->_f_rhs, _complex[vname]->tostring()) << endl;
+            }
             else
                 cout << _funct[fname]->getString() << endl;
         }
@@ -253,7 +268,9 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
         }
         else if (_rht == "?")
         {
-            if (isname(_lft))
+            if (isfunction(_lft))
+                value_of(_lft);
+            else if (isname(_lft))
                 value_of(_lft);
             else if (iscomplex(_lft))
                 complex_eval(bt->_left)->print_cn();
@@ -278,6 +295,8 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
     {
         if (isnumber(val))
         {
+            cout << "rhs is a number" << endl;
+            //check for variables in other types, delete if exit
             if (_matrices.find(bt->_left->getName()) != _matrices.end())
                 _matrices.erase(bt->_left->getName());
             else if (_complex.find(bt->_left->getName()) != _complex.end())
@@ -394,7 +413,6 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     }
     else if (isname(_f_rhs->getName()) && vname != _f_rhs->getName())
     {
-        cout << "var: " << vname << endl;
         if (search_map(_f_rhs->getName()))
         {
             _funct[fname] = f;
@@ -586,11 +604,12 @@ int SyntaxAnalyzer::eval_exp(BTree *&bt)
             {
                 if (bt->_right->getValue() != 0)
                 {
+                    cout << "division op" << endl;
                     res = *bt->_left / *bt->_right;
                     bt->setValue(res);
                 }
                 else
-                cout << "Error: InvalidOperandException" << endl;
+                    throw "ioe";
             }
         }
     }

@@ -15,6 +15,7 @@ class Matrix{
         Matrix();
         ~Matrix();
 
+        string tostring();
         double getColLen() const;
         double getRowLen() const;
         Matrix &operator*(const double);

@@ -38,9 +38,9 @@ BTree::BTree(const BTree &r)
         _right = r._right;
 }
 
-int BTree::pow(int b, int e)
+double BTree::pow(double b, double e)
 {
-    int res = 1;
+    double res = 1;
 
     for (int i = 0; i < e; i++)
         res *= b;
@@ -51,7 +51,7 @@ int BTree::getSign() const{
     return (_sign);
 }
 
-int BTree::getValue() const{
+double BTree::getValue() const{
     return (_value);
 }
 
@@ -83,19 +83,19 @@ Maps BTree::getOperand2() const{
     return (_oprnd2);
 }
 
-int BTree::operator+(BTree const &r){
+double BTree::operator+(BTree const &r){
     return (_value + r.getValue());
 }
 
-int BTree::operator-(BTree const &r){
+double BTree::operator-(BTree const &r){
     return (_value - r.getValue());
 }
 
-int BTree::operator*(BTree const &r){
+double BTree::operator*(BTree const &r){
     return (_value * r.getValue());
 }
 
-int BTree::operator/(BTree const &r){
+float BTree::operator/(BTree const &r){
     return (_value / r.getValue());
 }
 

@@ -15,6 +15,7 @@ class Complex{
 
         double getReal() const;
         double getImag() const;
+        string tostring() const;
         Complex &operator+(const Complex &r);
         Complex &operator*(const Complex &r);
 

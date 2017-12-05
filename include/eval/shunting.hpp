@@ -17,7 +17,7 @@ class Shunting{
         void _token_sign(string &, int &, int &);
         void assembly_matrix_multi(string &, Maps &);
         void assembly_complex(string &, Maps &, SToken &, stack<SToken> &);
-        void leading_sign(int, string, Maps &, SToken &, stack<SToken> &) throw (InvalidSyntaxException);
+        bool leading_sign(int, int, string &, Maps &, SToken &, stack<SToken> &) throw (InvalidSyntaxException);
 };
 
 #endif

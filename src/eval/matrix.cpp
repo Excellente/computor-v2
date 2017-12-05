@@ -104,11 +104,6 @@ void Matrix::tomatrix(string st)
         for (int j = 0; j < _col_length; j++, rbe++)
             matNN[i][j] = stod(*rbe);
     }
-    // ite = vals.end();
-    // itb = vals.begin();
-    // for (; itb != ite; itb++)
-    //     cout << *itb << " ";
-    // cout << endl;
 }
 
 void Matrix::print_mat()
@@ -125,6 +120,23 @@ void Matrix::print_mat()
     }
 }
 
+string Matrix::tostring()
+{
+    string str = "";
+
+    for (int i = 0; i < _row_length; i++)
+    {
+        str += " [";
+        for (int j = 0; j < _col_length; j++)
+            if (j < _col_length - 1)
+                str += to_string(matNN[i][j]) + " , ";
+            else 
+                str += to_string(matNN[i][j]);
+        str += "]";
+    }
+    return (str);
+}
+
 void Matrix::getValues(string &m, vector<string> &v, int f)
 {
     string mat_str;
@@ -136,9 +148,4 @@ void Matrix::getValues(string &m, vector<string> &v, int f)
     else np += 1;
     mat_str = m.substr(np, pe - np);
     v.push_back(mat_str);
-    // cout << "np: " << np << "\npe: " << pe << "\n" << mat_str << endl;
 }
-
-// void Matrix::row(string n, vector<string> &m)
-// {
-// }

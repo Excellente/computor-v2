@@ -52,7 +52,8 @@ void Complex::tocomplex(string cn)
     }
 }
 
-void Complex::print_cn() const{
+void Complex::print_cn() const
+{
     if (_real != 0)
     {
         cout << _real;
@@ -69,4 +70,26 @@ void Complex::print_cn() const{
         else
             cout << 0 << endl;
     }
+}
+
+string Complex::tostring() const
+{
+    string str = "";
+
+    if (_real != 0)
+    {
+        str += to_string(_real);
+        if (_imag > 0)
+            str += " + " + to_string(_imag) + "i" ;
+        else if (_imag != 0)
+            str += " - " + to_string(_imag * -1) + "i";
+    }
+    else
+    {
+        if (_imag != 0)
+            str += to_string(_imag) + "i";
+        else
+            str += "0";
+    }
+    return (str);
 }

@@ -40,21 +40,29 @@ void Shunting::assembly_matrix_multi(string &tm, Maps &_tk)
         tm += _tk.getNextToken();
 }
 
-void Shunting::leading_sign(int _n, string t, Maps &_t, SToken &st, stack<SToken> &ls) throw (InvalidSyntaxException)
+bool Shunting::leading_sign(int s, int _n, string &t, Maps &_t, SToken &st, stack<SToken> &ls) throw (InvalidSyntaxException)
 {
+    int _sign;
     InvalidSyntaxException ise;
 
-    if ((_n == 1 || _t.look_back(2) == "=") && isop(t))
+    if ((_n == 1 || _t.look_back(2) == "=" || _t.look_back(2) == "(") && isop(t))
     {
         if (t == "-" || t == "+")
         {
-            st = SToken(false, "0");
-            st.setSign(1);
+            if (t == "-")
+                _sign = -1;
+            else
+                _sign = 1;
+            t = _t.getNextToken();
+            st = SToken(false, t);
+            st.setSign(_sign * s);
             ls.push(st);
+            return (true);
         }
         else
             throw ise;
     }
+    return (false);
 }
 
 void Shunting::assembly_complex(string &tm, Maps &_tk, SToken &st, stack<SToken> &ops)
@@ -108,7 +116,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns) throw (InvalidSyntaxException)
         assembly_float(tmp, _tkns);
         assembly_matrix_multi(tmp, _tkns);
         assembly_complex(tmp, _tkns, st, opstack);
-        leading_sign(_tok, tmp, _tkns, st, lstack);
+        if (leading_sign(sign, _tok, tmp, _tkns, st, lstack)) continue;
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
         if (tmp == "[" && _tkns.look_ahead(0) == "[")

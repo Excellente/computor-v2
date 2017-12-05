@@ -24,6 +24,7 @@ class SyntaxAnalyzer{
 
         bool is_matrix(string);
         bool search_map(string);
+        bool is_complex(string);
         bool ismatrix_tree(BTree *);
         bool iscomplex_tree(BTree *);
         bool can_eval(BTree *, string);
