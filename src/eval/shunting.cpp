@@ -1,27 +1,27 @@
 #include "eval/shunting.hpp"
 
-void Shunting::_token_sign(string &tmp, int &inBrace, int &sign)
-{
-    if (tmp == "(") inBrace += 1;
-    if (tmp == ")") inBrace -= 1;
-    if (tmp == "-")
-    {
-        tmp = "+";
-        if (inBrace > 0)
-        {
-            if (sign == -1)
-                sign = 1;
-            else
-                sign = -1;
-        }
-        if (inBrace == 0) sign = -1;
-    }
-    else if (tmp == "+")
-    {
-        if (!inBrace && sign == -1)
-            sign = 1;
-    }
-}
+// void Shunting::_token_sign(string &tmp, int &inBrace, int &sign)
+// {
+//     if (tmp == "(") inBrace += 1;
+//     if (tmp == ")") inBrace -= 1;
+//     if (tmp == "-")
+//     {
+//         tmp = "+";
+//         if (inBrace > 0)
+//         {
+//             if (sign == -1)
+//                 sign = 1;
+//             else
+//                 sign = -1;
+//         }
+//         if (inBrace == 0) sign = -1;
+//     }
+//     else if (tmp == "+")
+//     {
+//         if (!inBrace && sign == -1)
+//             sign = 1;
+//     }
+// }
 
 void Shunting::assembly_float(string &t, Maps &_t)
 {
@@ -100,6 +100,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
     InvalidSyntaxException ise;
 
     o_pre["="] = 0;
+    int _tok = 0;
     o_pre["+"] = 1;
     o_pre["-"] = 1;
     o_pre["*"] = 2;
@@ -107,7 +108,6 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
     o_pre["/"] = 3;
     o_pre["%"] = 4;
     o_pre["^"] = 5;
-    int _tok = 0;
     while (1)
     {
         _tok++;
@@ -172,5 +172,6 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
         rstack.push(lstack.top());
         lstack.pop();
     }
+    // print_stack(rstack);
     return (rstack);
 }

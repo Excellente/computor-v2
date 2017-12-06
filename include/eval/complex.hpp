@@ -18,6 +18,7 @@ class Complex{
         string tostring() const;
         Complex &operator+(const Complex &r);
         Complex &operator*(const Complex &r);
+        Complex &operator^(const Complex &r);
 
         void print_cn() const;
         void tocomplex(string);

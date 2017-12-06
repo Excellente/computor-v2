@@ -37,6 +37,27 @@ Complex &Complex::operator*(const Complex &r)
     return (*this);
 }
 
+Complex &Complex::operator^(const Complex &r)
+{
+    double _2bi;
+    int d = r._real;
+    double _nimag = _imag;
+    double _nreal = _real;
+
+    for (int i = r._real; i > 1; i--)
+    {
+        if (d % 2 == 0)
+            _2bi = (_imag * _nimag) * -1;
+        else
+            _2bi = (_imag * _nimag);
+        _nreal = (_real * _nreal) + _2bi;
+        _nimag = 2 * _nimag * _nreal;
+    }
+    _imag = _nimag;
+    _real = _nreal;
+    return (*this);
+}
+
 void Complex::tocomplex(string cn)
 {
     vector<string> cm;

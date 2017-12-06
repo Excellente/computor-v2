@@ -4,7 +4,7 @@ SToken::~SToken(){}
 
 SToken::SToken(bool isop, string value)
 {
-    this->_sign = 0;
+    this->_sign = 1;
     this->_isOp = isop;
     this->_value = value;
 }
@@ -27,4 +27,8 @@ SToken &SToken::operator=(const SToken &r)
 
 void SToken::setSign(int s){
     this->_sign = s;
+}
+
+void SToken::setValue(string s){
+    this->_value = s;
 }

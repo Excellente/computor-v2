@@ -16,7 +16,8 @@ class SToken{
         string getValue() const;
         SToken &operator=(const SToken &r);
 
-        void setSign(int s);
+        void setSign(int);
+        void setValue(string);
 };
 
 #endif

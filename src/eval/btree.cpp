@@ -134,6 +134,10 @@ void BTree::setName(string _n){
     _name = _n;
 }
 
+void BTree::setSign(double _i){
+    _sign = _i;
+}
+
 void BTree::setValue(float _v){
     _value = _v;
 }
@@ -141,11 +145,11 @@ void BTree::setValue(float _v){
 void BTree::visit(){
     if (_sign == -1)
         cout << "- ";
-    // if (_left)
-    //     cout << _left->getName() << " " << _name << " ";
-    // if (_right)
-    //     cout << _right->getName() << endl;
-    // if (!_left && !_right)
+    if (_left)
+        cout << _left->getName() << " " << _name << " ";
+    if (_right)
+        cout << _right->getName() << endl;
+    if (!_left && !_right)
     cout << _name << endl;
 }
 

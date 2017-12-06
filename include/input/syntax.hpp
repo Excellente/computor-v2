@@ -22,6 +22,7 @@ class SyntaxAnalyzer{
         double eval_exp(BTree *&, string);
         double eval_func(BTree *, string);
 
+        bool isoperand(string);
         bool is_matrix(string);
         bool search_map(string);
         bool is_complex(string);

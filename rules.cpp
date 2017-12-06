@@ -30,3 +30,4 @@ $> leading sign //ignore if tmp is = and next is +|- and next is num|name: fixed
 
 Test cases to fix:
 $> a = ? // var / expression resolution
+2/0 = ?

@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
                 }
                 if (!tmp.empty())
                 {
+                    le.delete_map();                    
                     sa.build_ast(tmp, root);
                     sa.parse(root);
                     // root->print();
                     sa.delete_tree(root);
                 }
-                le.delete_map();
             }
         }
         catch(IndexOutOfBounds &e){
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         }
         catch(InvalidSyntaxException &e){
             cerr << "\033[1;31merror:\033[0m " << e.what() << endl;
-            // exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
         catch(invalid_argument &e){
             cerr << "\033[1;31merror:\033[0m invalid_argument: " << e.what() << endl;

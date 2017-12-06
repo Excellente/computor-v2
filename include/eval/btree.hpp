@@ -38,6 +38,7 @@ class BTree{
         void visit();
         void print();
         void setName(string);
+        void setSign(double);
         void setValue(float);
         void setMat(Matrix *);
         void tostring(string);
