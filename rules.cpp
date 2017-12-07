@@ -29,5 +29,12 @@ $> a = f(x) //segfault if f(x) hasn't been declared : fixed
 $> leading sign //ignore if tmp is = and next is +|- and next is num|name: fixed
 
 Test cases to fix:
-$> a = ? // var / expression resolution
 2/0 = ?
+ x = 23edd23-+-+
+ x = --2
+ matB = ? //correct, but has a zero at the end;
+ z *  [8.000000 , 4.000000] // matrix values to_stringed. function declaration
+ {
+     x = 2
+     x ^ 2 = ? -> -4 - 16i :: -4
+ }

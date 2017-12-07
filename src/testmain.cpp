@@ -50,13 +50,6 @@ bool isdigit(char c)
 
 int main(int ac, char *av[])
 {
-    double num = 2.3;
-    string test = "2f";
-    // string buf = stod(test);
-    char name[50]; //[[2,3];[3,4,5,6];[43,3,34]]
-
-    sprintf(name, "%f", num);
-    cout <<  isdigit('2') << endl;
-
+    cout << isnumber("3.000000") << endl;
     return (0);
 }

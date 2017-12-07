@@ -8,7 +8,7 @@ SyntaxAnalyzer::SyntaxAnalyzer(){
 
 bool SyntaxAnalyzer::isoperand(string n)
 {
-    if (isname(n) || isnumber(n))
+    if (isname(n) || isnumber(n) || isfunction(n))
         return (true);
     return (false);
 }
@@ -62,30 +62,39 @@ bool SyntaxAnalyzer::can_eval(BTree *r, string v)
     bool retval = true;
     string name = r->getName();
 
-    if (isname(name) && name != v)
+    if (!r->_left && !r->_right)
     {
-        getVal(r);
-        if (is_complex(r->getName()))
-            r->setName(_complex[r->getName()]->tostring());
-        else if (is_matrix(r->getName()))
-            r->setName(_matrices[r->getName()]->tostring());
+        if (isnumber(name))
+            retval = true;
+        else if (isname(name) && name != v)
+        {
+            if (is_complex(r->getName()))
+                r->setName(_complex[r->getName()]->tostring()); // change to r->_com = _complex[r->getName()];
+            else if (is_matrix(r->getName()))
+                r->setName(_matrices[r->getName()]->tostring()); // change to r->_mat = _matrices[r->getName()];
+            else if (_vars_int.find(name) != _vars_int.end())
+                r->setName(to_string(_vars_int[name]));
+            else
+            {
+                cout << "\003[1;31merror:\003[0m] " << name << ": has not been declared." << endl;
+                retval = false;
+            }
+            retval &= retval;
+        }
+        else if (isfunction(name))
+        {
+            lp = name.find("(");
+            fname = name.substr(0, lp - 0);
+            vname = name.substr(++lp, 1);
+            if (isname(vname))
+                vname = _vars_int[vname];
+            val = eval_func(_funct[fname]->_f_rhs, vname);
+            r->setName(to_string(val));
+            retval = true;
+        }
         else
-            r->setName(to_string(r->getValue()));
-        retval = true;
+            retval = false;
     }
-    else if (isfunction(name))
-    {
-        lp = name.find("(");
-        fname = name.substr(0, lp - 0);
-        vname = name.substr(++lp, 1);
-        if (isname(vname))
-            vname = _vars_int[v];
-        val = eval_func(_funct[fname]->_f_rhs, vname);
-        r->setName(to_string(val));
-        retval = true;
-    }
-    else
-        retval = false;
     if (r->_right != NULL)
         retval &= can_eval(r->_right, v);
     if (r->_left != NULL)
@@ -99,7 +108,6 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
     stack<BTree *> tr;
     InvalidSyntaxException ise;
 
-    print_stack(s);
     while (!s.empty())
     {
         if (!isop(s.top().getValue()))
@@ -112,7 +120,6 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
         {
             if (s.top().getValue() == "-")
             {
-                cout << tr.top()->getName() << endl;
                 s.top().setValue("+");
                 tr.top()->setSign(-1);
             }
@@ -125,81 +132,14 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
             s.pop();
         }
         else
-            throw ise;
+        {
+            cout << "\033[1;31merror: \033[0minvalid_syntax" << endl;
+            break;
+        }
     }
     b = tr.top();
     tr.pop();
 }
-
-// void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException)
-// {
-//     BTree *tb;
-//     stack<SToken> tmp;
-//     InvalidSyntaxException ise;
-
-//     while (!s.empty())
-//     {
-//         if (isop(s.top().getValue()))
-//             break;
-//         tmp.push(s.top());
-//         s.pop();
-//     }
-//     if (b == NULL)
-//     {
-//         if (!s.empty())
-//         {
-//             b = new BTree(s.top().getValue(), s.top().getSign());
-//             s.pop();
-//             if (!tmp.empty())
-//             {
-//                 b->_right = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//                 tmp.pop();
-//                 if (!tmp.empty())
-//                 {
-//                     b->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//                     tmp.pop();
-//                 }
-//             }
-//         }
-//         else if (!tmp.empty())
-//         {
-//             b = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//             tmp.pop();
-//             if (!tmp.empty())
-//             {
-//                 b->_right = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//                 tmp.pop();
-//                 if (!tmp.empty())
-//                 {
-//                     b->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//                     tmp.pop();
-//                 }
-//             }
-//         }
-//     } else {
-//         if (!s.empty())
-//         {
-//             tb = new BTree(s.top().getValue(), s.top().getSign());
-//             s.pop();
-//             tb->_right = b;
-//             b = tb;
-//             if (!tmp.empty())
-//             {
-//                 tb->_left = new BTree(tmp.top().getValue(), tmp.top().getSign());
-//                 tmp.pop();        
-//             }
-//         }
-//         else
-//             throw ise;
-//     }
-//     while (!tmp.empty())
-//     {
-//         s.push(tmp.top());
-//         tmp.pop();
-//     }
-//     if (!s.empty())
-//         build_ast(s, b);
-// }
 
 void SyntaxAnalyzer::parse(BTree *&bt)
 {
@@ -307,10 +247,7 @@ void SyntaxAnalyzer::op_equal(BTree *&bt)
             if (ismatrix_tree(bt->_left))
                 matrix_eval(bt->_left)->print_mat();
             else if (iscomplex_tree(bt->_left))
-            {
-                cout << "yep is a complex tree" << endl;
                 complex_eval(bt->_left)->print_cn();
-            }
             else
                 cout << eval_exp(bt->_left) << endl;
         } else
@@ -470,7 +407,7 @@ void SyntaxAnalyzer::function_declaration(BTree *&bt)
     else if (isop(_f_rhs->getName()) || vname == _f_rhs->getName())
     {
         if (can_eval(_f_rhs, vname))
-            cout << eval_exp(_f_rhs) << endl;
+            cout << eval_exp(_f_rhs, vname) << endl;
         else
         {
             f->tostring(_f_rhs);
@@ -502,11 +439,6 @@ void SyntaxAnalyzer::getVal(BTree *&bt)
         }
         else if (_vars_int.find(bt->getName()) != _vars_int.end())
             bt->setValue(_vars_int[bt->getName()] * bt->getSign());
-        // else
-        // {
-        //     cout << "\033[1;31merror: \033[0m" << bt->getName() << ":found has not been declared." << endl;
-        //     return;
-        // }
     }
     else if (isnumber(bt->getName()))
         bt->setValue(stod(bt->getName()));
@@ -531,72 +463,56 @@ double SyntaxAnalyzer::eval_func(BTree *bt, string vn)
 {
     double res;
 
-    if (bt->_left != NULL)
-        eval_func(bt->_left, vn);
-    if (isname(bt->getName()))
-        _vars_int[bt->getName()] = stod(vn);
-    if (bt->_right != NULL)
-        eval_func(bt->_right, vn);
     res = eval_exp(bt, vn);
-    _vars_int.erase(bt->getName());
     return (res);
 }
 
 double SyntaxAnalyzer::eval_exp(BTree *&bt, string v)
 {
-    double res;
+    double tmp;
+    double l_val;
+    double r_val;
 
+    if (!bt->_left && !bt->_right)
+    {
+        if (isname(bt->getName()))
+        {
+            if (isname(v) && (_vars_int.find(v) != _vars_int.end()))
+                tmp = _vars_int[bt->getName()] * bt->getSign();
+            else if (isnumber(v))
+                tmp = stod(v) * bt->getSign();
+        }
+        else if (isnumber(bt->getName()))
+            tmp = stod(bt->getName()) * bt->getSign();
+        else if (isfunction(bt->getName()))
+        {
+            size_t lp = bt->getName().find("(");
+            string fname = bt->getName().substr(0, lp - 0);
+            string vname = bt->getName().substr(++lp, 1);
+            tmp = eval_func(_funct[fname]->_f_rhs, vname);
+        }
+        return (tmp);
+    }
     if (bt->_left != NULL)
-        eval_exp(bt->_left, v);
-    getVal(bt);
+        l_val = eval_exp(bt->_left, v);
     if (bt->_right != NULL)
-        eval_exp(bt->_right, v);
+        r_val = eval_exp(bt->_right, v);
     if (isop(bt->getName()))
     {
         if (bt->getName() == "^")
-        {
-            if (bt->_left && bt->_right)
-            {
-                res = bt->pow(bt->_left->getValue(), bt->_right->getValue());
-                bt->setValue(res);
-            }
-        }
+            return (pow(l_val, r_val) * bt->getSign());
         else if (bt->getName() == "+")
-        {
-            if (bt->_left && bt->_right)
-            {
-                res = *bt->_left + *bt->_right;
-                bt->setValue(res);
-            }            
-        }
+            return ((l_val * bt->getSign()) + r_val);
         else if (bt->getName() == "-")
-        {
-            if (bt->_left && bt->_right)
-            {
-                res = *bt->_left - *bt->_right;
-                bt->setValue(res);
-            }
-        }
+            return ((l_val * bt->getSign()) - r_val);
         else if (bt->getName() == "*")
-        {
-            if (bt->_left && bt->_right)
-            {
-                res = *bt->_left * *bt->_right;
-                bt->setValue(res);
-            }
-        }
+            return ((l_val * bt->getSign()) * r_val);
         else if (bt->getName() == "/")
         {
-            if (bt->_left && bt->_right)
-            {
-                if (bt->_right->getValue() != 0)
-                {
-                    res = *bt->_left / *bt->_right;
-                    bt->setValue(res);
-                }
-                else
-                cout << "Error: InvalidOperandException" << endl;
-            }
+            if (r_val != 0)
+                return ((l_val * bt->getSign()) / r_val);
+            else
+                cout << "\033[1;31merror:\033[0m InvalidOperand: division_by_zero!" << endl;
         }
     }
     return (bt->getValue());
@@ -611,9 +527,19 @@ double SyntaxAnalyzer::eval_exp(BTree *&bt)
     if (!bt->_left && !bt->_right)
     {
         if (isname(bt->getName()) && (_vars_int.find(bt->getName()) != _vars_int.end()))
+        {
             tmp = _vars_int[bt->getName()] * bt->getSign();
+            cout << tmp << endl;
+        }
         else if (isnumber(bt->getName()))
             tmp = stod(bt->getName()) * bt->getSign();
+        else if (isfunction(bt->getName()))
+        {
+            size_t lp = bt->getName().find("(");
+            string fname = bt->getName().substr(0, lp - 0);
+            string vname = bt->getName().substr(++lp, 1);
+            tmp = eval_func(_funct[fname]->_f_rhs, vname);
+        }
         return (tmp);
     }
     if (bt->_left != NULL)
@@ -625,75 +551,13 @@ double SyntaxAnalyzer::eval_exp(BTree *&bt)
     if (bt->getName() == "-")
         return ((l_val - r_val) * bt->getSign());
     if (bt->getName() == "*")
-        return ((l_val * r_val) * bt->getSign());
+        return ((l_val * bt->getSign()) * r_val);
     if (bt->getName() == "/")
-        return ((l_val / r_val * bt->getSign()));
+        return ((l_val * bt->getSign()) / r_val);
+    if (bt->getName() == "%")
+        return ((static_cast<int>(l_val * bt->getSign())) % static_cast<int>(r_val));
     return ((pow(l_val, r_val) * bt->getSign()));
 }
-
-// double SyntaxAnalyzer::eval_exp(BTree *&bt)
-// {
-//     double res;
-
-//     if (bt->_left != NULL)
-//         eval_exp(bt->_left);
-//     if (isoperand(bt->getName()))
-//         getVal(bt);
-//     if (bt->_right != NULL)
-//         eval_exp(bt->_right);
-//     if (isop(bt->getName()))
-//     {
-//         if (bt->getName() == "^")
-//         {
-//             if (bt->_left != NULL && bt->_right != NULL)
-//             {
-//                 res = bt->pow(bt->_left->getValue(), bt->_right->getValue());
-//                 bt->setValue(res);
-//             }
-//         }
-//         else if (bt->getName() == "+")
-//         {
-//             if (bt->_left != NULL && bt->_right != NULL)
-//             {
-//                 res = *bt->_left + *bt->_right;
-//                 cout << res << endl;
-//                 bt->setValue(res);
-//             }            
-//         }
-//         else if (bt->getName() == "-")
-//         {
-//             if (bt->_left != NULL && bt->_right != NULL)
-//             {
-//                 res = *bt->_left - *bt->_right;
-//                 cout << res << endl;
-//                 bt->setValue(res);
-//             }
-//         }
-//         else if (bt->getName() == "*")
-//         {
-//             if (bt->_left != NULL && bt->_right != NULL)
-//             {
-//                 res = *bt->_left * *bt->_right;
-//                 cout << res << endl;
-//                 bt->setValue(res);
-//             }
-//         }
-//         else if (bt->getName() == "/")
-//         {
-//             if (bt->_left != NULL && bt->_right != NULL)
-//             {
-//                 if (bt->_right->getValue() != 0)
-//                 {
-//                     res = *bt->_left / *bt->_right;
-//                     bt->setValue(res);
-//                 }
-//                 else
-//                     throw "ioe";
-//             }
-//         }
-//     }
-//     return (bt->getValue());
-// }
 
 Matrix *SyntaxAnalyzer::matrix_eval(BTree *&bt)
 {

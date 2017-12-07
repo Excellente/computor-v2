@@ -30,7 +30,7 @@ void Error::ScanTree(BTree *bt) throw (InvalidSyntaxException)
     InvalidSyntaxException ise;
 
     if (!hasop(bt))
-        throw ise;
+        cout << "\033[1;31merror: \033[0mno operator found." << endl;
     OperatorScan(bt);
 }
 
@@ -41,9 +41,9 @@ void Error::OperatorScan(BTree *bt) throw (InvalidSyntaxException)
     if (bt->_left != NULL)
         OperatorScan(bt->_left);
     if (isop(bt->getName()) && (!bt->_left || !bt->_right))
-        throw ise;
+        cout << "\033[1;31merror: \033[0mbinary operator: " << bt->getName() << " must two operands." << endl;
     if (!bt->_left && !isleaf(bt->getName()) && !bt->_right)
-        throw ise;
+        cout << "\033[1;31merror: \033[0m: " << bt->getName() << " invalid operand." << endl;
     if (bt->_right != NULL)
         OperatorScan(bt->_right);
 }
@@ -55,7 +55,7 @@ void Error::OperandScan(BTree *bt) throw (InvalidOperandException)
     if (bt->_left != NULL)
         OperandScan(bt->_left);
     if (bt->getName() == "=" && isnumber(bt->_left->getName()))
-        throw ioe;
+        cout << "\033[1;31merror: \033[0minvalid syntax: " << bt->_left->getName() << " must be a valid var_name." << endl;
     if (bt->_right != NULL)
         OperandScan(bt->_right);
 }

@@ -1,28 +1,5 @@
 #include "eval/shunting.hpp"
 
-// void Shunting::_token_sign(string &tmp, int &inBrace, int &sign)
-// {
-//     if (tmp == "(") inBrace += 1;
-//     if (tmp == ")") inBrace -= 1;
-//     if (tmp == "-")
-//     {
-//         tmp = "+";
-//         if (inBrace > 0)
-//         {
-//             if (sign == -1)
-//                 sign = 1;
-//             else
-//                 sign = -1;
-//         }
-//         if (inBrace == 0) sign = -1;
-//     }
-//     else if (tmp == "+")
-//     {
-//         if (!inBrace && sign == -1)
-//             sign = 1;
-//     }
-// }
-
 void Shunting::assembly_float(string &t, Maps &_t)
 {
     if (isnumber(t) && _t.look_ahead(0) == "." && isnumber(_t.look_ahead(1)))
@@ -60,7 +37,7 @@ bool Shunting::leading_sign(int s, int _n, string &t, Maps &_t, SToken &st, stac
             return (true);
         }
         else
-            throw ise;
+            cout << "\033[1;31merror: \033[0minvalid syntax: " << endl;
     }
     return (false);
 }
@@ -160,7 +137,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
             lstack.push(st);
         }
         else
-            throw ise;
+            cout << "\033[1;31merror: \033[0minvalid_syntax" << endl;
     }
     while (!opstack.empty())
     {
