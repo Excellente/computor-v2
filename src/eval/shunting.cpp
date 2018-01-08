@@ -2,21 +2,31 @@
 
 int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp)
 {
-    static string tb;
-
-    if ((tb != "=" && tmp != "*" && isop(tb) && isop(tmp)))
-    {
-        tb = "";
-        cout << "\033[1;31merror: \033[0minvalid syntax: here " << tb << tmp << endl;
-        return (1);
-    }
-    else if (tmp == "=" && (ls.size() != op.size()))
+    string tm;
+    int op = 0;
+    string prev;
+    
+    if (tmp == "=" && (ls.size() != op.size()))
     {
         if (ls.size() > 1)
             cout << "\033[1;31merror: \033[0minvalid var_name." << endl;
         return (1);
     }
-    tb = tmp;
+    tm = _tkns.getNextToken();
+    while (tm != _EOF_)
+    {
+        prev = tm;
+        tm = _tkns.getNextToken();
+        if (isop(tm))
+        {
+            op++;
+            if (op >= 3 || (op == 2 && (prev != "*" || !(prev == "=" && tm != "="))))
+            {
+                cout << "\033[1;31merror: \033[0minvalid syntax: here " << tb << tmp << endl;
+                return (1);
+            }
+        }
+    }
     return (0);
 }
 
