@@ -30,7 +30,7 @@ $> leading sign //ignore if tmp is = and next is +|- and next is num|name: fixed
 
 Test cases to fix:
 2/0 = ?
- x = 23edd23-+-+
+ x = 23edd23-+-+ // fixed.
  x = --2
  matB = ? //correct, but has a zero at the end;
  z *  [8.000000 , 4.000000] // matrix values to_stringed. function declaration

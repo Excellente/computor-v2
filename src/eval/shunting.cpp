@@ -1,5 +1,25 @@
 #include "eval/shunting.hpp"
 
+int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp)
+{
+    static string tb;
+
+    if (tb != "=" && isop(tb) && isop(tmp))
+    {
+        tb = "";
+        cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
+        return (1);
+    }
+    else if (tmp == "=" && (ls.size() != op.size()))
+    {
+        if (ls.size() > 1)
+            cout << "\033[1;31merror: \033[0minvalid var_name." << endl;
+        return (1);
+    }
+    tb = tmp;
+    return (0);
+}
+
 void Shunting::assembly_float(string &t, Maps &_t)
 {
     if (isnumber(t) && _t.look_ahead(0) == "." && isnumber(_t.look_ahead(1)))
@@ -17,7 +37,7 @@ void Shunting::assembly_matrix_multi(string &tm, Maps &_tk)
         tm += _tk.getNextToken();
 }
 
-bool Shunting::leading_sign(int s, int _n, string &t, Maps &_t, SToken &st, stack<SToken> &ls) throw (InvalidSyntaxException)
+bool Shunting::leading_sign(int s, int &e, int _n, string &t, Maps &_t, SToken &st, stack<SToken> &ls) throw (InvalidSyntaxException)
 {
     int _sign;
     InvalidSyntaxException ise;
@@ -37,7 +57,10 @@ bool Shunting::leading_sign(int s, int _n, string &t, Maps &_t, SToken &st, stac
             return (true);
         }
         else
-            cout << "\033[1;31merror: \033[0minvalid syntax: " << endl;
+        {
+            e = 1;
+            cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
+        }
     }
     return (false);
 }
@@ -93,7 +116,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
         assembly_float(tmp, _tkns);
         assembly_matrix_multi(tmp, _tkns);
         assembly_complex(tmp, _tkns, st, opstack);
-        if (leading_sign(sign, _tok, tmp, _tkns, st, lstack)) continue;
+        if (leading_sign(sign, _err, _tok, tmp, _tkns, st, lstack)) continue;
         if (_tkns.look_ahead(0) == "(")
             _tkns.check_funct(tmp);
         if (tmp == "[" && _tkns.look_ahead(0) == "[")
@@ -101,7 +124,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
         if (!isvalid_syntax(tmp))
         {
             _err = 1;
-            cout << "\033[1;31merror: \033[0minvalid syntax: " << tmp << endl;
+            cout << "\033[1;31merror: \033[0minvalid syntax: " << tmp << "." << endl;
             break;
         }
         if (isop(tmp) || tmp == "(")
@@ -121,6 +144,8 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
                 }
             }
             opstack.push(st);
+            if ((_err = error_check(lstack, opstack, tmp)))
+                break;
         }
         else if (tmp == ")")
         {
@@ -137,7 +162,11 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
             lstack.push(st);
         }
         else
-            cout << "\033[1;31merror: \033[0minvalid_syntax" << endl;
+        {
+            _err = 1;
+            cout << "\033[1;31merror: \033[0minvalid_syntax." << endl;
+            break;
+        }
     }
     while (!opstack.empty())
     {
