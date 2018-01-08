@@ -43,7 +43,7 @@ class SyntaxAnalyzer{
         void var_declaration(BTree *&);
         void function_declaration(BTree *&);
         void build_ast(Maps, BTree *&) throw (InvalidSyntaxException);
-        void build_ast(stack<SToken> &, BTree *&) throw (InvalidSyntaxException);
+        void build_ast(stack<SToken> &, BTree *&, int&) throw (InvalidSyntaxException);
 
     private:
         int _index;

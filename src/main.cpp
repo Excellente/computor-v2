@@ -38,10 +38,14 @@ int main(int argc, char *argv[])
                 if (!tmp.empty())
                 {
                     le.delete_map();                    
-                    sa.build_ast(tmp, root);
-                    sa.parse(root);
-                    // root->print();
-                    sa.delete_tree(root);
+                    sa.build_ast(tmp, root, _e);
+                    if (!_e)
+                    {
+                        sa.parse(root);
+                        // root->print();
+                        sa.delete_tree(root);
+                    }
+                    else _e = 0;
                 }
             }
         }

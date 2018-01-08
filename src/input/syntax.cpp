@@ -102,7 +102,7 @@ bool SyntaxAnalyzer::can_eval(BTree *r, string v)
     return (retval);
 }
 
-void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntaxException)
+void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b, int &flag) throw (InvalidSyntaxException)
 {
     BTree *r;
     stack<BTree *> tr;
@@ -123,22 +123,35 @@ void SyntaxAnalyzer::build_ast(stack<SToken> &s, BTree *&b) throw (InvalidSyntax
                 s.top().setValue("+");
                 tr.top()->setSign(-1);
             }
-            r = new BTree(s.top().getValue(), s.top().getSign());
-            r->_right = tr.top();
-            tr.pop();
-            r->_left = tr.top();
-            tr.pop();
-            tr.push(r);
-            s.pop();
+            if (tr.size() >= 2)
+            {
+                r = new BTree(s.top().getValue(), s.top().getSign());
+                r->_right = tr.top();
+                tr.pop();
+                r->_left = tr.top();
+                tr.pop();
+                tr.push(r);
+                s.pop();
+            }
+            else
+            {
+                flag = 1;
+                cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
+                break;
+            }
         }
         else
         {
-            cout << "\033[1;31merror: \033[0minvalid_syntax" << endl;
+            flag = 1;
+            cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
             break;
         }
     }
-    b = tr.top();
-    tr.pop();
+    if (!flag)
+    {
+        b = tr.top();
+        tr.pop();
+    }
 }
 
 void SyntaxAnalyzer::parse(BTree *&bt)
@@ -317,7 +330,10 @@ void SyntaxAnalyzer::var_declaration(BTree *&bt)
                 _vars_int[bt->_left->getName()] = _vars_int[val];
             }
             else
-                cout << "\033[1;31merror: \033[0m" << bt->_right->getName() << ": has not been declared." << endl;
+            {
+                cout << "\033[1;31merror: \033[0m" << val << ": has not been declared." << endl;
+                return;
+            }
         }
         else if (isfunction(val))
         {

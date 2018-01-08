@@ -4,10 +4,10 @@ int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp)
 {
     static string tb;
 
-    if (tb != "=" && isop(tb) && isop(tmp))
+    if ((tb != "=" && tmp != "*" && isop(tb) && isop(tmp)))
     {
         tb = "";
-        cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
+        cout << "\033[1;31merror: \033[0minvalid syntax: here " << tb << tmp << endl;
         return (1);
     }
     else if (tmp == "=" && (ls.size() != op.size()))
@@ -164,9 +164,14 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
         else
         {
             _err = 1;
-            cout << "\033[1;31merror: \033[0minvalid_syntax." << endl;
+            cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
             break;
         }
+    }
+    if (lstack.empty() || lstack.top().getValue() == _EOF_)
+    {
+        _err = 1;
+        cout << "\033[1;31merror: \033[0minvalid syntax." << endl;
     }
     while (!opstack.empty())
     {
