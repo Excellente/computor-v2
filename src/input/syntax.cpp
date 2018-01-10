@@ -543,10 +543,7 @@ double SyntaxAnalyzer::eval_exp(BTree *&bt)
     if (!bt->_left && !bt->_right)
     {
         if (isname(bt->getName()) && (_vars_int.find(bt->getName()) != _vars_int.end()))
-        {
             tmp = _vars_int[bt->getName()] * bt->getSign();
-            cout << tmp << endl;
-        }
         else if (isnumber(bt->getName()))
             tmp = stod(bt->getName()) * bt->getSign();
         else if (isfunction(bt->getName()))
@@ -569,7 +566,11 @@ double SyntaxAnalyzer::eval_exp(BTree *&bt)
     if (bt->getName() == "*")
         return ((l_val * bt->getSign()) * r_val);
     if (bt->getName() == "/")
-        return ((l_val * bt->getSign()) / r_val);
+    {
+        if (!r_val)
+                cout << "\033[1;31merror:\033[0m InvalidOperand: division_by_zero!" << endl;
+        else return ((l_val * bt->getSign()) / r_val);
+    }
     if (bt->getName() == "%")
         return ((static_cast<int>(l_val * bt->getSign())) % static_cast<int>(r_val));
     return ((pow(l_val, r_val) * bt->getSign()));

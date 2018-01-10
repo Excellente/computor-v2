@@ -38,3 +38,5 @@ Test cases to fix:
      x = 2
      x ^ 2 = ? -> -4 - 16i :: -4
  }
+ f(x) = ? // prints a zero
+ $> x+2=? -> 2 '\n' 4

@@ -1,17 +1,17 @@
 #include "eval/shunting.hpp"
 
-int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp)
+int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp, Maps _tkns)
 {
     string tm;
-    int op = 0;
+    int op_count = 0;
     string prev;
     
-    if (tmp == "=" && (ls.size() != op.size()))
-    {
-        if (ls.size() > 1)
-            cout << "\033[1;31merror: \033[0minvalid var_name." << endl;
-        return (1);
-    }
+    // if (tmp == "=" && (ls.size() != op.size()))
+    // {
+    //     if (ls.size() > 1)
+    //         cout << "\033[1;31merror: \033[0minvalid var_name." << endl;
+    //     return (1);
+    // }
     tm = _tkns.getNextToken();
     while (tm != _EOF_)
     {
@@ -19,13 +19,14 @@ int Shunting::error_check(stack<SToken> ls, stack<SToken> op, string tmp)
         tm = _tkns.getNextToken();
         if (isop(tm))
         {
-            op++;
-            if (op >= 3 || (op == 2 && (prev != "*" || !(prev == "=" && tm != "="))))
+            op_count++;
+            if (op_count >= 3 || (op_count == 2 && (prev != "*" || !(prev == "=" && tm != "="))))
             {
-                cout << "\033[1;31merror: \033[0minvalid syntax: here " << tb << tmp << endl;
+                cout << "\033[1;31merror: \033[0minvalid syntax: here " << tmp << endl;
                 return (1);
             }
         }
+        else if (op_count) op_count--;
     }
     return (0);
 }
@@ -154,7 +155,7 @@ stack<SToken> Shunting::shuntingYard(Maps _tkns, int &_err)
                 }
             }
             opstack.push(st);
-            if ((_err = error_check(lstack, opstack, tmp)))
+            if ((_err = error_check(lstack, opstack, tmp, _tkns)))
                 break;
         }
         else if (tmp == ")")

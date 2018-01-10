@@ -11,7 +11,7 @@ void print_stack(stack<SToken> st);
 class Shunting{
     public:
         stack<SToken> shuntingYard(Maps, int &);
-        int error_check(stack<SToken>, stack<SToken>, string);
+        int error_check(stack<SToken>, stack<SToken>, string, Maps);
 
         void print(stack<SToken>);
         void assembly_float(string &, Maps &);
