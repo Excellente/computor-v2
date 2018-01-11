@@ -4,15 +4,21 @@ Complex::~Complex(){}
 
 Complex::Complex()
 {
+    _exp = 0;
     _real = 0;
     _imag = 0;
 }
 
 Complex::Complex(string cn)
 {
+    _exp = 0;
     _real = 0;
     _imag = 0;
     tocomplex(cn);
+}
+
+double Complex::getExp() const{
+    return (_exp);
 }
 
 double Complex::getReal() const{
@@ -44,9 +50,10 @@ Complex &Complex::operator^(const Complex &r)
     double _nimag = _imag;
     double _nreal = _real;
 
+    _exp = r._real;
     for (int i = r._real; i > 1; i--)
     {
-        if (d % 2 == 0)
+        if (d == 2)
             _2bi = (_imag * _nimag) * -1;
         else
             _2bi = (_imag * _nimag);

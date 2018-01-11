@@ -5,6 +5,7 @@
 
 class Complex{
     private:
+        double _exp;
         double _real;
         double _imag;
 
@@ -13,6 +14,7 @@ class Complex{
         Complex();
         Complex(string);
 
+        double getExp() const;
         double getReal() const;
         double getImag() const;
         string tostring() const;
