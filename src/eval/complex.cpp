@@ -4,21 +4,21 @@ Complex::~Complex(){}
 
 Complex::Complex()
 {
-    _exp = 0;
+    _i = 0;
     _real = 0;
     _imag = 0;
 }
 
 Complex::Complex(string cn)
 {
-    _exp = 0;
+    _i = 0;
     _real = 0;
     _imag = 0;
     tocomplex(cn);
 }
 
-double Complex::getExp() const{
-    return (_exp);
+double Complex::getI() const{
+    return (_i);
 }
 
 double Complex::getReal() const{
@@ -27,6 +27,17 @@ double Complex::getReal() const{
 
 double Complex::getImag() const{
     return (_imag);
+}
+
+Complex &Complex::operator/(const Complex &r)
+{
+    Complex c;
+
+    c._real = ((_real * r._real) + (_imag * r._imag)) / ((r._real * r._real) + (r._imag * r._imag));
+    c._imag = ((_imag * r._real) - (_real * r._imag)) / ((r._real * r._real) + (r._imag * r._imag));
+    _real = c._real;
+    _imag = c._imag;
+    return (*this);
 }
 
 Complex &Complex::operator+(const Complex &r)
@@ -38,30 +49,47 @@ Complex &Complex::operator+(const Complex &r)
 
 Complex &Complex::operator*(const Complex &r)
 {
-    _real *= r._real;
-    _imag *= r._imag;
+    Complex c;
+
+    c._real = (_real * r._real) - (_imag * r._imag);
+    c._imag = (_real * r._imag) + (_imag * r._real);
+    _real = c._real;
+    _imag = c._imag;
     return (*this);
 }
 
 Complex &Complex::operator^(const Complex &r)
 {
-    double _2bi;
-    int d = r._real;
-    double _nimag = _imag;
-    double _nreal = _real;
+    int exp;
+    int sign = 1;
 
-    _exp = r._real;
-    for (int i = r._real; i > 1; i--)
+    exp = r.getReal();
+    if (exp % 4 == 0)
     {
-        if (d == 2)
-            _2bi = (_imag * _nimag) * -1;
-        else
-            _2bi = (_imag * _nimag);
-        _nreal = (_real * _nreal) + _2bi;
-        _nimag = 2 * _nimag * _nreal;
+        _i = 0;
+        for (; exp > 1; exp--)
+            *this = *this * *this;
     }
-    _imag = _nimag;
-    _real = _nreal;
+    else if (exp % 2 == 0 && exp % 4 != 0)
+    {
+        _i = 0;
+        for (; exp > 1; exp--)
+            *this = *this * *this;
+        _imag *= -1;
+    }
+    else if ((exp - 1) % 2 == 0)
+    {
+        _i = 1;
+        for (; exp > 1; exp--)
+            *this = *this * *this;
+        _imag *= -1;
+    }
+    else if ((exp - 1) % 4 == 0)
+    {
+        _i = 1;
+        for (; exp > 1; exp--)
+            *this = *this * *this;
+    }
     return (*this);
 }
 
@@ -73,6 +101,7 @@ void Complex::tocomplex(string cn)
         _real = stod(cn);
     else if (iscomplex(cn))
     {
+        _i = 1;
         if (isnumber(string(1, cn[0])))
             _imag = stod(cn);
         else
@@ -80,21 +109,31 @@ void Complex::tocomplex(string cn)
     }
 }
 
-void Complex::print_cn() const
+void Complex::print_cn()
 {
     if (_real != 0)
     {
+        if (_i == 0) _real += _imag;
         cout << _real;
         if (_imag > 0)
-            cout << " + " << _imag << "i" ;
+        {
+            if (_i == 1)
+                cout << " + " << _imag << "i" ;
+        }
         else if (_imag != 0)
-            cout << " - " << (_imag * -1) << "i";
+        {
+            if (_i == 1)
+                cout << " - " << (_imag * -1) << "i";
+        }
         cout << endl;
     }
     else
     {
         if (_imag != 0)
-            cout << _imag << "i" << endl;
+        {
+            if (_i == 1)
+                cout << _imag << "i" << endl;
+        }
         else
             cout << 0 << endl;
     }

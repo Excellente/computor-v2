@@ -5,7 +5,7 @@
 
 class Complex{
     private:
-        double _exp;
+        double _i;
         double _real;
         double _imag;
 
@@ -14,15 +14,16 @@ class Complex{
         Complex();
         Complex(string);
 
-        double getExp() const;
+        double getI() const;
         double getReal() const;
         double getImag() const;
         string tostring() const;
         Complex &operator+(const Complex &r);
         Complex &operator*(const Complex &r);
+        Complex &operator/(const Complex &r);
         Complex &operator^(const Complex &r);
 
-        void print_cn() const;
+        void print_cn();
         void tocomplex(string);
 };
 
